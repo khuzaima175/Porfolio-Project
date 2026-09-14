@@ -1,21 +1,146 @@
+@import url('https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --surface: #EEEFEC;              /* base ground: cool near-white */
+  --surface-2: #E2E4DD;            /* recessed wells, specimen frames, code panels */
+  --ink: #14161A;                  /* primary text: deep carbon-black, cold undertone */
+  --ink-muted: #6B6E68;            /* secondary technical context */
+  --line: rgba(20, 22, 26, 0.12);  /* structural dividers — drawn only at true boundaries */
+  --line-heavy: rgba(20, 22, 26, 0.35);
+  --signal: #2C5AA0;               /* the single accent — cold instrument blue, <= 5% of pixels */
+  --signal-subtle: rgba(44, 90, 160, 0.08);
+
+  --e-out: cubic-bezier(0.16, 1, 0.3, 1);   /* clean mechanical reveals */
+  --e-io: cubic-bezier(0.76, 0, 0.24, 1);   /* functional wipes */
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+.theme-inverted {
+  --surface: #14161A;
+  --surface-2: #1C1F24;
+  --ink: #EEEFEC;
+  --ink-muted: #8E928A;
+  --line: rgba(238, 239, 236, 0.12);
+  --line-heavy: rgba(238, 239, 236, 0.35);
+  --signal: #4A7FD4;
+  --signal-subtle: rgba(74, 127, 212, 0.12);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  background-color: var(--surface);
+  color: var(--ink);
+  font-family: 'General Sans', system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--surface);
+  color: var(--ink);
+  min-height: 100vh;
+  overflow-x: hidden;
+  cursor: default;
+}
+
+/* Structural geometry: zero rounded corners */
+div, section, article, nav, header, footer, button, input, textarea {
+  border-radius: 0 !important;
+}
+
+/* Noise overlay */
+.noise-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  opacity: 0.025;
+  z-index: 9999;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+}
+
+/* Custom Scrollbar for Laboratory aesthetic */
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--surface);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--line-heavy);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--signal);
+}
+
+/* Tabular numerals utility for metrics */
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Frame boundary tick mark styling */
+.tick-mark {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  pointer-events: none;
+}
+.tick-tl {
+  top: -1px;
+  left: -1px;
+  border-top: 1px solid var(--line-heavy);
+  border-left: 1px solid var(--line-heavy);
+}
+.tick-tr {
+  top: -1px;
+  right: -1px;
+  border-top: 1px solid var(--line-heavy);
+  border-right: 1px solid var(--line-heavy);
+}
+.tick-bl {
+  bottom: -1px;
+  left: -1px;
+  border-bottom: 1px solid var(--line-heavy);
+  border-left: 1px solid var(--line-heavy);
+}
+.tick-br {
+  bottom: -1px;
+  right: -1px;
+  border-bottom: 1px solid var(--line-heavy);
+  border-right: 1px solid var(--line-heavy);
+}
+
+/* Lenis Recommended CSS */
+html.lenis, html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
 }

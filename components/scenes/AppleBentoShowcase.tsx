@@ -528,18 +528,18 @@ export function AppleBentoShowcase({
                       ))}
                     </div>
 
-                    {/* Tech Stack Pills */}
-                    <div className="flex flex-wrap gap-1.5">
+                    {/* Tech Stack Tags */}
+                    <div className="flex flex-wrap items-center gap-2 pt-1">
                       {project.techStack.slice(0, 4).map((tech, tIdx) => (
                         <span
                           key={tIdx}
-                          className="text-[10px] font-mono px-2.5 py-0.5 bg-white/[0.04] border border-white/8 text-apple-subtle rounded-full"
+                          className="text-xs font-sans font-medium px-2.5 py-1 bg-white/[0.05] border border-white/[0.08] text-neutral-300 rounded-lg group-hover:border-white/20 transition-colors"
                         >
                           {tech}
                         </span>
                       ))}
                       {project.techStack.length > 4 && (
-                        <span className="text-[10px] font-mono px-2 py-0.5 text-apple-subtle/80">
+                        <span className="text-xs font-mono px-2 py-1 text-apple-subtle font-medium">
                           +{project.techStack.length - 4}
                         </span>
                       )}

@@ -1,10 +1,13 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X } from "lucide-react";
+import { X, ChevronDown, Zap } from "lucide-react";
 import Lenis from "lenis";
 import { Project } from "@/lib/data/projects";
+import { AcousticVisualizer } from "@/components/specimens/AcousticVisualizer";
+import { GNSSSimulator } from "@/components/specimens/GNSSSimulator";
+import { SensoryRibbon } from "@/components/specimens/SensoryRibbon";
 
 interface ProjectModalProps {
   project: Project | null;
@@ -14,6 +17,16 @@ interface ProjectModalProps {
 export function ProjectModal({ project, onClose }: ProjectModalProps) {
   const scrollWrapperRef = useRef<HTMLDivElement | null>(null);
   const scrollContentRef = useRef<HTMLDivElement | null>(null);
+  const [activeTab, setActiveTab] = useState<"overview" | "deep-dive">("overview");
+  const [specimenOpen, setSpecimenOpen] = useState(false);
+
+  // Reset tabs when a new project opens
+  useEffect(() => {
+    if (project) {
+      setActiveTab("overview");
+      setSpecimenOpen(false);
+    }
+  }, [project?.id]);
 
   // Dedicated Lenis instance inside the modal for buttery smooth momentum scrolling
   useEffect(() => {
@@ -73,11 +86,13 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
     };
   }, [project]);
 
+  const hasSpecimen = project && project.specimenType && project.specimenType !== "none";
+
   return (
     <AnimatePresence>
       {project && (
         <div className="fixed inset-0 z-[100] flex justify-end">
-          {/* Backdrop with smooth blur */}
+          {/* Backdrop */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -87,7 +102,7 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
             className="fixed inset-0 bg-black/80 backdrop-blur-md cursor-pointer"
           />
 
-          {/* Drawer Panel: Apple Cubic-Bezier Glide */}
+          {/* Drawer Panel */}
           <motion.div
             data-lenis-prevent="true"
             initial={{ x: "100%" }}
@@ -96,7 +111,7 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
             transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
             className="relative w-full max-w-3xl bg-[#141415] border-l border-white/10 h-screen max-h-screen flex flex-col shadow-2xl z-10 overflow-hidden text-white select-text transform-gpu"
           >
-            {/* Drawer Header (Fixed at top) */}
+            {/* Drawer Header */}
             <div className="flex-shrink-0 bg-[#161617]/95 backdrop-blur-xl border-b border-white/10 p-5 px-6 flex items-center justify-between z-20">
               <div className="flex items-center space-x-3">
                 <span className="px-3 py-1 bg-apple-blue/15 border border-apple-blue/30 text-apple-blue font-mono text-[10px] uppercase rounded-full font-medium">
@@ -114,6 +129,24 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
               </button>
             </div>
 
+            {/* Tab switcher */}
+            <div className="flex-shrink-0 flex border-b border-white/10 bg-[#141415]">
+              {(["overview", "deep-dive"] as const).map((tab) => (
+                <button
+                  key={tab}
+                  onClick={() => setActiveTab(tab)}
+                  className={`flex-1 py-3 text-xs font-mono uppercase tracking-widest transition-colors ${
+                    activeTab === tab
+                      ? "text-white border-b-2 border-apple-blue"
+                      : "text-apple-subtle hover:text-white border-b-2 border-transparent"
+                  }`}
+                  data-cursor-interactive="true"
+                >
+                  {tab === "overview" ? "Overview" : "Technical Deep-Dive"}
+                </button>
+              ))}
+            </div>
+
             {/* Dedicated Smooth Scroll Wrapper */}
             <div
               ref={scrollWrapperRef}
@@ -121,140 +154,226 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
               className="flex-1 overflow-y-auto overscroll-contain min-h-0 apple-scrollbar"
               style={{ WebkitOverflowScrolling: "touch" }}
             >
-              <div ref={scrollContentRef} className="p-6 sm:p-8 space-y-8">
-                {/* Title & Tagline */}
-                <div>
-                  <h2 className="font-sans text-2xl sm:text-4xl font-bold text-white tracking-apple-tight leading-tight">
-                    {project.title}
-                  </h2>
-                  <p className="text-apple-subtle font-mono text-xs sm:text-sm mt-2">
-                    {project.tagline}
-                  </p>
-                </div>
+              <div ref={scrollContentRef} className="p-6 sm:p-8 space-y-7">
 
-                {/* Media Graphic if available */}
-                {project.image && (
-                  <div className="relative border border-white/10 overflow-hidden bg-black rounded-3xl aspect-video shadow-2xl">
-                    <img
-                      src={project.image}
-                      alt={project.title}
-                      loading="eager"
-                      decoding="async"
-                      className="w-full h-full object-cover grayscale contrast-125 hover:grayscale-0 transition-transform duration-500 ease-out"
-                    />
-                    <div className="absolute bottom-3 right-3 px-3 py-1.5 bg-black/80 backdrop-blur-md border border-white/10 text-apple-subtle font-mono text-[10px] rounded-full">
-                      ARCHIVAL SPECIMEN // LIVE
-                    </div>
-                  </div>
-                )}
-
-                {/* Executive Briefing */}
-                <div className="p-6 bg-apple-blue/10 border-l-2 border-apple-blue rounded-r-2xl">
-                  <h3 className="text-xs font-mono text-apple-blue uppercase tracking-wider mb-2 font-semibold">
-                    Executive Briefing
-                  </h3>
-                  <p className="text-white text-sm sm:text-base leading-relaxed font-normal">
-                    {project.executivePitch}
-                  </p>
-                </div>
-
-                {/* Key Hard Metrics */}
-                <div>
-                  <h3 className="text-xs font-mono text-apple-subtle uppercase tracking-wider mb-3">
-                    Validated Performance Metrics
-                  </h3>
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                    {project.metrics.map((metric, idx) => (
-                      <div key={idx} className="p-4 bg-white/5 border border-white/10 rounded-2xl">
-                        <div className="text-apple-subtle font-mono text-[10px] uppercase">
-                          {metric.label}
-                        </div>
-                        <div className="font-sans text-xl font-bold text-apple-blue tabular-nums mt-1">
-                          {metric.value}
-                        </div>
-                        <div className="text-[11px] text-apple-subtle mt-1 leading-snug">
-                          {metric.description}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Architecture & Engineering Highlights */}
-                <div>
-                  <h3 className="text-xs font-mono text-apple-subtle uppercase tracking-wider mb-4">
-                    Core Architecture & Engineering Highlights
-                  </h3>
-                  <div className="space-y-3">
-                    {project.architectureHighlights.map((arch, idx) => (
-                      <div
-                        key={idx}
-                        className="p-4 bg-white/[0.03] border border-white/10 rounded-2xl hover:border-white/20 transition-colors"
-                      >
-                        <div className="flex items-center space-x-2 text-white font-mono text-xs font-semibold">
-                          <span className="text-apple-blue">0{idx + 1}.</span>
-                          <span>{arch.title}</span>
-                        </div>
-                        <p className="text-apple-subtle text-xs sm:text-sm mt-2 leading-relaxed font-normal">
-                          {arch.detail}
+                {/* --- OVERVIEW TAB --- */}
+                <AnimatePresence mode="wait">
+                  {activeTab === "overview" && (
+                    <motion.div
+                      key="overview"
+                      initial={{ opacity: 0, y: 12 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -8 }}
+                      transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+                      className="space-y-7"
+                    >
+                      {/* Title & Tagline */}
+                      <div>
+                        <h2 className="font-sans text-2xl sm:text-4xl font-bold text-white tracking-apple-tight leading-tight">
+                          {project.title}
+                        </h2>
+                        <p className="text-apple-subtle font-sans text-sm sm:text-base mt-2 leading-relaxed">
+                          {project.tagline}
                         </p>
                       </div>
-                    ))}
-                  </div>
-                </div>
 
-                {/* Hard Metrics & Benchmarks */}
-                {project.hardMetrics && project.hardMetrics.length > 0 && (
-                  <div>
-                    <h3 className="text-xs font-mono text-apple-subtle uppercase tracking-wider mb-3">
-                      Hard Metrics & Quantitative Benchmarks
-                    </h3>
-                    <div className="p-5 bg-white/5 border border-white/10 rounded-2xl space-y-2">
-                      {project.hardMetrics.map((hm, idx) => (
-                        <div key={idx} className="flex items-start space-x-2 text-xs font-mono text-white">
-                          <span className="text-apple-blue font-bold">[{idx + 1}]</span>
-                          <span>{hm}</span>
+                      {/* Media Graphic */}
+                      {project.image && (
+                        <div className="relative border border-white/10 overflow-hidden bg-black rounded-3xl aspect-video shadow-2xl">
+                          <img
+                            src={project.image}
+                            alt={project.title}
+                            loading="eager"
+                            decoding="async"
+                            className="w-full h-full object-cover grayscale contrast-125 hover:grayscale-0 transition-all duration-500 ease-out"
+                          />
+                          <div className="absolute bottom-3 right-3 px-3 py-1.5 bg-black/80 backdrop-blur-md border border-white/10 text-apple-subtle font-mono text-[10px] rounded-full">
+                            ARCHIVAL SPECIMEN // LIVE
+                          </div>
                         </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
+                      )}
 
-                {/* Technologies Deployed */}
-                <div>
-                  <h3 className="text-xs font-mono text-apple-subtle uppercase tracking-wider mb-3">
-                    Technologies Deployed
-                  </h3>
-                  <div className="flex flex-wrap gap-2">
-                    {project.techStack.map((tech, idx) => (
-                      <span
-                        key={idx}
-                        className="px-3 py-1.5 bg-white/5 border border-white/10 text-apple-subtle font-mono text-xs rounded-full"
+                      {/* Executive Briefing */}
+                      <div className="p-5 bg-apple-blue/10 border-l-2 border-apple-blue rounded-r-2xl">
+                        <h3 className="text-[10px] font-mono text-apple-blue uppercase tracking-wider mb-2 font-semibold">
+                          Executive Briefing
+                        </h3>
+                        <p className="text-white text-sm leading-relaxed font-normal">
+                          {project.executivePitch}
+                        </p>
+                      </div>
+
+                      {/* Validated Metrics */}
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                        {project.metrics.map((metric, idx) => (
+                          <div key={idx} className="p-4 bg-white/5 border border-white/10 rounded-2xl">
+                            <div className="text-apple-subtle font-mono text-[10px] uppercase">
+                              {metric.label}
+                            </div>
+                            <div className="font-sans text-xl font-bold text-apple-blue tabular-nums mt-1">
+                              {metric.value}
+                            </div>
+                            <div className="text-[11px] text-apple-subtle mt-1 leading-snug">
+                              {metric.description}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+
+                      {/* Tech tags */}
+                      <div>
+                        <h3 className="text-[10px] font-mono text-apple-subtle uppercase tracking-wider mb-3">
+                          Technologies
+                        </h3>
+                        <div className="flex flex-wrap gap-2.5">
+                          {project.techStack.map((tech, idx) => (
+                            <span
+                              key={idx}
+                              className="px-3.5 py-1.5 bg-white/[0.05] border border-white/[0.08] text-neutral-200 font-sans text-sm font-medium rounded-xl"
+                            >
+                              {tech}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Live Proof section — only for projects with a specimen */}
+                      {hasSpecimen && (
+                        <div className="border border-white/10 rounded-2xl overflow-hidden">
+                          <button
+                            onClick={() => setSpecimenOpen((v) => !v)}
+                            className="w-full flex items-center justify-between px-5 py-4 bg-white/[0.03] hover:bg-white/[0.06] transition-colors"
+                            data-cursor-interactive="true"
+                          >
+                            <div className="flex items-center space-x-2 text-xs font-mono">
+                              <Zap className="w-3.5 h-3.5 text-apple-blue" />
+                              <span className="text-white font-semibold uppercase tracking-wider">
+                                Run Live Proof
+                              </span>
+                              <span className="text-apple-subtle">
+                                — interactive model in your browser
+                              </span>
+                            </div>
+                            <ChevronDown
+                              className={`w-4 h-4 text-apple-subtle transition-transform duration-300 flex-shrink-0 ${
+                                specimenOpen ? "rotate-180 text-apple-blue" : ""
+                              }`}
+                            />
+                          </button>
+
+                          <AnimatePresence>
+                            {specimenOpen && (
+                              <motion.div
+                                key="specimen"
+                                initial={{ height: 0, opacity: 0 }}
+                                animate={{ height: "auto", opacity: 1 }}
+                                exit={{ height: 0, opacity: 0 }}
+                                transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                                className="overflow-hidden border-t border-white/10"
+                              >
+                                <div className="p-4">
+                                  {project.specimenType === "acoustic" && <AcousticVisualizer />}
+                                  {project.specimenType === "gnss" && <GNSSSimulator />}
+                                  {project.specimenType === "sensory" && <SensoryRibbon />}
+                                </div>
+                              </motion.div>
+                            )}
+                          </AnimatePresence>
+                        </div>
+                      )}
+
+                      {/* CTA to deep-dive */}
+                      <button
+                        onClick={() => setActiveTab("deep-dive")}
+                        className="w-full py-3 rounded-2xl border border-white/10 text-apple-subtle hover:text-white hover:border-white/30 transition-colors font-mono text-xs uppercase tracking-widest"
+                        data-cursor-interactive="true"
                       >
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
-                </div>
+                        View Full Architecture →
+                      </button>
+                    </motion.div>
+                  )}
 
-                {/* Engineering Impact Statements */}
-                <div>
-                  <h3 className="text-xs font-mono text-apple-subtle uppercase tracking-wider mb-3">
-                    Engineering Impact Statements
-                  </h3>
-                  <ul className="space-y-2.5">
-                    {project.resumeBullets.map((bullet, idx) => (
-                      <li key={idx} className="flex items-start space-x-2 text-xs sm:text-sm text-apple-subtle leading-relaxed">
-                        <span className="text-apple-blue mt-0.5">&bull;</span>
-                        <span>{bullet}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+                  {/* --- TECHNICAL DEEP-DIVE TAB --- */}
+                  {activeTab === "deep-dive" && (
+                    <motion.div
+                      key="deep-dive"
+                      initial={{ opacity: 0, y: 12 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -8 }}
+                      transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+                      className="space-y-7"
+                    >
+                      {/* Title repeat for context */}
+                      <div>
+                        <h2 className="font-sans text-2xl sm:text-3xl font-semibold text-white tracking-tight leading-snug">
+                          {project.title}
+                        </h2>
+                        <p className="text-apple-subtle font-sans text-sm mt-1.5 font-normal">
+                          Technical Architecture & Engineering Highlights
+                        </p>
+                      </div>
+
+                      {/* Architecture Highlights */}
+                      <div>
+                        <h3 className="text-xs font-mono text-apple-subtle uppercase tracking-wider mb-4">
+                          Core Architecture & Engineering Highlights
+                        </h3>
+                        <div className="space-y-3">
+                          {project.architectureHighlights.map((arch, idx) => (
+                            <div
+                              key={idx}
+                              className="p-4 bg-white/[0.03] border border-white/10 rounded-2xl hover:border-white/20 transition-colors"
+                            >
+                              <div className="flex items-center space-x-2 text-white font-sans text-sm font-semibold">
+                                <span className="text-apple-blue font-mono">0{idx + 1}.</span>
+                                <span>{arch.title}</span>
+                              </div>
+                              <p className="text-apple-subtle text-sm sm:text-base mt-2 leading-relaxed font-normal">
+                                {arch.detail}
+                              </p>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Hard Metrics */}
+                      {project.hardMetrics && project.hardMetrics.length > 0 && (
+                        <div>
+                          <h3 className="text-xs font-mono text-apple-subtle uppercase tracking-wider mb-3">
+                            Hard Metrics & Quantitative Benchmarks
+                          </h3>
+                          <div className="p-5 bg-white/5 border border-white/10 rounded-2xl space-y-3">
+                            {project.hardMetrics.map((hm, idx) => (
+                              <div key={idx} className="flex items-start space-x-2 text-sm font-mono text-white leading-relaxed">
+                                <span className="text-apple-blue font-bold flex-shrink-0">[{idx + 1}]</span>
+                                <span>{hm}</span>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Engineering Impact Statements */}
+                      <div>
+                        <h3 className="text-xs font-mono text-apple-subtle uppercase tracking-wider mb-3">
+                          Engineering Impact Statements
+                        </h3>
+                        <ul className="space-y-3">
+                          {project.resumeBullets.map((bullet, idx) => (
+                            <li key={idx} className="flex items-start space-x-2.5 text-sm sm:text-base text-apple-subtle leading-relaxed">
+                              <span className="text-apple-blue mt-1 flex-shrink-0">&bull;</span>
+                              <span>{bullet}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
             </div>
 
-            {/* Drawer Footer (Fixed at bottom) */}
+            {/* Drawer Footer */}
             <div className="flex-shrink-0 bg-[#161617]/95 backdrop-blur-xl border-t border-white/10 p-4 px-6 flex items-center justify-between text-apple-subtle font-mono text-xs z-20">
               <span className="text-[11px]">REF ID: {project.id}</span>
               <button

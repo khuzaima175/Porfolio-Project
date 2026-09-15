@@ -94,19 +94,13 @@ export function AppleSubnav() {
           >
             Compare
           </a>
-          <a
-            href="#specimens"
-            className="hover:text-white transition-colors"
-            data-cursor-interactive="true"
-          >
-            Specimens
-          </a>
+
           <a
             href="#archive"
             className="hover:text-white transition-colors"
             data-cursor-interactive="true"
           >
-            Index
+            About
           </a>
         </div>
 

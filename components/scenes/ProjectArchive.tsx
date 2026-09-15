@@ -266,11 +266,17 @@ export function ProjectArchive() {
   return (
     <section
       id="archive"
-      className="py-28 px-6 sm:px-12 max-w-7xl mx-auto border-t border-white/10 space-y-24 select-none"
+      className="py-28 px-6 sm:px-12 max-w-7xl mx-auto border-t border-white/10 space-y-24 select-none overflow-hidden"
     >
       {/* — 1. High-Impact Personal Statement & Executive Bio — */}
       <div className="space-y-8">
-        <motion.div {...fadeUp(0)} className="flex items-center gap-3">
+        <motion.div
+          initial={{ opacity: 0, x: -30, filter: "blur(4px)" }}
+          whileInView={{ opacity: 1, x: 0, filter: "blur(0px)" }}
+          viewport={{ once: true, margin: "-40px" }}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          className="flex items-center gap-3"
+        >
           <span className="inline-block text-xs sm:text-sm font-sans font-semibold tracking-wider uppercase text-apple-blue">
             About // Systems & AI Engineer
           </span>
@@ -281,7 +287,10 @@ export function ProjectArchive() {
         </motion.div>
 
         <motion.h2
-          {...fadeUp(0.05)}
+          initial={{ opacity: 0, x: -40, filter: "blur(6px)" }}
+          whileInView={{ opacity: 1, x: 0, filter: "blur(0px)" }}
+          viewport={{ once: true, margin: "-40px" }}
+          transition={{ duration: 0.7, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
           className="font-sans text-3xl sm:text-5xl lg:text-6xl font-bold text-white leading-[1.12] tracking-tight max-w-4xl"
         >
           I build systems that run on real hardware, with real constraints —{" "}
@@ -312,7 +321,10 @@ export function ProjectArchive() {
         </div>
 
         <motion.div
-          {...fadeUp(0.15)}
+          initial={{ opacity: 0, y: 25 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-40px" }}
+          transition={{ duration: 0.6, delay: 0.18, ease: [0.16, 1, 0.3, 1] }}
           className="flex items-center gap-4 flex-wrap pt-2"
         >
           <a
@@ -339,7 +351,7 @@ export function ProjectArchive() {
           </a>
 
           <div className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-white/[0.04] border border-white/10 text-xs sm:text-sm font-sans text-neutral-300">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+            <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
             <span>Open for select engineering roles</span>
           </div>
         </motion.div>
@@ -347,7 +359,10 @@ export function ProjectArchive() {
 
       {/* — 2. Dynamic Kinetic Capabilities Marquee — */}
       <motion.div
-        {...fadeUp(0.2)}
+        initial={{ opacity: 0, scale: 0.96 }}
+        whileInView={{ opacity: 1, scale: 1 }}
+        viewport={{ once: true, margin: "-30px" }}
+        transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
         className="relative overflow-hidden py-6 border-y border-white/10 bg-gradient-to-r from-white/[0.01] via-white/[0.03] to-white/[0.01]"
       >
         <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-black to-transparent z-10 pointer-events-none" />
@@ -365,9 +380,15 @@ export function ProjectArchive() {
         </div>
       </motion.div>
 
-      {/* — 3. Grand Architectural Capability Hubs with Directional Scroll Animations — */}
+      {/* — 3. Grand Architectural Capability Hubs with Side-Loading Momentum — */}
       <div className="space-y-10">
-        <div className="space-y-3">
+        <motion.div
+          initial={{ opacity: 0, x: -30, filter: "blur(4px)" }}
+          whileInView={{ opacity: 1, x: 0, filter: "blur(0px)" }}
+          viewport={{ once: true, margin: "-40px" }}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          className="space-y-3"
+        >
           <span className="text-xs sm:text-sm font-sans font-semibold tracking-wider uppercase text-apple-blue">
             Core Toolchain & Architecture
           </span>
@@ -377,22 +398,22 @@ export function ProjectArchive() {
           <p className="text-neutral-400 text-base sm:text-lg max-w-3xl font-normal">
             Every tool is selected to maximize hardware performance, eliminate bloat, and deliver verifiable precision.
           </p>
-        </div>
+        </motion.div>
 
-        {/* 3 Massive Architectural Bento Cards with Left / Bottom / Right Slide Entrances */}
+        {/* 3 Massive Architectural Bento Cards with Side & Bottom Slide Entrances */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8 items-stretch">
           {CAPABILITY_HUBS.map((hub, hIdx) => {
             const Icon = hub.icon;
-            const initialX = hub.direction === "left" ? -40 : hub.direction === "right" ? 40 : 0;
-            const initialY = hub.direction === "bottom" ? 40 : 20;
+            const initialX = hub.direction === "left" ? -60 : hub.direction === "right" ? 60 : 0;
+            const initialY = hub.direction === "bottom" ? 50 : 20;
 
             return (
               <motion.div
                 key={hub.id}
-                initial={{ opacity: 0, x: initialX, y: initialY }}
-                whileInView={{ opacity: 1, x: 0, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ duration: 0.6, delay: hIdx * 0.12, ease: [0.16, 1, 0.3, 1] }}
+                initial={{ opacity: 0, x: initialX, y: initialY, filter: "blur(6px)" }}
+                whileInView={{ opacity: 1, x: 0, y: 0, filter: "blur(0px)" }}
+                viewport={{ once: true, margin: "-60px" }}
+                transition={{ duration: 0.7, delay: hIdx * 0.12, ease: [0.16, 1, 0.3, 1] }}
                 className={`relative p-7 sm:p-9 bg-[#121214] border border-white/10 ${hub.borderHover} rounded-3xl transition-all duration-500 flex flex-col justify-between space-y-7 overflow-hidden group shadow-2xl`}
               >
                 {/* Ambient Radial Specular Gradient */}
@@ -475,10 +496,10 @@ export function ProjectArchive() {
 
         {/* — 4. Grand Live Capability Telemetry HUD / Inspector Visor — */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, y: 40, filter: "blur(6px)" }}
+          whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
           viewport={{ once: true, margin: "-40px" }}
-          transition={{ duration: 0.6, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration: 0.7, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
           className="relative p-7 sm:p-10 rounded-3xl bg-[#0d0d0f] border border-white/15 overflow-hidden shadow-2xl backdrop-blur-2xl"
         >
           {/* Glowing Top Specular Line */}

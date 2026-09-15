@@ -1,14 +1,61 @@
 "use client";
 
+import { useState, useEffect, useRef } from "react";
+import { motion } from "framer-motion";
 import { useLocalTime } from "@/lib/hooks/useLocalTime";
 import { ArrowUpRight } from "lucide-react";
 
 export function AppleSubnav() {
   const localTime = useLocalTime();
+  const [visible, setVisible] = useState(true);
+  const lastScrollY = useRef(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+
+      // Always show at the top of the page
+      if (currentScrollY <= 80) {
+        setVisible(true);
+        lastScrollY.current = currentScrollY;
+        return;
+      }
+
+      const diff = currentScrollY - lastScrollY.current;
+
+      // Scrolling DOWN -> vanish with animation
+      if (diff > 10) {
+        setVisible(false);
+        lastScrollY.current = currentScrollY;
+      }
+      // Scrolling BACK UP -> smoothly animate back into view
+      else if (diff < -10) {
+        setVisible(true);
+        lastScrollY.current = currentScrollY;
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
-    <div className="sticky top-4 z-50 max-w-6xl mx-auto px-4 pointer-events-auto">
-      <div className="apple-subnav rounded-full px-5 sm:px-6 py-2.5 sm:py-3 flex items-center justify-between shadow-2xl border border-white/10 bg-[#161617]/85 backdrop-blur-2xl">
+    <div className="sticky top-4 z-50 max-w-6xl mx-auto px-4 pointer-events-none">
+      <motion.div
+        initial={false}
+        animate={{
+          y: visible ? 0 : -80,
+          opacity: visible ? 1 : 0,
+          scale: visible ? 1 : 0.96,
+        }}
+        transition={{
+          duration: 0.35,
+          ease: [0.16, 1, 0.3, 1],
+        }}
+        className={`apple-subnav rounded-full px-5 sm:px-6 py-2.5 sm:py-3 flex items-center justify-between shadow-2xl border border-white/10 bg-[#161617]/85 backdrop-blur-2xl transition-shadow ${
+          visible ? "pointer-events-auto" : "pointer-events-none"
+        }`}
+      >
         {/* Left branding & availability */}
         <div className="flex items-center space-x-3">
           <a
@@ -79,7 +126,7 @@ export function AppleSubnav() {
             <ArrowUpRight className="w-3.5 h-3.5" />
           </a>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 }

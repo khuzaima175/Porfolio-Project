@@ -9,30 +9,36 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        surface: "var(--surface)",
-        "surface-2": "var(--surface-2)",
-        ink: "var(--ink)",
-        "ink-muted": "var(--ink-muted)",
-        line: "var(--line)",
-        "line-heavy": "var(--line-heavy)",
-        signal: "var(--signal)",
-        "signal-subtle": "var(--signal-subtle)",
+        "apple-black": "#000000",
+        "apple-gray": "#161617",
+        "apple-card": "#1d1d1f",
+        "apple-subtle": "#86868b",
+        "apple-blue": "#2997ff",
+        "apple-text": "#f5f5f7",
       },
       fontFamily: {
-        sans: ["'General Sans'", "system-ui", "-apple-system", "sans-serif"],
-        mono: ["var(--font-jetbrains-mono)", "'JetBrains Mono'", "monospace"],
+        sans: ["Inter", "system-ui", "sans-serif"],
       },
-      transitionTimingFunction: {
-        "e-out": "cubic-bezier(0.16, 1, 0.3, 1)",
-        "e-io": "cubic-bezier(0.76, 0, 0.24, 1)",
+      letterSpacing: {
+        "apple-tight": "-0.02em",
+        "apple-tighter": "-0.03em",
+        "apple-tightest": "-0.05em",
       },
       borderRadius: {
-        none: "0px",
-        DEFAULT: "0px",
+        "apple-sm": "12px",
+        "apple-md": "18px",
+        "apple-lg": "28px",
+        "apple-xl": "40px",
+      },
+      backgroundImage: {
+        "glass-gradient":
+          "linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.02) 100%)",
+      },
+      boxShadow: {
+        "apple-glow": "0 0 60px -15px rgba(41, 151, 255, 0.4)",
       },
     },
   },
   plugins: [],
 };
-
 export default config;

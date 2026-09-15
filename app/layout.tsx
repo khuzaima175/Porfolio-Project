@@ -1,57 +1,43 @@
-import type { Metadata, Viewport } from "next";
-import { JetBrains_Mono } from "next/font/google";
+import type { Metadata } from "next";
 import "./globals.css";
 import { CustomCursor } from "@/components/chrome/CustomCursor";
 
-const jetbrainsMono = JetBrains_Mono({
-  subsets: ["latin"],
-  variable: "--font-jetbrains-mono",
-  display: "swap",
-});
-
 export const metadata: Metadata = {
-  title: "Syed Khuzaima — Engineering & AI Systems Portfolio",
+  title: "Khuzaima Ahmed — Systems & AI Engineer",
   description:
-    "Engineering signal pipelines, spatial estimators, and intelligent local software. A laboratory instrument portfolio with verified telemetry.",
+    "Portfolio of Khuzaima Ahmed. Systems, DSP, sensor fusion, and local-first AI engineering. Featuring GNSS precision positioning, real-time audio biquad synthesis, and zero-overhead Windows background telemetry.",
   keywords: [
-    "Syed Khuzaima",
     "Systems Engineer",
+    "AI Engineer",
     "DSP",
-    "Web Audio Worklets",
-    "Kalman Filter",
     "GNSS",
+    "Kalman Filtering",
+    "Web Audio API",
+    "Local-First",
     "FastAPI",
-    "Next.js",
-    "AI Inference",
+    "TypeScript",
   ],
-  authors: [{ name: "Syed Khuzaima" }],
-};
-
-export const viewport: Viewport = {
-  width: "device-width",
-  initialScale: 1,
+  authors: [{ name: "Khuzaima Ahmed" }],
+  openGraph: {
+    title: "Khuzaima Ahmed — Systems & AI Engineer",
+    description:
+      "Minimalist engineering portfolio: zero-overhead sensory daemons, multi-stream GNSS fusion, and real-time biquad audio synthesis.",
+    type: "website",
+  },
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
-    <html lang="en" className={jetbrainsMono.variable}>
-      <head>
-        <link
-          rel="stylesheet"
-          href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600&display=swap"
-        />
-      </head>
-      <body className="antialiased font-sans bg-surface text-ink selection:bg-signal selection:text-surface">
-        {/* Static 2% monochrome SVG noise overlay */}
-        <div className="noise-overlay" aria-hidden="true" />
-
-        {/* 6px -> 28px Hairline Custom Cursor */}
+    <html lang="en" className="dark">
+      <body className="bg-black text-apple-text antialiased selection:bg-apple-blue selection:text-white font-sans">
+        {/* Precision Cursor */}
         <CustomCursor />
 
+        {/* Content */}
         {children}
       </body>
     </html>

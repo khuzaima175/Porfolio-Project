@@ -1,98 +1,61 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import { useState } from "react";
 import { useLenis } from "@/lib/hooks/useLenis";
-import { Preloader } from "@/components/chrome/Preloader";
-import { Header } from "@/components/chrome/Header";
-import { CommandPalette } from "@/components/chrome/CommandPalette";
-import { Hero } from "@/components/scenes/Hero";
-import { Profile } from "@/components/scenes/Profile";
-import { SelectedWork } from "@/components/scenes/SelectedWork";
-import { Archive } from "@/components/scenes/Archive";
-import { SignalChain } from "@/components/scenes/SignalChain";
-import { Proof } from "@/components/scenes/Proof";
-import { Method } from "@/components/scenes/Method";
-import { Trajectory } from "@/components/scenes/Trajectory";
-import { Dispatch } from "@/components/scenes/Dispatch";
+import { PROJECTS, Project } from "@/lib/data/projects";
+import { AppleSubnav } from "@/components/chrome/AppleSubnav";
+import { AppleHeroStory } from "@/components/scenes/AppleHeroStory";
+import { AppleComparison } from "@/components/scenes/AppleComparison";
+import { AppleBentoShowcase } from "@/components/scenes/AppleBentoShowcase";
+import { SpecimensSection } from "@/components/scenes/SpecimensSection";
+import { ProjectArchive } from "@/components/scenes/ProjectArchive";
+import { EngineeringMethod } from "@/components/scenes/EngineeringMethod";
+import { ContactSection } from "@/components/scenes/ContactSection";
+import { ProjectModal } from "@/components/scenes/ProjectModal";
 
 export default function Home() {
+  // Initialize Lenis smooth momentum physics
   useLenis();
 
-  const [isCalibrated, setIsCalibrated] = useState<boolean>(false);
-  const [isCommandPaletteOpen, setIsCommandPaletteOpen] = useState<boolean>(false);
-
-  // Global hotkeys for Command Palette: Ctrl+K, Cmd+K, and '/'
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      const activeEl = document.activeElement;
-      const isInputFocused =
-        activeEl &&
-        (activeEl.tagName === "INPUT" ||
-          activeEl.tagName === "TEXTAREA" ||
-          (activeEl as HTMLElement).isContentEditable);
-
-      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") {
-        e.preventDefault();
-        setIsCommandPaletteOpen((prev) => !prev);
-      } else if (e.key === "/" && !isInputFocused && !isCommandPaletteOpen) {
-        e.preventDefault();
-        setIsCommandPaletteOpen(true);
-      }
-    };
-
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [isCommandPaletteOpen]);
-
-  const scrollToSection = (id: string) => {
-    const el = document.getElementById(id);
-    if (el) {
-      el.scrollIntoView({ behavior: "smooth" });
-    }
-  };
+  // State for Project Deep-Dive inspection drawer
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
 
   return (
-    <main className="relative min-h-screen bg-surface selection:bg-signal selection:text-surface">
-      {/* S0 System Calibration Preloader (Silent <= 1.0s) */}
-      <Preloader onComplete={() => setIsCalibrated(true)} />
+    <main className="relative min-h-screen bg-black text-apple-text selection:bg-apple-blue selection:text-white">
+      {/* Floating Apple Master Nav */}
+      <AppleSubnav />
 
-      {/* Persistent Hairline Header with Scroll-Spy & Live Karachi Clock */}
-      <Header onOpenCommandPalette={() => setIsCommandPaletteOpen(true)} />
+      {/* Apple 280vh Pinned Scrollytelling Storyboard */}
+      <AppleHeroStory />
 
-      {/* S1: Hero / The Instrument */}
-      <Hero
-        onExploreWork={() => scrollToSection("selected-work")}
-        onExploreSignalChain={() => scrollToSection("signal-chain")}
+      {/* Apple Comparison Matrix (Matches iPhone 18 Pro Screenshot) */}
+      <AppleComparison />
+
+      {/* Apple Bento Grid Flagship Showcase */}
+      <AppleBentoShowcase
+        projects={PROJECTS}
+        onSelectProject={(proj) => setSelectedProject(proj)}
       />
 
-      {/* S2: Profile & Measured Baselines */}
-      <Profile />
+      {/* Live Engineering Interactive Specimens */}
+      <SpecimensSection />
 
-      {/* S3: Selected Work (400vh Pinned Scrub, 4 Live Specimen Engines) */}
-      <SelectedWork />
+      {/* Complete Index & Project Directory (All 9 Projects) */}
+      <ProjectArchive
+        projects={PROJECTS}
+        onSelectProject={(proj) => setSelectedProject(proj)}
+      />
 
-      {/* S4: The Archive (Index Ledger, Spring Tilt Preview & Accordion) */}
-      <Archive />
+      {/* Engineering Philosophy & Tenets */}
+      <EngineeringMethod />
 
-      {/* S5: Signal Chain (Interactive Capabilities Pipeline & Dependency Tracing) */}
-      <SignalChain />
+      {/* Dispatch Terminal & Footer */}
+      <ContactSection />
 
-      {/* S6: Proof & Telemetry (.theme-inverted, Verified SVG Sparklines) */}
-      <Proof />
-
-      {/* S7: Method (1–4 Genuinely Sequential Lifecycle) */}
-      <Method />
-
-      {/* S8: Trajectory (Chronological Milestones & Architectural Redesigns) */}
-      <Trajectory />
-
-      {/* S9: Dispatch & Colophon (.theme-inverted, Clipboard Copy, Colophon) */}
-      <Dispatch />
-
-      {/* Command Palette Overlay */}
-      <CommandPalette
-        isOpen={isCommandPaletteOpen}
-        onClose={() => setIsCommandPaletteOpen(false)}
+      {/* Project Deep-Dive Sliding Drawer Modal */}
+      <ProjectModal
+        project={selectedProject}
+        onClose={() => setSelectedProject(null)}
       />
     </main>
   );

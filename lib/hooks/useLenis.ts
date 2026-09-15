@@ -2,55 +2,41 @@
 
 import { useEffect, useRef } from "react";
 import Lenis from "lenis";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-/**
- * Initializes Lenis smooth scrolling with lerp: 0.09, synchronizing
- * with GSAP ScrollTrigger ticker. Respects prefers-reduced-motion.
- */
 export function useLenis() {
   const lenisRef = useRef<Lenis | null>(null);
 
   useEffect(() => {
-    // Check prefers-reduced-motion
-    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-    if (prefersReducedMotion) {
-      // Let standard native instant scroll take over
-      return;
-    }
-
-    gsap.registerPlugin(ScrollTrigger);
-
+    // Highly responsive Apple-grade smooth momentum scroll
     const lenis = new Lenis({
-      duration: 1.2,
+      duration: 0.85,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      lerp: 0.09, // Strict requirement from Master Directive v4.2 Section 3
       orientation: "vertical",
       gestureOrientation: "vertical",
       smoothWheel: true,
-      wheelMultiplier: 1,
-      touchMultiplier: 2,
+      wheelMultiplier: 1.0,
+      touchMultiplier: 1.5,
     });
 
     lenisRef.current = lenis;
+    if (typeof window !== "undefined") {
+      (window as any).__lenis = lenis;
+    }
 
-    // Update ScrollTrigger on Lenis scroll
-    lenis.on("scroll", ScrollTrigger.update);
+    function raf(time: number) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
 
-    // Synchronize GSAP ticker with Lenis
-    const updateTicker = (time: number) => {
-      lenis.raf(time * 1000);
-    };
-
-    gsap.ticker.add(updateTicker);
-    gsap.ticker.lagSmoothing(0);
+    const rafId = requestAnimationFrame(raf);
 
     return () => {
-      gsap.ticker.remove(updateTicker);
+      cancelAnimationFrame(rafId);
       lenis.destroy();
       lenisRef.current = null;
+      if (typeof window !== "undefined") {
+        delete (window as any).__lenis;
+      }
     };
   }, []);
 

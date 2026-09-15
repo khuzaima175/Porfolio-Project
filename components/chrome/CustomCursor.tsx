@@ -1,93 +1,96 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
+import { motion, useMotionValue, useSpring } from "framer-motion";
 
-export const CustomCursor: React.FC = () => {
-  const [isHovered, setIsHovered] = useState<boolean>(false);
-  const [isVisible, setIsVisible] = useState<boolean>(false);
-  const [isTouchDevice, setIsTouchDevice] = useState<boolean>(false);
+export function CustomCursor() {
+  const [isVisible, setIsVisible] = useState(false);
+  const [isHoveringInteractive, setIsHoveringInteractive] = useState(false);
+  const [hoverLabel, setHoverLabel] = useState("");
 
-  const dotRef = useRef<HTMLDivElement>(null);
-  const ringRef = useRef<HTMLDivElement>(null);
+  const cursorX = useMotionValue(-100);
+  const cursorY = useMotionValue(-100);
 
-  const mousePos = useRef({ x: -100, y: -100 });
-  const ringPos = useRef({ x: -100, y: -100 });
+  const springConfig = { damping: 25, stiffness: 350, mass: 0.5 };
+  const smoothX = useSpring(cursorX, springConfig);
+  const smoothY = useSpring(cursorY, springConfig);
 
   useEffect(() => {
-    // Detect touch device
+    // Disable custom cursor on touch screens
     if (window.matchMedia("(pointer: coarse)").matches) {
-      setIsTouchDevice(true);
       return;
     }
 
     const handleMouseMove = (e: MouseEvent) => {
+      cursorX.set(e.clientX);
+      cursorY.set(e.clientY);
       if (!isVisible) setIsVisible(true);
-      mousePos.current = { x: e.clientX, y: e.clientY };
 
-      if (dotRef.current) {
-        dotRef.current.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0)`;
-      }
-
-      // Check for interactive targets
+      // Check if hovering interactive element
       const target = e.target as HTMLElement | null;
-      if (target) {
-        const isInteractive = target.closest(
-          "button, a, input, textarea, [data-interactive='true'], [role='button'], .cursor-pointer"
-        );
-        setIsHovered(!!isInteractive);
+      const interactiveEl = target?.closest("button, a, [data-cursor-label], [data-cursor-interactive]");
+      
+      if (interactiveEl) {
+        setIsHoveringInteractive(true);
+        const label = interactiveEl.getAttribute("data-cursor-label") || "";
+        setHoverLabel(label);
+      } else {
+        setIsHoveringInteractive(false);
+        setHoverLabel("");
       }
     };
 
-    const handleMouseLeave = () => setIsVisible(false);
-    const handleMouseEnter = () => setIsVisible(true);
+    const handleMouseLeave = () => {
+      setIsVisible(false);
+    };
 
-    window.addEventListener("mousemove", handleMouseMove, { passive: true });
+    window.addEventListener("mousemove", handleMouseMove);
     document.addEventListener("mouseleave", handleMouseLeave);
-    document.addEventListener("mouseenter", handleMouseEnter);
-
-    let animId: number;
-    const render = () => {
-      // Smooth lerp for outer hairline ring
-      ringPos.current.x += (mousePos.current.x - ringPos.current.x) * 0.22;
-      ringPos.current.y += (mousePos.current.y - ringPos.current.y) * 0.22;
-
-      if (ringRef.current) {
-        ringRef.current.style.transform = `translate3d(${ringPos.current.x}px, ${ringPos.current.y}px, 0)`;
-      }
-
-      animId = requestAnimationFrame(render);
-    };
-    animId = requestAnimationFrame(render);
 
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
       document.removeEventListener("mouseleave", handleMouseLeave);
-      document.removeEventListener("mouseenter", handleMouseEnter);
-      cancelAnimationFrame(animId);
     };
-  }, [isVisible]);
+  }, [cursorX, cursorY, isVisible]);
 
-  if (isTouchDevice || !isVisible) return null;
+  if (!isVisible) return null;
 
   return (
-    <>
-      {/* 6px carbon-black dot */}
-      <div
-        ref={dotRef}
-        className="fixed top-0 left-0 w-[6px] h-[6px] -mt-[3px] -ml-[3px] bg-ink pointer-events-none z-[999999] transition-opacity duration-150"
-        style={{ opacity: isVisible ? 1 : 0 }}
+    <div className="pointer-events-none fixed inset-0 z-[9999] overflow-hidden">
+      {/* Center dot */}
+      <motion.div
+        className="fixed top-0 left-0 w-1.5 h-1.5 rounded-full bg-apple-blue"
+        style={{
+          x: cursorX,
+          y: cursorY,
+          translateX: "-50%",
+          translateY: "-50%",
+        }}
       />
-      {/* 28px hairline ring */}
-      <div
-        ref={ringRef}
-        className={`fixed top-0 left-0 pointer-events-none z-[999998] transition-all duration-200 ease-e-out ${
-          isHovered
-            ? "w-[36px] h-[36px] -mt-[18px] -ml-[18px] border border-signal opacity-80"
-            : "w-[24px] h-[24px] -mt-[12px] -ml-[12px] border border-line-heavy opacity-40"
-        }`}
-      />
-    </>
-  );
-};
 
-export default CustomCursor;
+      {/* Trailing follower ring */}
+      <motion.div
+        className="fixed top-0 left-0 flex items-center justify-center rounded-full border border-white/25 pointer-events-none"
+        animate={{
+          width: isHoveringInteractive ? (hoverLabel ? 64 : 44) : 24,
+          height: isHoveringInteractive ? (hoverLabel ? 64 : 44) : 24,
+          borderColor: isHoveringInteractive ? "rgba(41, 151, 255, 0.7)" : "rgba(255, 255, 255, 0.2)",
+          backgroundColor: isHoveringInteractive ? "rgba(41, 151, 255, 0.08)" : "transparent",
+        }}
+        transition={{ type: "spring", stiffness: 400, damping: 28 }}
+        style={{
+          x: smoothX,
+          y: smoothY,
+          translateX: "-50%",
+          translateY: "-50%",
+        }}
+      >
+        {hoverLabel && (
+          <span className="font-mono text-[9px] tracking-widest text-white uppercase">
+            {hoverLabel}
+          </span>
+        )}
+      </motion.div>
+    </div>
+  );
+}

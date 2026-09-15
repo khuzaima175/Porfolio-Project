@@ -9,9 +9,9 @@ import {
   Activity,
   Zap,
   Layers,
-  Sparkles,
   ChevronRight,
 } from "lucide-react";
+import { ScrollTextReveal } from "@/components/ui/ScrollTextReveal";
 
 interface TechDetail {
   name: string;
@@ -194,6 +194,7 @@ const CAPABILITY_HUBS = [
     borderHover: "hover:border-blue-500/40",
     badgeGlow: "bg-apple-blue/15 text-apple-blue border-apple-blue/30",
     icon: Activity,
+    direction: "left",
     stats: [
       { label: "CPU Overhead", value: "0.0%" },
       { label: "Target PEQ Error", value: "≤ 0.5 dB" },
@@ -210,6 +211,7 @@ const CAPABILITY_HUBS = [
     borderHover: "hover:border-indigo-500/40",
     badgeGlow: "bg-indigo-500/15 text-indigo-400 border-indigo-500/30",
     icon: Zap,
+    direction: "bottom",
     stats: [
       { label: "Cascade Fallback", value: "3-Tier" },
       { label: "Prompt Token Cut", value: "60%" },
@@ -226,6 +228,7 @@ const CAPABILITY_HUBS = [
     borderHover: "hover:border-emerald-500/40",
     badgeGlow: "bg-emerald-500/15 text-emerald-400 border-emerald-500/30",
     icon: Layers,
+    direction: "right",
     stats: [
       { label: "Local Data Latency", value: "0 ms" },
       { label: "Mobile UI Frame Rate", value: "60 FPS" },
@@ -263,23 +266,23 @@ export function ProjectArchive() {
   return (
     <section
       id="archive"
-      className="py-32 px-6 sm:px-12 max-w-7xl mx-auto border-t border-white/10 space-y-28 select-none"
+      className="py-28 px-6 sm:px-12 max-w-7xl mx-auto border-t border-white/10 space-y-24 select-none"
     >
       {/* — 1. High-Impact Personal Statement & Executive Bio — */}
-      <div className="space-y-10">
+      <div className="space-y-8">
         <motion.div {...fadeUp(0)} className="flex items-center gap-3">
-          <span className="inline-block text-sm font-sans font-semibold tracking-wider uppercase text-apple-blue">
+          <span className="inline-block text-xs sm:text-sm font-sans font-semibold tracking-wider uppercase text-apple-blue">
             About // Systems & AI Engineer
           </span>
           <span className="w-1.5 h-1.5 rounded-full bg-apple-blue/60" />
-          <span className="text-sm font-sans text-neutral-400">
+          <span className="text-xs sm:text-sm font-sans text-neutral-400">
             Karachi, PK
           </span>
         </motion.div>
 
         <motion.h2
           {...fadeUp(0.05)}
-          className="font-sans text-5xl sm:text-7xl lg:text-8xl font-bold text-white leading-[1.04] tracking-tight max-w-6xl"
+          className="font-sans text-3xl sm:text-5xl lg:text-6xl font-bold text-white leading-[1.12] tracking-tight max-w-4xl"
         >
           I build systems that run on real hardware, with real constraints —{" "}
           <span className="text-neutral-500 font-normal">
@@ -287,14 +290,26 @@ export function ProjectArchive() {
           </span>
         </motion.h2>
 
-        <motion.p
-          {...fadeUp(0.1)}
-          className="text-neutral-300 text-xl sm:text-2xl leading-relaxed max-w-4xl font-normal"
-        >
-          Based in Karachi. I specialise in systems & AI engineering, full-stack
-          web, and mobile-first local apps. Everything I ship is production code —
-          benchmarked, deployed, and built to survive edge cases.
-        </motion.p>
+        {/* Word-by-Word Scroll-Illuminated Bio */}
+        <div className="pt-2 max-w-3xl">
+          <ScrollTextReveal
+            text="Based in Karachi. I specialise in systems & AI engineering, full-stack web, and mobile-first local apps. Everything I ship is production code — benchmarked, deployed, and built to survive edge cases."
+            highlightWords={[
+              "karachi",
+              "systems",
+              "ai",
+              "engineering",
+              "full-stack",
+              "production",
+              "code",
+              "benchmarked",
+              "deployed",
+              "edge",
+              "cases",
+            ]}
+            className="text-base sm:text-xl font-normal leading-relaxed text-apple-subtle"
+          />
+        </div>
 
         <motion.div
           {...fadeUp(0.15)}
@@ -304,10 +319,10 @@ export function ProjectArchive() {
             href="https://github.com/khuzaima175"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2.5 px-6 py-3.5 rounded-full bg-white/10 hover:bg-white/20 border border-white/15 text-white text-base font-semibold transition-all duration-200 backdrop-blur-md hover:scale-[1.02] active:scale-[0.98]"
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/10 hover:bg-white/20 border border-white/15 text-white text-sm font-semibold transition-all duration-200 backdrop-blur-md hover:scale-[1.02] active:scale-[0.98]"
             data-cursor-interactive="true"
           >
-            <Github className="w-5 h-5" />
+            <Github className="w-4 h-4" />
             GitHub
           </a>
 
@@ -315,64 +330,70 @@ export function ProjectArchive() {
             href="/cv.pdf"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2.5 px-6 py-3.5 rounded-full bg-apple-blue hover:bg-blue-400 text-white text-base font-semibold transition-all duration-200 shadow-xl shadow-apple-blue/25 hover:scale-[1.02] active:scale-[0.98]"
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-apple-blue hover:bg-blue-400 text-white text-sm font-semibold transition-all duration-200 shadow-lg shadow-apple-blue/25 hover:scale-[1.02] active:scale-[0.98]"
             data-cursor-interactive="true"
           >
-            <FileText className="w-5 h-5" />
+            <FileText className="w-4 h-4" />
             Download CV
             <ArrowUpRight className="w-4 h-4" />
           </a>
 
-          <div className="inline-flex items-center gap-2.5 px-5 py-3.5 rounded-full bg-white/[0.04] border border-white/10 text-sm font-sans text-neutral-300">
-            <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
+          <div className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-white/[0.04] border border-white/10 text-xs sm:text-sm font-sans text-neutral-300">
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
             <span>Open for select engineering roles</span>
           </div>
         </motion.div>
       </div>
 
-      {/* — 2. Massive Eye-Catching Kinetic Capabilities Stream — */}
+      {/* — 2. Dynamic Kinetic Capabilities Marquee — */}
       <motion.div
         {...fadeUp(0.2)}
-        className="relative overflow-hidden py-8 border-y border-white/10 bg-gradient-to-r from-white/[0.01] via-white/[0.03] to-white/[0.01]"
+        className="relative overflow-hidden py-6 border-y border-white/10 bg-gradient-to-r from-white/[0.01] via-white/[0.03] to-white/[0.01]"
       >
         <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-black to-transparent z-10 pointer-events-none" />
         <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-black to-transparent z-10 pointer-events-none" />
-        <div className="flex w-max animate-marquee space-x-12 items-center">
+        <div className="flex w-max animate-marquee space-x-10 items-center">
           {[...MARQUEE_ITEMS, ...MARQUEE_ITEMS].map((item, idx) => (
             <div
               key={idx}
-              className="flex items-center space-x-5 text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-neutral-600 hover:text-white transition-colors duration-300"
+              className="flex items-center space-x-4 text-xl sm:text-2xl lg:text-3xl font-bold tracking-tight text-neutral-600 hover:text-white transition-colors duration-300"
             >
-              <span className="w-2 h-2 rounded-full bg-apple-blue" />
+              <span className="w-1.5 h-1.5 rounded-full bg-apple-blue" />
               <span>{item}</span>
             </div>
           ))}
         </div>
       </motion.div>
 
-      {/* — 3. Grand Architectural Capability Hubs — */}
+      {/* — 3. Grand Architectural Capability Hubs with Directional Scroll Animations — */}
       <div className="space-y-10">
         <div className="space-y-3">
-          <span className="text-sm font-sans font-semibold tracking-wider uppercase text-apple-blue">
+          <span className="text-xs sm:text-sm font-sans font-semibold tracking-wider uppercase text-apple-blue">
             Core Toolchain & Architecture
           </span>
-          <h3 className="font-sans text-3xl sm:text-5xl lg:text-6xl font-bold text-white tracking-tight">
+          <h3 className="font-sans text-3xl sm:text-5xl font-bold text-white tracking-tight">
             Engineered for speed. Built for scale.
           </h3>
-          <p className="text-neutral-400 text-lg sm:text-xl max-w-3xl font-normal">
+          <p className="text-neutral-400 text-base sm:text-lg max-w-3xl font-normal">
             Every tool is selected to maximize hardware performance, eliminate bloat, and deliver verifiable precision.
           </p>
         </div>
 
-        {/* 3 Massive Architectural Bento Cards */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-stretch">
+        {/* 3 Massive Architectural Bento Cards with Left / Bottom / Right Slide Entrances */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8 items-stretch">
           {CAPABILITY_HUBS.map((hub, hIdx) => {
             const Icon = hub.icon;
+            const initialX = hub.direction === "left" ? -40 : hub.direction === "right" ? 40 : 0;
+            const initialY = hub.direction === "bottom" ? 40 : 20;
+
             return (
               <motion.div
                 key={hub.id}
-                {...fadeUp(hIdx * 0.1)}
-                className={`relative p-8 sm:p-10 bg-[#121214] border border-white/10 ${hub.borderHover} rounded-[2.5rem] transition-all duration-500 flex flex-col justify-between space-y-8 overflow-hidden group shadow-2xl`}
+                initial={{ opacity: 0, x: initialX, y: initialY }}
+                whileInView={{ opacity: 1, x: 0, y: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.6, delay: hIdx * 0.12, ease: [0.16, 1, 0.3, 1] }}
+                className={`relative p-7 sm:p-9 bg-[#121214] border border-white/10 ${hub.borderHover} rounded-3xl transition-all duration-500 flex flex-col justify-between space-y-7 overflow-hidden group shadow-2xl`}
               >
                 {/* Ambient Radial Specular Gradient */}
                 <div
@@ -382,19 +403,19 @@ export function ProjectArchive() {
                 <div className="space-y-6 relative z-10">
                   {/* Hub Header */}
                   <div className="flex items-center justify-between">
-                    <div className="w-12 h-12 rounded-2xl bg-white/[0.08] border border-white/15 flex items-center justify-center text-apple-blue shadow-lg group-hover:scale-110 transition-transform duration-300">
-                      <Icon className="w-6 h-6" />
+                    <div className="w-11 h-11 rounded-2xl bg-white/[0.08] border border-white/15 flex items-center justify-center text-apple-blue shadow-lg group-hover:scale-110 transition-transform duration-300">
+                      <Icon className="w-5 h-5" />
                     </div>
-                    <span className={`px-3.5 py-1 rounded-full text-xs font-sans font-semibold border ${hub.badgeGlow}`}>
+                    <span className={`px-3 py-1 rounded-full text-xs font-sans font-semibold border ${hub.badgeGlow}`}>
                       PROD VERIFIED
                     </span>
                   </div>
 
                   <div className="space-y-2">
-                    <h4 className="font-sans text-2xl sm:text-3xl font-bold text-white tracking-tight">
+                    <h4 className="font-sans text-2xl font-bold text-white tracking-tight">
                       {hub.title}
                     </h4>
-                    <p className="text-neutral-400 text-sm sm:text-base leading-relaxed font-normal">
+                    <p className="text-neutral-400 text-sm leading-relaxed font-normal">
                       {hub.subtitle}
                     </p>
                   </div>
@@ -403,10 +424,10 @@ export function ProjectArchive() {
                   <div className="grid grid-cols-3 gap-2 py-4 border-y border-white/10">
                     {hub.stats.map((st, sIdx) => (
                       <div key={sIdx} className="space-y-1">
-                        <div className="text-[11px] text-neutral-400 uppercase font-sans font-medium tracking-wide">
+                        <div className="text-[10px] text-neutral-400 uppercase font-sans font-medium tracking-wide">
                           {st.label}
                         </div>
-                        <div className="font-sans text-base sm:text-lg font-bold text-white">
+                        <div className="font-sans text-sm sm:text-base font-bold text-white">
                           {st.value}
                         </div>
                       </div>
@@ -418,7 +439,7 @@ export function ProjectArchive() {
                     <div className="text-xs font-sans font-semibold uppercase tracking-wider text-neutral-400">
                       Technology Stack
                     </div>
-                    <div className="flex flex-wrap gap-2.5">
+                    <div className="flex flex-wrap gap-2">
                       {hub.techList.map((techName) => {
                         const isHovered = hoveredTech === techName;
                         return (
@@ -427,7 +448,7 @@ export function ProjectArchive() {
                             onMouseEnter={() => setHoveredTech(techName)}
                             onMouseLeave={() => setHoveredTech(null)}
                             onClick={() => setHoveredTech(techName)}
-                            className={`px-4 py-2.5 rounded-xl text-sm font-sans font-semibold transition-all duration-200 border ${
+                            className={`px-3.5 py-2 rounded-xl text-xs sm:text-sm font-sans font-semibold transition-all duration-200 border ${
                               isHovered
                                 ? "bg-apple-blue text-white border-apple-blue shadow-lg shadow-apple-blue/30 scale-105"
                                 : "bg-white/[0.06] hover:bg-white/[0.12] text-neutral-200 hover:text-white border-white/10 hover:border-white/30"
@@ -454,8 +475,11 @@ export function ProjectArchive() {
 
         {/* — 4. Grand Live Capability Telemetry HUD / Inspector Visor — */}
         <motion.div
-          {...fadeUp(0.15)}
-          className="relative p-8 sm:p-12 rounded-[2.5rem] bg-[#0d0d0f] border border-white/15 overflow-hidden shadow-2xl backdrop-blur-2xl"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-40px" }}
+          transition={{ duration: 0.6, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+          className="relative p-7 sm:p-10 rounded-3xl bg-[#0d0d0f] border border-white/15 overflow-hidden shadow-2xl backdrop-blur-2xl"
         >
           {/* Glowing Top Specular Line */}
           <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-apple-blue to-transparent" />
@@ -464,7 +488,7 @@ export function ProjectArchive() {
             <div className="space-y-3 flex-1">
               <div className="flex items-center space-x-3">
                 <span className="w-2.5 h-2.5 rounded-full bg-apple-blue animate-ping" />
-                <span className="text-sm font-sans uppercase tracking-wider text-apple-blue font-bold">
+                <span className="text-xs sm:text-sm font-sans uppercase tracking-wider text-apple-blue font-bold">
                   {activeTechInfo
                     ? `Live Telemetry // ${activeTechInfo.name}`
                     : "Interactive Capability Inspector"}
@@ -483,7 +507,7 @@ export function ProjectArchive() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -6 }}
                   transition={{ duration: 0.2 }}
-                  className="font-sans text-lg sm:text-2xl text-white font-medium leading-relaxed"
+                  className="font-sans text-base sm:text-xl text-white font-medium leading-relaxed"
                 >
                   {activeTechInfo
                     ? activeTechInfo.role
@@ -494,20 +518,20 @@ export function ProjectArchive() {
 
             {/* Benchmark & Target Spec Column */}
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6 lg:border-l lg:border-white/15 lg:pl-10 flex-shrink-0">
-              <div className="space-y-1.5">
+              <div className="space-y-1">
                 <span className="text-xs font-sans uppercase tracking-wider text-neutral-400 font-semibold block">
                   {activeTechInfo ? "Verified Metric" : "Quality Standard"}
                 </span>
-                <span className="text-base sm:text-lg font-sans text-apple-blue font-bold block">
+                <span className="text-sm sm:text-base font-sans text-apple-blue font-bold block">
                   {activeTechInfo ? activeTechInfo.metric : "Zero Bloat • Sub-Millisecond"}
                 </span>
               </div>
 
-              <div className="space-y-1.5">
+              <div className="space-y-1">
                 <span className="text-xs font-sans uppercase tracking-wider text-neutral-400 font-semibold block">
                   {activeTechInfo ? "Deployed In" : "Flagship Suite"}
                 </span>
-                <span className="text-base sm:text-lg font-sans text-white font-semibold block">
+                <span className="text-sm sm:text-base font-sans text-white font-semibold block">
                   {activeTechInfo ? activeTechInfo.project : "9 Production Architectures"}
                 </span>
               </div>
@@ -518,4 +542,5 @@ export function ProjectArchive() {
     </section>
   );
 }
+
 

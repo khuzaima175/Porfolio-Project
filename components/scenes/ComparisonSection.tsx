@@ -128,9 +128,10 @@ export function ComparisonSection() {
   ];
 
   return (
-    <section id="compare" className="py-28 px-4 sm:px-8 lg:px-12 max-w-[95vw] 2xl:max-w-[110rem] mx-auto text-center border-t border-white/10">
-      {/* Overline & Heading */}
-      <div className="space-y-4 max-w-4xl mx-auto">
+    <section id="compare" className="py-28 px-4 sm:px-12 w-full border-t border-white/10 text-center">
+      <div className="max-w-[95vw] 2xl:max-w-[110rem] mx-auto">
+        {/* Overline & Heading */}
+        <div className="space-y-4 max-w-4xl mx-auto">
         <span className="text-xs sm:text-sm font-semibold tracking-widest uppercase text-brand-subtle font-mono">
           The sovereign upgrade
         </span>
@@ -309,6 +310,7 @@ export function ComparisonSection() {
           </motion.div>
         )}
       </AnimatePresence>
+      </div>
     </section>
   );
 }

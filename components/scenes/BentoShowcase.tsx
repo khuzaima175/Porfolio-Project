@@ -288,7 +288,7 @@ export function BentoShowcase({
                   }`}
                 >
                   {/* Media Plate with Shared Layout Morph Hook (Expansive Cinematic Widescreen) */}
-                  <div className="relative w-full h-[40vh] sm:h-[48vh] lg:h-[52vh] max-h-[35rem] rounded-3xl overflow-hidden shadow-2xl border border-white/10 bg-black">
+                  <div className="relative w-full h-[40vh] sm:h-[48vh] lg:h-[52vh] max-h-[35rem] rounded-[2rem] overflow-hidden shadow-2xl border border-white/10 bg-black">
                     <motion.img
                       layoutId={`media-${project.id}`}
                       src={project.image}
@@ -391,125 +391,127 @@ export function BentoShowcase({
       {/* =========================================================================
           PART 2: THE EXTENDED PRO SUITE (THE OTHER 5 ARCHITECTURES DIRECTLY BELOW)
          ========================================================================= */}
-      <div className="py-28 px-4 sm:px-8 lg:px-12 max-w-[95vw] 2xl:max-w-[110rem] mx-auto border-t border-white/10">
-        {/* Section Header */}
-        <div className="space-y-3 mb-16 text-center sm:text-left">
-          <span className="text-xs sm:text-sm font-semibold tracking-widest uppercase text-brand-subtle font-mono">
-            Specialized Architectures // Local-First & Cloud
-          </span>
-          <h3 className="font-sans text-3xl sm:text-5xl font-bold tracking-tightest-editorial text-white leading-tight">
-            Engineered for the edge. Built for scale.
-          </h3>
-          <p className="text-brand-subtle max-w-2xl text-sm sm:text-base font-normal">
-            Autonomous mobile geofencing, zero-quota creator intelligence, client-side NLP forensics,
-            and offline-first SQLite desktop applications.
-          </p>
-        </div>
+      <div className="py-28 px-4 sm:px-12 w-full border-t border-white/10">
+        <div className="max-w-[95vw] 2xl:max-w-[110rem] mx-auto">
+          {/* Section Header */}
+          <div className="space-y-3 mb-16 text-center sm:text-left">
+            <span className="text-xs sm:text-sm font-semibold tracking-widest uppercase text-brand-subtle font-mono">
+              Specialized Architectures // Local-First & Cloud
+            </span>
+            <h3 className="font-sans text-3xl sm:text-5xl font-bold tracking-tightest-editorial text-white leading-tight">
+              Engineered for the edge. Built for scale.
+            </h3>
+            <p className="text-brand-subtle max-w-2xl text-sm sm:text-base font-normal">
+              Autonomous mobile geofencing, zero-quota creator intelligence, client-side NLP forensics,
+              and offline-first SQLite desktop applications.
+            </p>
+          </div>
 
-        {/* Balanced 12-Column Studio Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
-          {extendedProjects.map((item) => {
-            const project = item.project;
-            const Icon = item.icon;
+          {/* Balanced 12-Column Studio Grid */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+            {extendedProjects.map((item) => {
+              const project = item.project;
+              const Icon = item.icon;
 
-            return (
-              <motion.div
-                key={project.id}
-                initial={{ opacity: 0, y: 35, filter: "blur(6px)" }}
-                whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                viewport={{ once: true, margin: "-40px" }}
-                transition={{ duration: 0.6, ease: EASE_ENTER }}
-                onClick={() => onSelectProject(project)}
-                className={`${item.span} group pro-card rounded-[2.5rem] p-7 sm:p-9 flex flex-col justify-between overflow-hidden cursor-pointer relative transform-gpu hover:border-white/20 transition-all duration-300`}
-                data-cursor-interactive="true"
-                data-cursor-label="INSPECT"
-              >
-                {/* Visual Media Graphic with layoutId morph hook */}
-                {project.image && (
-                  <div className="relative w-full aspect-[16/10] rounded-2xl overflow-hidden mb-6 border border-white/5 bg-black">
-                    <motion.img
-                      layoutId={`media-${project.id}`}
-                      src={project.image}
-                      alt={project.title}
-                      loading="lazy"
-                      decoding="async"
-                      className="w-full h-full object-cover grayscale contrast-125 group-hover:scale-105 group-hover:grayscale-0 transition-transform duration-500 ease-out"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-80 pointer-events-none" />
-                    <div className="absolute bottom-3.5 left-3.5 flex items-center space-x-2 px-3 py-1.5 rounded-full bg-black/80 border border-white/10 text-xs font-mono text-white pointer-events-none">
-                      <Icon className="w-3.5 h-3.5 text-brand-blue flex-shrink-0" />
-                      <span className="truncate max-w-[16.25rem] sm:max-w-none">{item.badge}</span>
+              return (
+                <motion.div
+                  key={project.id}
+                  initial={{ opacity: 0, y: 35, filter: "blur(6px)" }}
+                  whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                  viewport={{ once: true, margin: "-40px" }}
+                  transition={{ duration: 0.6, ease: EASE_ENTER }}
+                  onClick={() => onSelectProject(project)}
+                  className={`${item.span} group pro-card rounded-[2rem] p-7 sm:p-9 flex flex-col justify-between overflow-hidden cursor-pointer relative transform-gpu hover:border-white/20 transition-all duration-300`}
+                  data-cursor-interactive="true"
+                  data-cursor-label="INSPECT"
+                >
+                  {/* Visual Media Graphic with layoutId morph hook */}
+                  {project.image && (
+                    <div className="relative w-full aspect-[16/10] rounded-2xl overflow-hidden mb-6 border border-white/[0.04] bg-black">
+                      <motion.img
+                        layoutId={`media-${project.id}`}
+                        src={project.image}
+                        alt={project.title}
+                        loading="lazy"
+                        decoding="async"
+                        className="w-full h-full object-cover grayscale contrast-125 group-hover:scale-105 group-hover:grayscale-0 transition-transform duration-500 ease-out"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-80 pointer-events-none" />
+                      <div className="absolute bottom-3.5 left-3.5 flex items-center space-x-2 px-3 py-1.5 rounded-full bg-black/80 border border-white/10 text-xs font-mono text-white pointer-events-none">
+                        <Icon className="w-3.5 h-3.5 text-brand-blue flex-shrink-0" />
+                        <span className="truncate max-w-[16.25rem] sm:max-w-none">{item.badge}</span>
+                      </div>
                     </div>
-                  </div>
-                )}
+                  )}
 
-                {/* Content Section */}
-                <div className="flex-1 flex flex-col justify-between space-y-4">
-                  <div className="space-y-2">
-                    <div className="flex items-center justify-between text-xs font-medium text-brand-subtle">
-                      <span className="text-brand-blue uppercase tracking-wider font-mono">
-                        {project.category}
-                      </span>
-                      <span className="font-mono">{project.year}</span>
-                    </div>
-
-                    <h4 className="font-sans text-2xl sm:text-3xl font-bold text-white group-hover:text-brand-blue transition-colors duration-200 leading-tight">
-                      {project.title}
-                    </h4>
-
-                    <p className="text-brand-subtle text-xs sm:text-sm leading-relaxed line-clamp-2 pt-1 font-normal">
-                      {project.executivePitch}
-                    </p>
-                  </div>
-
-                  {/* Quantitative Metrics Badges with Odometers */}
-                  <div className="pt-2">
-                    <div className="flex flex-wrap gap-2 mb-3">
-                      {project.metrics.slice(0, 3).map((metric, mIdx) => (
-                        <div
-                          key={mIdx}
-                          className="px-3 py-1.5 rounded-xl bg-white/5 border border-white/10"
-                        >
-                          <div className="text-[9px] text-brand-subtle uppercase font-mono">
-                            {metric.label}
-                          </div>
-                          <div className="font-sans text-base sm:text-lg font-bold text-white tabular-nums">
-                            <Odometer value={metric.value} />
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-
-                    {/* Tech Stack Tags */}
-                    <div className="flex flex-wrap items-center gap-2 pt-1">
-                      {project.techStack.slice(0, 4).map((tech, tIdx) => (
-                        <span
-                          key={tIdx}
-                          className="text-xs font-sans font-medium px-2.5 py-1 bg-white/[0.05] border border-white/[0.08] text-neutral-300 rounded-lg group-hover:border-white/20 transition-colors"
-                        >
-                          {tech}
+                  {/* Content Section */}
+                  <div className="flex-1 flex flex-col justify-between space-y-4">
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-between text-xs font-medium text-brand-subtle">
+                        <span className="text-brand-blue uppercase tracking-wider font-mono">
+                          {project.category}
                         </span>
-                      ))}
-                      {project.techStack.length > 4 && (
-                        <span className="text-xs font-mono px-2 py-1 text-brand-subtle font-medium">
-                          +{project.techStack.length - 4}
-                        </span>
-                      )}
+                        <span className="font-mono">{project.year}</span>
+                      </div>
+
+                      <h4 className="font-sans text-2xl sm:text-3xl font-bold text-white group-hover:text-brand-blue transition-colors duration-200 leading-tight">
+                        {project.title}
+                      </h4>
+
+                      <p className="text-brand-subtle text-xs sm:text-sm leading-relaxed line-clamp-2 pt-1 font-normal">
+                        {project.executivePitch}
+                      </p>
+                    </div>
+
+                    {/* Quantitative Metrics Badges with Odometers */}
+                    <div className="pt-2">
+                      <div className="flex flex-wrap gap-2 mb-3">
+                        {project.metrics.slice(0, 3).map((metric, mIdx) => (
+                          <div
+                            key={mIdx}
+                            className="px-3 py-1.5 rounded-xl bg-white/5 border border-white/10"
+                          >
+                            <div className="text-[9px] text-brand-subtle uppercase font-mono">
+                              {metric.label}
+                            </div>
+                            <div className="font-sans text-base sm:text-lg font-bold text-white tabular-nums">
+                              <Odometer value={metric.value} />
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+
+                      {/* Tech Stack Tags */}
+                      <div className="flex flex-wrap items-center gap-2 pt-1">
+                        {project.techStack.slice(0, 4).map((tech, tIdx) => (
+                          <span
+                            key={tIdx}
+                            className="text-xs font-sans font-medium px-2.5 py-1 bg-white/[0.05] border border-white/[0.08] text-neutral-300 rounded-lg group-hover:border-white/20 transition-colors"
+                          >
+                            {tech}
+                          </span>
+                        ))}
+                        {project.techStack.length > 4 && (
+                          <span className="text-xs font-mono px-2 py-1 text-brand-subtle font-medium">
+                            +{project.techStack.length - 4}
+                          </span>
+                        )}
+                      </div>
                     </div>
                   </div>
-                </div>
 
-                {/* Magnetic Action Icon Button */}
-                <div className="absolute top-7 right-7">
-                  <MagneticButton>
-                    <div className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center text-white group-hover:bg-brand-blue transition-colors duration-200 shadow-lg pointer-events-none">
-                      <ArrowUpRight className="w-4 h-4" />
-                    </div>
-                  </MagneticButton>
-                </div>
-              </motion.div>
-            );
-          })}
+                  {/* Magnetic Action Icon Button */}
+                  <div className="absolute top-7 right-7">
+                    <MagneticButton>
+                      <div className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center text-white group-hover:bg-brand-blue transition-colors duration-200 shadow-lg pointer-events-none">
+                        <ArrowUpRight className="w-4 h-4" />
+                      </div>
+                    </MagneticButton>
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
         </div>
       </div>
     </div>

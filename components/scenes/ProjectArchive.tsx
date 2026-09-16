@@ -288,10 +288,11 @@ export function ProjectArchive() {
   return (
     <section
       id="archive"
-      className="py-28 px-4 sm:px-8 lg:px-12 max-w-[95vw] 2xl:max-w-[110rem] mx-auto border-t border-white/10 space-y-24 select-none overflow-hidden"
+      className="py-28 px-4 sm:px-12 w-full border-t border-white/10 select-none overflow-hidden"
     >
-      {/* — 1. Personal Statement & Executive Bio — */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-center">
+      <div className="max-w-[95vw] 2xl:max-w-[110rem] mx-auto space-y-24">
+        {/* — 1. Personal Statement & Executive Bio — */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-center">
         {/* Left Editorial Column */}
         <div className="lg:col-span-7 space-y-7">
           <Reveal variant="slide-right">
@@ -606,6 +607,7 @@ export function ProjectArchive() {
             </div>
           </div>
         </motion.div>
+      </div>
       </div>
     </section>
   );

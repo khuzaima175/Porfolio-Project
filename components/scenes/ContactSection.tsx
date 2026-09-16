@@ -80,9 +80,10 @@ export function ContactSection() {
   return (
     <footer
       id="contact"
-      className="py-24 px-4 sm:px-8 lg:px-12 max-w-[95vw] 2xl:max-w-[110rem] mx-auto border-t border-white/10 overflow-hidden select-none"
+      className="py-24 px-4 sm:px-12 w-full border-t border-white/10 overflow-hidden select-none"
     >
-      <div className="pb-16 border-b border-white/10">
+      <div className="max-w-[95vw] 2xl:max-w-[110rem] mx-auto">
+        <div className="pb-16 border-b border-white/10">
         {/* Balanced Widescreen 2-Column Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
           {/* Left Column: Editorial Narrative & Quick Actions (7 Cols) */}
@@ -360,6 +361,7 @@ export function ContactSection() {
             <ArrowUpRight className="w-3 h-3 opacity-60" />
           </a>
         </div>
+      </div>
       </div>
     </footer>
   );

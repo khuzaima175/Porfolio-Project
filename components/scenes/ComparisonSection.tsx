@@ -128,7 +128,7 @@ export function ComparisonSection() {
   ];
 
   return (
-    <section id="compare" className="py-28 px-4 sm:px-8 lg:px-12 max-w-[95vw] 2xl:max-w-[1760px] mx-auto text-center border-t border-white/10">
+    <section id="compare" className="py-28 px-4 sm:px-8 lg:px-12 max-w-[95vw] 2xl:max-w-[110rem] mx-auto text-center border-t border-white/10">
       {/* Overline & Heading */}
       <div className="space-y-4 max-w-4xl mx-auto">
         <span className="text-xs sm:text-sm font-semibold tracking-widest uppercase text-brand-subtle font-mono">
@@ -284,7 +284,7 @@ export function ComparisonSection() {
                     </div>
 
                     {/* Comparative baseline vs engine hairline bars */}
-                    <div className="pt-2 pb-1 space-y-1.5 max-w-[200px] mx-auto">
+                    <div className="pt-2 pb-1 space-y-1.5 max-w-[12.5rem] mx-auto">
                       <div className="flex items-center justify-between text-[10px] font-mono text-brand-subtle">
                         <span>BASELINE</span>
                         <span>ENGINE</span>

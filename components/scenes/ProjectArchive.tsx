@@ -288,7 +288,7 @@ export function ProjectArchive() {
   return (
     <section
       id="archive"
-      className="py-28 px-4 sm:px-8 lg:px-12 max-w-[95vw] 2xl:max-w-[1760px] mx-auto border-t border-white/10 space-y-24 select-none overflow-hidden"
+      className="py-28 px-4 sm:px-8 lg:px-12 max-w-[95vw] 2xl:max-w-[110rem] mx-auto border-t border-white/10 space-y-24 select-none overflow-hidden"
     >
       {/* — 1. Personal Statement & Executive Bio — */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-center">
@@ -578,7 +578,7 @@ export function ProjectArchive() {
               </div>
 
               {/* Monospace Typewriter Description */}
-              <p className="font-sans text-base sm:text-xl text-white font-medium leading-relaxed min-h-[56px]">
+              <p className="font-sans text-base sm:text-xl text-white font-medium leading-relaxed min-h-[3.5rem]">
                 {typedRole}
                 <span className="inline-block w-1.5 h-4 bg-brand-blue ml-1 animate-pulse" />
               </p>

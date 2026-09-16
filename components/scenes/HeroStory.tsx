@@ -87,11 +87,11 @@ export function HeroStory() {
         {/* Dynamic Multi-Layer Ambient Specular Lights */}
         <motion.div
           style={{ opacity: blueGlowOpacity }}
-          className="pointer-events-none absolute top-1/4 left-1/2 -translate-x-1/2 w-[90vw] sm:w-[750px] h-[350px] sm:h-[520px] blue-glow blur-[40px] sm:blur-[120px]"
+          className="pointer-events-none absolute top-1/4 left-1/2 -translate-x-1/2 w-[90vw] sm:w-[46.875rem] h-[21.875rem] sm:h-[32.5rem] blue-glow blur-[40px] sm:blur-[120px]"
         />
         <motion.div
           style={{ opacity: amberGlowOpacity }}
-          className="pointer-events-none absolute bottom-1/4 right-1/4 w-[80vw] sm:w-[650px] h-[300px] sm:h-[520px] amber-glow blur-[50px] sm:blur-[140px]"
+          className="pointer-events-none absolute bottom-1/4 right-1/4 w-[80vw] sm:w-[40.625rem] h-[18.75rem] sm:h-[32.5rem] amber-glow blur-[50px] sm:blur-[140px]"
         />
 
         {/* Live Ambient Hardware Plate Layer (First-Paint Silicon Proof) */}
@@ -104,7 +104,7 @@ export function HeroStory() {
           }}
           className="pointer-events-none absolute inset-0 flex items-center justify-center z-0"
         >
-          <div className="w-[94vw] max-w-[1720px] h-[64vh] relative rounded-3xl overflow-hidden shadow-2xl border border-white/10 bg-black/60 backdrop-blur-md">
+          <div className="w-[94vw] max-w-[107.5rem] h-[64vh] relative rounded-3xl overflow-hidden shadow-2xl border border-white/10 bg-black/60 backdrop-blur-md">
             {/* Live Ambient Canvas */}
             <GNSSSimulator ambientMode={true} paused={isPastHero} />
 
@@ -123,7 +123,7 @@ export function HeroStory() {
         {/* Top Telemetry Header with Smooth Scroll Fade */}
         <motion.div
           style={{ opacity: topHeaderOpacity, y: topHeaderY }}
-          className="z-10 flex items-center justify-between font-mono text-xs text-brand-subtle uppercase tracking-wider max-w-[95vw] 2xl:max-w-[1760px] mx-auto w-full"
+          className="z-10 flex items-center justify-between font-mono text-xs text-brand-subtle uppercase tracking-wider max-w-[95vw] 2xl:max-w-[110rem] mx-auto w-full"
         >
           <div className="flex items-center space-x-2">
             <span className="w-2 h-2 rounded-full bg-brand-blue animate-pulse" />
@@ -135,7 +135,7 @@ export function HeroStory() {
         </motion.div>
 
         {/* Center Stage Storyboard */}
-        <div className="z-10 my-auto w-full max-w-[95vw] 2xl:max-w-[1760px] mx-auto text-center relative">
+        <div className="z-10 my-auto w-full max-w-[95vw] 2xl:max-w-[110rem] mx-auto text-center relative">
           {/* Radial Scrim Behind Headline to Eliminate Contour Bleed */}
           <div className="pointer-events-none absolute inset-0 -inset-x-12 -inset-y-8 blur-2xl -z-10" style={{ background: 'radial-gradient(circle, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.5) 40%, transparent 100%)' }} />
 

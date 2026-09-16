@@ -80,7 +80,7 @@ export function ContactSection() {
   return (
     <footer
       id="contact"
-      className="py-24 px-4 sm:px-8 lg:px-12 max-w-[95vw] 2xl:max-w-[1760px] mx-auto border-t border-white/10 overflow-hidden select-none"
+      className="py-24 px-4 sm:px-8 lg:px-12 max-w-[95vw] 2xl:max-w-[110rem] mx-auto border-t border-white/10 overflow-hidden select-none"
     >
       <div className="pb-16 border-b border-white/10">
         {/* Balanced Widescreen 2-Column Grid */}
@@ -206,32 +206,32 @@ export function ContactSection() {
               <div className="absolute top-0 right-0 w-72 h-72 bg-gradient-to-bl from-blue-500/20 via-purple-500/10 to-transparent rounded-full blur-3xl pointer-events-none" />
 
               {/* Console Top Bar */}
-              <div className="flex items-center justify-between pb-3 border-b border-white/10 text-neutral-400 relative z-10">
+              <div className="flex items-center justify-between pb-3.5 border-b border-white/15 text-neutral-300 relative z-10">
                 <div className="flex items-center space-x-2.5">
                   <Terminal className="w-4 h-4 text-brand-blue" />
-                  <span className="font-sans text-xs font-semibold uppercase tracking-wider text-white">
+                  <span className="font-sans text-sm font-bold uppercase tracking-wider text-white">
                     Direct Dispatch Console
                   </span>
                 </div>
-                <span className="text-[11px] font-mono font-semibold text-emerald-400 flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/20">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                <span className="text-xs font-mono font-semibold text-emerald-400 flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/15 border border-emerald-500/30 shadow-sm">
+                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
                   GATEWAY ONLINE
                 </span>
               </div>
 
               {/* Simulated System Handshake Logs */}
-              <div className="space-y-1 font-mono text-[11px] text-brand-subtle bg-black/60 p-3 rounded-xl border border-white/10 relative z-10">
-                <div className="flex items-center space-x-2">
-                  <span className="text-brand-blue">&gt;</span>
-                  <span>HANDSHAKE // 2048-BIT ENCRYPTED CHANNEL</span>
+              <div className="space-y-1.5 font-mono text-xs text-neutral-300 bg-black/75 p-3.5 rounded-xl border border-white/15 relative z-10 leading-relaxed">
+                <div className="flex items-center space-x-2.5">
+                  <span className="text-brand-blue font-bold">&gt;</span>
+                  <span className="text-neutral-200">HANDSHAKE // 2048-BIT ENCRYPTED CHANNEL</span>
                 </div>
-                <div className="flex items-center space-x-2">
-                  <span className="text-emerald-400">&gt;</span>
-                  <span>ROUTE // DIRECT TRANSMIT TO KHUZAIMA AHMED</span>
+                <div className="flex items-center space-x-2.5">
+                  <span className="text-emerald-400 font-bold">&gt;</span>
+                  <span className="text-neutral-200">ROUTE // DIRECT TRANSMIT TO KHUZAIMA AHMED</span>
                 </div>
-                <div className="flex items-center space-x-2">
-                  <span className="text-purple-400">&gt;</span>
-                  <span>STATUS // BUFFER OPEN • ZERO-LATENCY READY</span>
+                <div className="flex items-center space-x-2.5">
+                  <span className="text-purple-400 font-bold">&gt;</span>
+                  <span className="text-neutral-200">STATUS // BUFFER OPEN • ZERO-LATENCY READY</span>
                 </div>
               </div>
 
@@ -240,9 +240,9 @@ export function ContactSection() {
                 onSubmit={handleDispatch}
                 className="space-y-4 relative z-10"
               >
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                   <div>
-                    <label className="block text-[11px] text-neutral-400 uppercase font-mono font-medium mb-1.5">
+                    <label className="block text-xs text-neutral-300 uppercase font-mono font-semibold tracking-wider mb-2">
                       Your Name / Org
                     </label>
                     <input
@@ -250,11 +250,11 @@ export function ContactSection() {
                       value={senderName}
                       onChange={(e) => setSenderName(e.target.value)}
                       placeholder="e.g. Sarah Connor"
-                      className="w-full bg-black/50 border border-white/10 rounded-xl px-3.5 py-2.5 text-white font-sans text-xs focus:outline-none focus:border-brand-blue transition-colors placeholder:text-neutral-600"
+                      className="w-full bg-black/70 border border-white/15 rounded-xl px-4 py-2.5 text-white font-sans text-sm focus:outline-none focus:border-brand-blue focus:bg-black/90 transition-colors placeholder:text-neutral-400"
                     />
                   </div>
                   <div>
-                    <label className="block text-[11px] text-neutral-400 uppercase font-mono font-medium mb-1.5">
+                    <label className="block text-xs text-neutral-300 uppercase font-mono font-semibold tracking-wider mb-2">
                       Contact Email / Handle
                     </label>
                     <input
@@ -262,13 +262,13 @@ export function ContactSection() {
                       value={senderContact}
                       onChange={(e) => setSenderContact(e.target.value)}
                       placeholder="e.g. sarah@cyberdyne.io"
-                      className="w-full bg-black/50 border border-white/10 rounded-xl px-3.5 py-2.5 text-white font-sans text-xs focus:outline-none focus:border-brand-blue transition-colors placeholder:text-neutral-600"
+                      className="w-full bg-black/70 border border-white/15 rounded-xl px-4 py-2.5 text-white font-sans text-sm focus:outline-none focus:border-brand-blue focus:bg-black/90 transition-colors placeholder:text-neutral-400"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-[11px] text-neutral-400 uppercase font-mono font-medium mb-1.5">
+                  <label className="block text-xs text-neutral-300 uppercase font-mono font-semibold tracking-wider mb-2">
                     Message Payload
                   </label>
                   <textarea
@@ -276,21 +276,21 @@ export function ContactSection() {
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
                     placeholder="Brief project scope, engineering challenge, or collaboration proposal..."
-                    className="w-full bg-black/50 border border-white/10 rounded-xl p-3.5 text-white font-sans text-xs focus:outline-none focus:border-brand-blue transition-colors resize-none placeholder:text-neutral-600"
+                    className="w-full bg-black/70 border border-white/15 rounded-xl p-4 text-white font-sans text-sm focus:outline-none focus:border-brand-blue focus:bg-black/90 transition-colors resize-none placeholder:text-neutral-400"
                   />
                 </div>
 
-                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pt-1">
-                  <span className="text-[11px] font-mono text-brand-subtle">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3.5 pt-1.5">
+                  <span className="text-xs font-mono text-neutral-400">
                     {statusText || "Instant mailto routing with 1-click fallback"}
                   </span>
                   <button
                     type="submit"
                     disabled={isTransmitting || !message.trim()}
-                    className={`flex items-center space-x-2 px-6 py-2.5 rounded-full font-sans font-semibold text-xs transition-all shadow-md active:scale-95 ${
+                    className={`flex items-center space-x-2 px-6 py-2.5 rounded-full font-sans font-semibold text-sm transition-all shadow-md active:scale-95 ${
                       message.trim()
                         ? "bg-brand-blue text-white hover:bg-blue-400 shadow-brand-blue/25 hover:scale-105"
-                        : "bg-white/10 text-neutral-500 cursor-not-allowed"
+                        : "bg-white/10 text-neutral-400 cursor-not-allowed border border-white/10"
                     }`}
                     data-cursor-interactive="true"
                   >

@@ -220,12 +220,12 @@ export function BentoShowcase({
         <div className="sticky top-0 h-[100dvh] w-full overflow-hidden flex flex-col justify-between py-4 sm:py-8 px-4 sm:px-12">
           {/* Dynamic Ambient Specular Glow Behind the Theater */}
           <div
-            className="pointer-events-none absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90vw] sm:w-[1600px] h-[350px] sm:h-[900px] rounded-full blur-[60px] sm:blur-[190px] transition-colors duration-1000"
+            className="pointer-events-none absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90vw] sm:w-[100rem] h-[21.875rem] sm:h-[56.25rem] rounded-full blur-[60px] sm:blur-[190px] transition-colors duration-1000"
             style={{ backgroundColor: activeGlow }}
           />
 
           {/* Top Header & Chapter Pill Switcher with Sliding Layout Pill */}
-          <div className="relative z-20 max-w-[95vw] 2xl:max-w-[1760px] mx-auto w-full flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="relative z-20 max-w-[95vw] 2xl:max-w-[110rem] mx-auto w-full flex flex-col sm:flex-row items-center justify-between gap-4">
             <div className="flex items-center space-x-2 text-xs sm:text-sm font-mono text-brand-subtle">
               <Sparkles className="w-4 h-4 text-brand-blue" />
               <span className="uppercase tracking-wider">FLAGSHIP SHOWCASE // CINEMATIC ARCHITECTURE</span>
@@ -267,7 +267,7 @@ export function BentoShowcase({
             style={{ rotateX: springTiltX, rotateY: springTiltY, transformPerspective: 1000 }}
             onMouseMove={handleStageMouseMove}
             onMouseLeave={handleStageMouseLeave}
-            className="relative z-10 my-auto w-full max-w-[95vw] 2xl:max-w-[1760px] mx-auto grid grid-cols-1 grid-rows-1 items-center"
+            className="relative z-10 my-auto w-full max-w-[95vw] 2xl:max-w-[110rem] mx-auto grid grid-cols-1 grid-rows-1 items-center"
           >
             {chapters.map((ch, idx) => {
               const project = ch.project;
@@ -288,7 +288,7 @@ export function BentoShowcase({
                   }`}
                 >
                   {/* Media Plate with Shared Layout Morph Hook (Expansive Cinematic Widescreen) */}
-                  <div className="relative w-full h-[40vh] sm:h-[48vh] lg:h-[52vh] max-h-[560px] rounded-3xl overflow-hidden shadow-2xl border border-white/10 bg-black">
+                  <div className="relative w-full h-[40vh] sm:h-[48vh] lg:h-[52vh] max-h-[35rem] rounded-3xl overflow-hidden shadow-2xl border border-white/10 bg-black">
                     <motion.img
                       layoutId={`media-${project.id}`}
                       src={project.image}
@@ -328,7 +328,7 @@ export function BentoShowcase({
                         {ch.stats.map((st, sIdx) => (
                           <div
                             key={sIdx}
-                            className="p-2 sm:p-4 px-3 sm:px-6 rounded-2xl bg-[#161617] border border-white/10 text-center flex-1 sm:flex-none min-w-[75px] sm:min-w-[130px] shadow-xl"
+                            className="p-2 sm:p-4 px-3 sm:px-6 rounded-2xl bg-[#161617] border border-white/10 text-center flex-1 sm:flex-none min-w-[4.6875rem] sm:min-w-[8.125rem] shadow-xl"
                           >
                             <div className="text-[9px] sm:text-[11px] text-brand-subtle uppercase font-mono tracking-wider">
                               {st.label}
@@ -359,7 +359,7 @@ export function BentoShowcase({
           </motion.div>
 
           {/* Bottom Segmented Intra-Chapter Progress Rail */}
-          <div className="relative z-20 max-w-[95vw] 2xl:max-w-[1760px] mx-auto w-full flex items-center justify-between font-mono text-xs sm:text-sm text-brand-subtle pt-4 border-t border-white/10">
+          <div className="relative z-20 max-w-[95vw] 2xl:max-w-[110rem] mx-auto w-full flex items-center justify-between font-mono text-xs sm:text-sm text-brand-subtle pt-4 border-t border-white/10">
             <div className="flex items-center space-x-2">
               <span className="w-2 h-2 rounded-full bg-brand-blue animate-pulse" />
               <span className="uppercase tracking-wider">SCROLL TO PROGRESS FLAGSHIPS</span>
@@ -391,7 +391,7 @@ export function BentoShowcase({
       {/* =========================================================================
           PART 2: THE EXTENDED PRO SUITE (THE OTHER 5 ARCHITECTURES DIRECTLY BELOW)
          ========================================================================= */}
-      <div className="py-28 px-4 sm:px-8 lg:px-12 max-w-[95vw] 2xl:max-w-[1760px] mx-auto border-t border-white/10">
+      <div className="py-28 px-4 sm:px-8 lg:px-12 max-w-[95vw] 2xl:max-w-[110rem] mx-auto border-t border-white/10">
         {/* Section Header */}
         <div className="space-y-3 mb-16 text-center sm:text-left">
           <span className="text-xs sm:text-sm font-semibold tracking-widest uppercase text-brand-subtle font-mono">
@@ -438,7 +438,7 @@ export function BentoShowcase({
                     <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-80 pointer-events-none" />
                     <div className="absolute bottom-3.5 left-3.5 flex items-center space-x-2 px-3 py-1.5 rounded-full bg-black/80 border border-white/10 text-xs font-mono text-white pointer-events-none">
                       <Icon className="w-3.5 h-3.5 text-brand-blue flex-shrink-0" />
-                      <span className="truncate max-w-[260px] sm:max-w-none">{item.badge}</span>
+                      <span className="truncate max-w-[16.25rem] sm:max-w-none">{item.badge}</span>
                     </div>
                   </div>
                 )}

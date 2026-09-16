@@ -77,7 +77,7 @@ export function Subnav() {
   }, []);
 
   return (
-    <div className="sticky top-3 sm:top-5 z-50 max-w-[98vw] 2xl:max-w-[1760px] mx-auto px-2 sm:px-6 pointer-events-none">
+    <div className="sticky top-3 sm:top-5 z-50 max-w-[98vw] 2xl:max-w-[110rem] mx-auto px-2 sm:px-6 pointer-events-none">
       <motion.div
         initial={false}
         animate={{

@@ -14,22 +14,20 @@ interface OdometerProps {
 
 function DigitColumn({
   digit,
-  isInView,
   delay = 0,
-  duration = 0.8,
+  duration = 0.75,
 }: {
   digit: number;
-  isInView: boolean;
   delay: number;
   duration: number;
 }) {
   const numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 
   return (
-    <span className="inline-block relative h-[1.1em] overflow-hidden tabular-nums leading-none">
+    <span className="inline-block relative h-[1.15em] overflow-hidden tabular-nums leading-none">
       <motion.span
         initial={{ y: "0%" }}
-        animate={isInView ? { y: `-${digit * 10}%` } : { y: "0%" }}
+        animate={{ y: `-${digit * 10}%` }}
         transition={{
           duration,
           delay,
@@ -38,7 +36,10 @@ function DigitColumn({
         className="flex flex-col text-center"
       >
         {numbers.map((num) => (
-          <span key={num} className="h-[1.1em] flex items-center justify-center leading-none">
+          <span
+            key={num}
+            className="h-[1.15em] flex items-center justify-center leading-none"
+          >
             {num}
           </span>
         ))}
@@ -50,12 +51,12 @@ function DigitColumn({
 export function Odometer({
   value,
   className = "",
-  duration = 0.85,
+  duration = 0.75,
   delay = 0,
-  triggerOnView = true,
+  triggerOnView = false,
 }: OdometerProps) {
   const containerRef = useRef<HTMLSpanElement | null>(null);
-  const inView = useInView(containerRef, { once: true, margin: "-20px" });
+  const inView = useInView(containerRef, { once: true, margin: "100px" });
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -64,7 +65,6 @@ export function Odometer({
 
   const stringValue = String(value);
   const characters = stringValue.split("");
-  const shouldAnimate = triggerOnView ? inView : true;
 
   if (!mounted) {
     return <span className={`tabular-nums ${className}`}>{stringValue}</span>;
@@ -84,13 +84,12 @@ export function Odometer({
           const isDigit = !isNaN(parsedInt);
 
           if (isDigit) {
-            const currentDelay = delay + digitIndex * 0.05;
+            const currentDelay = delay + digitIndex * 0.04;
             digitIndex++;
             return (
               <DigitColumn
-                key={index}
+                key={`${index}-${parsedInt}-${stringValue}`}
                 digit={parsedInt}
-                isInView={shouldAnimate}
                 delay={currentDelay}
                 duration={duration}
               />

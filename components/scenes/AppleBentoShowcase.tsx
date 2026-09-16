@@ -220,12 +220,12 @@ export function AppleBentoShowcase({
         <div className="sticky top-0 h-screen w-full overflow-hidden flex flex-col justify-between py-6 sm:py-8 px-6 sm:px-12">
           {/* Dynamic Ambient Specular Glow Behind the Theater */}
           <div
-            className="pointer-events-none absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[550px] rounded-full blur-[140px] transition-colors duration-1000"
+            className="pointer-events-none absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1200px] h-[750px] rounded-full blur-[170px] transition-colors duration-1000"
             style={{ backgroundColor: activeGlow }}
           />
 
           {/* Top Header & Chapter Pill Switcher with Sliding Layout Pill */}
-          <div className="relative z-20 max-w-6xl mx-auto w-full flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="relative z-20 max-w-7xl mx-auto w-full flex flex-col sm:flex-row items-center justify-between gap-4">
             <div className="flex items-center space-x-2 text-xs font-mono text-apple-subtle">
               <Sparkles className="w-3.5 h-3.5 text-apple-blue" />
               <span className="uppercase tracking-wider">FLAGSHIP SHOWCASE // CINEMATIC ARCHITECTURE</span>
@@ -240,7 +240,7 @@ export function AppleBentoShowcase({
                   <button
                     key={idx}
                     onClick={() => scrollToChapter(idx)}
-                    className={`relative flex items-center space-x-1.5 px-3.5 py-1.5 rounded-full text-xs font-mono transition-colors z-10 ${
+                    className={`relative flex items-center space-x-1.5 px-4 py-2 rounded-full text-xs font-mono transition-colors z-10 ${
                       isActive
                         ? "text-black font-semibold"
                         : "text-apple-subtle hover:text-white"
@@ -254,7 +254,7 @@ export function AppleBentoShowcase({
                         className="absolute inset-0 bg-white rounded-full -z-10 shadow-md"
                       />
                     )}
-                    <Icon className={`w-3 h-3 ${isActive ? "text-black" : "text-apple-blue"}`} />
+                    <Icon className={`w-3.5 h-3.5 ${isActive ? "text-black" : "text-apple-blue"}`} />
                     <span className="truncate">{ch.shortLabel}</span>
                   </button>
                 );
@@ -267,7 +267,7 @@ export function AppleBentoShowcase({
             style={{ rotateX: springTiltX, rotateY: springTiltY, transformPerspective: 1000 }}
             onMouseMove={handleStageMouseMove}
             onMouseLeave={handleStageMouseLeave}
-            className="relative z-10 my-auto w-full max-w-6xl mx-auto grid grid-cols-1 grid-rows-1 items-center"
+            className="relative z-10 my-auto w-full max-w-7xl mx-auto grid grid-cols-1 grid-rows-1 items-center"
           >
             {chapters.map((ch, idx) => {
               const project = ch.project;
@@ -283,12 +283,12 @@ export function AppleBentoShowcase({
                     y: trans.y,
                     scale: trans.scale,
                   }}
-                  className={`col-start-1 row-start-1 w-full space-y-4 sm:space-y-5 ${
+                  className={`col-start-1 row-start-1 w-full space-y-4 sm:space-y-6 ${
                     isCurrent ? "pointer-events-auto z-10" : "pointer-events-none z-0"
                   }`}
                 >
-                  {/* Media Plate with Shared Layout Morph Hook */}
-                  <div className="relative w-full h-[32vh] sm:h-[38vh] rounded-3xl overflow-hidden shadow-2xl border border-white/10 bg-black">
+                  {/* Media Plate with Shared Layout Morph Hook (Cinematic Widescreen) */}
+                  <div className="relative w-full h-[36vh] sm:h-[44vh] lg:h-[48vh] max-h-[500px] rounded-3xl overflow-hidden shadow-2xl border border-white/10 bg-black">
                     <motion.img
                       layoutId={`media-${project.id}`}
                       src={project.image}
@@ -304,7 +304,7 @@ export function AppleBentoShowcase({
 
                   {/* Title & Metadata with Line Masks */}
                   <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 pt-1">
-                    <div className="space-y-2 max-w-2xl">
+                    <div className="space-y-2 max-w-3xl">
                       <div className="flex items-center space-x-3 text-xs font-mono text-apple-subtle">
                         <span className="text-apple-blue uppercase font-bold">{project.category}</span>
                         <span>// {project.year}</span>
@@ -317,23 +317,23 @@ export function AppleBentoShowcase({
                         </h3>
                       </div>
 
-                      <p className="text-apple-subtle text-xs sm:text-sm leading-relaxed font-normal">
+                      <p className="text-apple-subtle text-xs sm:text-sm lg:text-base leading-relaxed font-normal">
                         {project.executivePitch}
                       </p>
                     </div>
 
                     {/* Metric Cards with Slotted Odometers */}
-                    <div className="flex flex-col sm:flex-row lg:flex-col items-start sm:items-center lg:items-end gap-3 flex-shrink-0">
-                      <div className="flex gap-2.5">
+                    <div className="flex flex-col sm:flex-row lg:flex-col items-start sm:items-center lg:items-end gap-3.5 flex-shrink-0">
+                      <div className="flex gap-3">
                         {ch.stats.map((st, sIdx) => (
                           <div
                             key={sIdx}
-                            className="p-3 px-3.5 rounded-2xl bg-[#161617] border border-white/10 text-center min-w-[90px] shadow-lg"
+                            className="p-3 sm:p-3.5 px-4 sm:px-5 rounded-2xl bg-[#161617] border border-white/10 text-center min-w-[95px] sm:min-w-[110px] shadow-lg"
                           >
-                            <div className="text-[9px] text-apple-subtle uppercase font-mono">
+                            <div className="text-[9px] sm:text-[10px] text-apple-subtle uppercase font-mono">
                               {st.label}
                             </div>
-                            <div className="font-sans text-lg sm:text-xl font-bold text-white flex items-center justify-center">
+                            <div className="font-sans text-lg sm:text-2xl font-bold text-white flex items-center justify-center">
                               <Odometer value={st.value} duration={0.6} />
                             </div>
                           </div>
@@ -343,7 +343,7 @@ export function AppleBentoShowcase({
                       <MagneticButton>
                         <button
                           onClick={() => onSelectProject(project)}
-                          className="inline-flex items-center space-x-2 px-5 py-2.5 rounded-full bg-white text-black hover:bg-neutral-200 transition-colors text-xs font-semibold shadow-xl active:scale-95 cursor-pointer"
+                          className="inline-flex items-center space-x-2 px-6 py-3 rounded-full bg-white text-black hover:bg-neutral-200 transition-colors text-xs sm:text-sm font-semibold shadow-xl active:scale-95 cursor-pointer"
                           data-cursor-interactive="true"
                           data-cursor-label="INSPECT"
                         >
@@ -359,7 +359,7 @@ export function AppleBentoShowcase({
           </motion.div>
 
           {/* Bottom Segmented Intra-Chapter Progress Rail */}
-          <div className="relative z-20 max-w-6xl mx-auto w-full flex items-center justify-between font-mono text-xs text-apple-subtle pt-4 border-t border-white/10">
+          <div className="relative z-20 max-w-7xl mx-auto w-full flex items-center justify-between font-mono text-xs text-apple-subtle pt-4 border-t border-white/10">
             <div className="flex items-center space-x-2">
               <span className="w-2 h-2 rounded-full bg-apple-blue animate-pulse" />
               <span className="uppercase tracking-wider">SCROLL TO PROGRESS FLAGSHIPS</span>

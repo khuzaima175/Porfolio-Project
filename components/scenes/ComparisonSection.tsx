@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { ScrollTextReveal } from "@/components/ui/ScrollTextReveal";
 import { Odometer } from "@/components/ui/Odometer";
@@ -95,6 +95,28 @@ export function ComparisonSection() {
   const [selectedId, setSelectedId] = useState<string>("gnss");
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [expanded, setExpanded] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  // Close dropdown on outside click or Escape key
+  useEffect(() => {
+    if (!dropdownOpen) return;
+    const handleClickOutside = (e: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setDropdownOpen(false);
+      }
+    };
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setDropdownOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [dropdownOpen]);
 
   const current = presets.find((p) => p.id === selectedId) || presets[0];
 
@@ -185,47 +207,60 @@ export function ComparisonSection() {
             className="overflow-hidden"
           >
             {/* Dropdown Selector */}
-            <div className="pt-12 pb-8 relative max-w-md mx-auto">
+            <div ref={dropdownRef} className="pt-12 pb-8 relative max-w-md mx-auto">
               <div className="text-xs text-brand-subtle uppercase tracking-wider mb-2 font-mono">
                 Compare with
               </div>
 
               <button
+                type="button"
                 onClick={() => setDropdownOpen(!dropdownOpen)}
                 className="w-full flex items-center justify-between px-6 py-3.5 rounded-full bg-brand-gray/90 border border-white/15 text-white hover:border-white/30 transition-all shadow-xl font-medium text-sm"
                 data-cursor-interactive="true"
+                aria-expanded={dropdownOpen}
               >
                 <span className="truncate">{current.name}</span>
                 <ChevronDown
-                  className={`w-4 h-4 text-brand-subtle ml-2 transition-transform duration-300 ${
-                    dropdownOpen ? "rotate-180 text-brand-blue" : ""
-                  }`}
+                  className={`w-4 h-4 text-brand-subtle ml-2 transition-transform duration-300 ${dropdownOpen ? "rotate-180 text-brand-blue" : ""
+                    }`}
                 />
               </button>
 
-              {dropdownOpen && (
-                <div className="absolute top-[85px] left-0 right-0 z-30 rounded-2xl bg-brand-gray/95 backdrop-blur-2xl border border-white/15 overflow-hidden shadow-2xl divide-y divide-white/5 text-left">
-                  {presets.map((preset) => (
-                    <button
-                      key={preset.id}
-                      onClick={() => {
-                        setSelectedId(preset.id);
-                        setDropdownOpen(false);
-                      }}
-                      className={`w-full px-5 py-3 text-xs sm:text-sm font-medium transition-colors flex items-center justify-between ${
-                        preset.id === selectedId
-                          ? "bg-brand-blue/15 text-brand-blue font-semibold"
-                          : "text-brand-text hover:bg-white/5"
-                      }`}
-                    >
-                      <span>{preset.name}</span>
-                      {preset.id === selectedId && (
-                        <span className="w-1.5 h-1.5 rounded-full bg-brand-blue" />
-                      )}
-                    </button>
-                  ))}
-                </div>
-              )}
+              <AnimatePresence>
+                {dropdownOpen && (
+                  <motion.div
+                    data-lenis-prevent="true"
+                    onWheel={(e) => e.stopPropagation()}
+                    initial={{ opacity: 0, y: -6, scale: 0.98 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: -6, scale: 0.98 }}
+                    transition={{ duration: 0.15, ease: "easeOut" }}
+                    className="absolute top-[85px] left-0 right-0 z-30 max-h-60 sm:max-h-72 overflow-y-auto overscroll-contain custom-scrollbar rounded-2xl bg-brand-gray/95 backdrop-blur-2xl border border-white/15 shadow-2xl divide-y divide-white/5 text-left"
+                  >
+                    {presets.map((preset) => (
+                      <button
+                        key={preset.id}
+                        type="button"
+                        onClick={() => {
+                          setSelectedId(preset.id);
+                          setDropdownOpen(false);
+                        }}
+                        className={`w-full px-5 py-3 text-xs sm:text-sm font-medium transition-colors flex items-center justify-between text-left ${
+                          preset.id === selectedId
+                            ? "bg-brand-blue/15 text-brand-blue font-semibold"
+                            : "text-brand-text hover:bg-white/5 hover:text-white"
+                        }`}
+                        data-cursor-interactive="true"
+                      >
+                        <span className="truncate pr-2">{preset.name}</span>
+                        {preset.id === selectedId && (
+                          <span className="w-1.5 h-1.5 rounded-full bg-brand-blue flex-shrink-0" />
+                        )}
+                      </button>
+                    ))}
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
 
             {/* Directional Animated 3-Column Stat Cards with Comparative Progress Bars */}

@@ -25,6 +25,12 @@ export function useLenis() {
       wheelMultiplier: 1.0,
       touchMultiplier: 1.0,
       syncTouch: false,
+      prevent: (node: any) => {
+        return (
+          Boolean(node?.hasAttribute?.("data-lenis-prevent")) ||
+          Boolean(node?.closest?.("[data-lenis-prevent]"))
+        );
+      },
     });
 
     lenisRef.current = lenis;

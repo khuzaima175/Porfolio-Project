@@ -232,7 +232,11 @@ export function CommandPalette({ onSelectProject }: CommandPaletteProps) {
               </div>
 
               {/* Command List */}
-              <div className="overflow-y-auto p-2 space-y-1 divide-y divide-white/5 custom-scrollbar">
+              <div
+                data-lenis-prevent="true"
+                onWheel={(e) => e.stopPropagation()}
+                className="overflow-y-auto p-2 space-y-1 divide-y divide-white/5 custom-scrollbar"
+              >
                 {filteredCommands.length === 0 ? (
                   <div className="py-12 text-center text-brand-subtle font-mono text-xs">
                     No matching architectures or sections found.

@@ -288,101 +288,130 @@ export function ProjectArchive() {
   return (
     <section
       id="archive"
-      className="py-28 px-6 sm:px-12 max-w-7xl mx-auto border-t border-white/10 space-y-24 select-none overflow-hidden"
+      className="py-28 px-4 sm:px-8 lg:px-12 max-w-[95vw] 2xl:max-w-[1760px] mx-auto border-t border-white/10 space-y-24 select-none overflow-hidden"
     >
-      {/* — 1. High-Impact Personal Statement & Executive Bio — */}
-      <div className="space-y-8">
-        <Reveal variant="slide-right">
-          <div className="flex items-center gap-3">
-            <span className="inline-block text-xs sm:text-sm font-sans font-semibold tracking-wider uppercase text-apple-blue">
-              About // Systems & AI Engineer
-            </span>
-            <span className="w-1.5 h-1.5 rounded-full bg-apple-blue/60" />
-            <span className="text-xs sm:text-sm font-sans text-neutral-400">
-              Karachi, PK
-            </span>
-          </div>
-        </Reveal>
-
-        {/* Asymmetric Editorial Headline */}
-        <div className="space-y-2 max-w-4xl">
-          <div className="overflow-hidden">
-            <motion.h2
-              initial={{ y: "110%" }}
-              whileInView={{ y: 0 }}
-              viewport={{ once: true, margin: "-40px" }}
-              transition={{ duration: 0.7, ease: EASE_ENTER }}
-              className="font-sans text-3xl sm:text-5xl lg:text-6xl font-bold text-white leading-[1.12] tracking-tight"
-            >
-              I build systems that run on real hardware, with real constraints
-            </motion.h2>
-          </div>
-
-          <div className="overflow-hidden">
-            <motion.h2
-              initial={{ x: 60, opacity: 0 }}
-              whileInView={{ x: 0, opacity: 1 }}
-              viewport={{ once: true, margin: "-40px" }}
-              transition={{ duration: 0.75, delay: 0.12, ease: EASE_ENTER }}
-              className="font-sans text-3xl sm:text-5xl lg:text-6xl font-bold text-neutral-500 leading-[1.12] tracking-tight"
-            >
-              — not demos, not tutorials.
-            </motion.h2>
-          </div>
-        </div>
-
-        {/* Word-by-Word Scroll-Illuminated Bio */}
-        <div className="pt-2 max-w-3xl">
-          <ScrollTextReveal
-            text="Based in Karachi. I specialise in systems & AI engineering, full-stack web, and mobile-first local apps. Everything I ship is production code — benchmarked, deployed, and built to survive edge cases."
-            highlightWords={[
-              "karachi",
-              "systems",
-              "ai",
-              "engineering",
-              "full-stack",
-              "production",
-              "code",
-              "benchmarked",
-              "deployed",
-              "edge",
-              "cases",
-            ]}
-            className="text-base sm:text-xl font-normal leading-relaxed text-apple-subtle"
-          />
-        </div>
-
-        <Reveal variant="blur-rise" delay={0.2}>
-          <div className="flex items-center gap-4 flex-wrap pt-2">
-            <a
-              href="https://github.com/khuzaima175"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/10 hover:bg-white/20 border border-white/15 text-white text-sm font-semibold transition-all duration-200 backdrop-blur-md hover:scale-[1.02] active:scale-[0.98]"
-              data-cursor-interactive="true"
-            >
-              <Github className="w-4 h-4" />
-              GitHub
-            </a>
-
-            <a
-              href="/cv.pdf"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-apple-blue hover:bg-blue-400 text-white text-sm font-semibold transition-all duration-200 shadow-lg shadow-apple-blue/25 hover:scale-[1.02] active:scale-[0.98]"
-              data-cursor-interactive="true"
-            >
-              <FileText className="w-4 h-4" />
-              Download CV
-              <ArrowUpRight className="w-4 h-4" />
-            </a>
-
-            <div className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-white/[0.04] border border-white/10 text-xs sm:text-sm font-sans text-neutral-300">
-              <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
-              <span>Open for select engineering roles</span>
+      {/* — 1. High-Impact Personal Statement & Executive Bio (Balanced Widescreen Layout) — */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-center">
+        {/* Left Editorial Column */}
+        <div className="lg:col-span-7 space-y-7">
+          <Reveal variant="slide-right">
+            <div className="flex items-center gap-3">
+              <span className="inline-block text-xs sm:text-sm font-sans font-semibold tracking-wider uppercase text-apple-blue font-mono">
+                About // Systems & AI Engineer
+              </span>
+              <span className="w-1.5 h-1.5 rounded-full bg-apple-blue/60" />
+              <span className="text-xs sm:text-sm font-mono text-neutral-400">
+                Karachi, PK
+              </span>
             </div>
+          </Reveal>
+
+          {/* Unified High-Impact Headline */}
+          <div className="space-y-2">
+            <h2 className="font-sans text-3xl sm:text-5xl lg:text-6xl font-bold text-white leading-[1.12] tracking-tight">
+              I build systems that run on real hardware, with real constraints{" "}
+              <span className="text-neutral-500 block sm:inline">— not demos, not tutorials.</span>
+            </h2>
           </div>
-        </Reveal>
+
+          {/* Word-by-Word Scroll-Illuminated Bio */}
+          <div className="pt-1 max-w-2xl">
+            <ScrollTextReveal
+              text="Based in Karachi. I specialise in systems & AI engineering, full-stack web, and mobile-first local apps. Everything I ship is production code — benchmarked, deployed, and built to survive edge cases."
+              highlightWords={[
+                "karachi",
+                "systems",
+                "ai",
+                "engineering",
+                "full-stack",
+                "production",
+                "code",
+                "benchmarked",
+                "deployed",
+                "edge",
+                "cases",
+              ]}
+              className="text-base sm:text-xl font-normal leading-relaxed text-apple-subtle"
+            />
+          </div>
+
+          <Reveal variant="blur-rise" delay={0.2}>
+            <div className="flex items-center gap-4 flex-wrap pt-2">
+              <a
+                href="https://github.com/khuzaima175"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/10 hover:bg-white/20 border border-white/15 text-white text-sm font-semibold transition-all duration-200 backdrop-blur-md hover:scale-[1.02] active:scale-[0.98]"
+                data-cursor-interactive="true"
+              >
+                <Github className="w-4 h-4" />
+                GitHub
+              </a>
+
+              <a
+                href="/cv.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-apple-blue hover:bg-blue-400 text-white text-sm font-semibold transition-all duration-200 shadow-lg shadow-apple-blue/25 hover:scale-[1.02] active:scale-[0.98]"
+                data-cursor-interactive="true"
+              >
+                <FileText className="w-4 h-4" />
+                Download CV
+                <ArrowUpRight className="w-4 h-4" />
+              </a>
+
+              <div className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-white/[0.04] border border-white/10 text-xs sm:text-sm font-sans text-neutral-300">
+                <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
+                <span>Open for select engineering roles</span>
+              </div>
+            </div>
+          </Reveal>
+        </div>
+
+        {/* Right Architectural Dossier Snapshot Card */}
+        <div className="lg:col-span-5">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, ease: EASE_ENTER }}
+            className="p-7 sm:p-9 rounded-3xl bg-[#141416]/95 border border-white/15 shadow-2xl backdrop-blur-2xl space-y-6 relative overflow-hidden"
+          >
+            {/* Ambient Radial Accent */}
+            <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-bl from-blue-500/15 via-purple-500/5 to-transparent rounded-full blur-3xl pointer-events-none" />
+
+            <div className="flex items-center justify-between border-b border-white/10 pb-4 relative z-10">
+              <div className="flex items-center space-x-2.5">
+                <span className="w-2 h-2 rounded-full bg-apple-blue animate-pulse" />
+                <span className="font-mono text-xs uppercase tracking-wider text-white font-semibold">
+                  Engineer Dossier // Verified
+                </span>
+              </div>
+              <span className="font-mono text-[10px] text-apple-subtle uppercase px-2.5 py-0.5 rounded-full bg-white/5 border border-white/10">
+                2026 ACTIVE
+              </span>
+            </div>
+
+            <div className="space-y-4 text-xs sm:text-sm font-sans relative z-10">
+              <div className="flex items-center justify-between py-2 border-b border-white/5">
+                <span className="text-apple-subtle uppercase font-mono text-xs">Primary Discipline</span>
+                <span className="text-white font-semibold">Real-Time Systems & AI Engineering</span>
+              </div>
+              <div className="flex items-center justify-between py-2 border-b border-white/5">
+                <span className="text-apple-subtle uppercase font-mono text-xs">Core Stacks</span>
+                <span className="text-white font-semibold">Python • TypeScript • Web Audio DSP • Ctypes</span>
+              </div>
+              <div className="flex items-center justify-between py-2 border-b border-white/5">
+                <span className="text-apple-subtle uppercase font-mono text-xs">Validation Metric</span>
+                <span className="text-apple-blue font-mono font-semibold">0.0% CPU • 1.235m RTS Smoothed</span>
+              </div>
+              <div className="flex items-center justify-between py-2">
+                <span className="text-apple-subtle uppercase font-mono text-xs">Architectures Shipped</span>
+                <span className="text-white font-semibold">9 Production Systems</span>
+              </div>
+            </div>
+          </motion.div>
+        </div>
       </div>
 
       {/* — 2. Dynamic Velocity-Coupled Capabilities Marquee — */}

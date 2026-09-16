@@ -50,7 +50,7 @@ export function EngineeringMethod() {
   ];
 
   return (
-    <section id="method" className="py-24 px-6 sm:px-12 max-w-6xl mx-auto border-t border-white/10 space-y-12">
+    <section id="method" className="py-24 px-4 sm:px-8 lg:px-12 max-w-[95vw] 2xl:max-w-[1760px] mx-auto border-t border-white/10 space-y-12">
       {/* Header */}
       <Reveal variant="slide-right">
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">

@@ -97,7 +97,7 @@ export function AppleHeroStory() {
           }}
           className="pointer-events-none absolute inset-0 flex items-center justify-center z-0"
         >
-          <div className="w-[88vw] max-w-5xl h-[62vh] relative rounded-3xl overflow-hidden shadow-2xl border border-white/10 bg-black/60 backdrop-blur-md">
+          <div className="w-[94vw] max-w-[1720px] h-[64vh] relative rounded-3xl overflow-hidden shadow-2xl border border-white/10 bg-black/60 backdrop-blur-md">
             {/* Live Ambient Canvas */}
             <GNSSSimulator ambientMode={true} paused={isPastHero} />
 
@@ -114,7 +114,7 @@ export function AppleHeroStory() {
         </motion.div>
 
         {/* Top Telemetry Header */}
-        <div className="z-10 flex items-center justify-between font-mono text-xs text-apple-subtle uppercase tracking-wider">
+        <div className="z-10 flex items-center justify-between font-mono text-xs text-apple-subtle uppercase tracking-wider max-w-[95vw] 2xl:max-w-[1760px] mx-auto w-full">
           <div className="flex items-center space-x-2">
             <span className="w-2 h-2 rounded-full bg-apple-blue animate-pulse" />
             <ScrambleText text="Khuzaima Ahmed // Systems & AI Engineering" duration={500} />
@@ -125,7 +125,7 @@ export function AppleHeroStory() {
         </div>
 
         {/* Center Stage Storyboard */}
-        <div className="z-10 my-auto w-full max-w-5xl mx-auto text-center relative">
+        <div className="z-10 my-auto w-full max-w-[95vw] 2xl:max-w-[1760px] mx-auto text-center relative">
           {/* Radial Scrim Behind Headline to Eliminate Contour Bleed */}
           <div className="pointer-events-none absolute inset-0 -inset-x-12 -inset-y-8 blur-2xl -z-10" style={{ background: 'radial-gradient(circle, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.5) 40%, transparent 100%)' }} />
 

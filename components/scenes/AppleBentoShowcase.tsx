@@ -220,19 +220,19 @@ export function AppleBentoShowcase({
         <div className="sticky top-0 h-screen w-full overflow-hidden flex flex-col justify-between py-6 sm:py-8 px-6 sm:px-12">
           {/* Dynamic Ambient Specular Glow Behind the Theater */}
           <div
-            className="pointer-events-none absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1200px] h-[750px] rounded-full blur-[170px] transition-colors duration-1000"
+            className="pointer-events-none absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1600px] h-[900px] rounded-full blur-[190px] transition-colors duration-1000"
             style={{ backgroundColor: activeGlow }}
           />
 
           {/* Top Header & Chapter Pill Switcher with Sliding Layout Pill */}
-          <div className="relative z-20 max-w-7xl mx-auto w-full flex flex-col sm:flex-row items-center justify-between gap-4">
-            <div className="flex items-center space-x-2 text-xs font-mono text-apple-subtle">
-              <Sparkles className="w-3.5 h-3.5 text-apple-blue" />
+          <div className="relative z-20 max-w-[95vw] 2xl:max-w-[1760px] mx-auto w-full flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div className="flex items-center space-x-2 text-xs sm:text-sm font-mono text-apple-subtle">
+              <Sparkles className="w-4 h-4 text-apple-blue" />
               <span className="uppercase tracking-wider">FLAGSHIP SHOWCASE // CINEMATIC ARCHITECTURE</span>
             </div>
 
             {/* Apple Chapter Pills with layoutId sliding background */}
-            <div className="flex items-center space-x-1.5 p-1 rounded-full bg-[#161617]/85 backdrop-blur-xl border border-white/10 shadow-xl overflow-x-auto max-w-full">
+            <div className="flex items-center space-x-2 p-1.5 rounded-full bg-[#161617]/85 backdrop-blur-xl border border-white/10 shadow-xl overflow-x-auto max-w-full">
               {chapters.map((ch, idx) => {
                 const Icon = ch.icon;
                 const isActive = activeChapter === idx;
@@ -240,7 +240,7 @@ export function AppleBentoShowcase({
                   <button
                     key={idx}
                     onClick={() => scrollToChapter(idx)}
-                    className={`relative flex items-center space-x-1.5 px-4 py-2 rounded-full text-xs font-mono transition-colors z-10 ${
+                    className={`relative flex items-center space-x-2 px-4 sm:px-5 py-2 rounded-full text-xs sm:text-sm font-mono transition-colors z-10 ${
                       isActive
                         ? "text-black font-semibold"
                         : "text-apple-subtle hover:text-white"
@@ -267,7 +267,7 @@ export function AppleBentoShowcase({
             style={{ rotateX: springTiltX, rotateY: springTiltY, transformPerspective: 1000 }}
             onMouseMove={handleStageMouseMove}
             onMouseLeave={handleStageMouseLeave}
-            className="relative z-10 my-auto w-full max-w-7xl mx-auto grid grid-cols-1 grid-rows-1 items-center"
+            className="relative z-10 my-auto w-full max-w-[95vw] 2xl:max-w-[1760px] mx-auto grid grid-cols-1 grid-rows-1 items-center"
           >
             {chapters.map((ch, idx) => {
               const project = ch.project;
@@ -287,8 +287,8 @@ export function AppleBentoShowcase({
                     isCurrent ? "pointer-events-auto z-10" : "pointer-events-none z-0"
                   }`}
                 >
-                  {/* Media Plate with Shared Layout Morph Hook (Cinematic Widescreen) */}
-                  <div className="relative w-full h-[36vh] sm:h-[44vh] lg:h-[48vh] max-h-[500px] rounded-3xl overflow-hidden shadow-2xl border border-white/10 bg-black">
+                  {/* Media Plate with Shared Layout Morph Hook (Expansive Cinematic Widescreen) */}
+                  <div className="relative w-full h-[40vh] sm:h-[48vh] lg:h-[52vh] max-h-[560px] rounded-3xl overflow-hidden shadow-2xl border border-white/10 bg-black">
                     <motion.img
                       layoutId={`media-${project.id}`}
                       src={project.image}
@@ -296,44 +296,44 @@ export function AppleBentoShowcase({
                       className="w-full h-full object-cover grayscale contrast-125 hover:grayscale-0 transition-transform duration-700 ease-out"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent" />
-                    <div className="absolute bottom-4 left-4 sm:left-6 flex items-center space-x-2 px-4 py-2 rounded-full bg-black/80 backdrop-blur-md border border-white/10 text-xs font-mono text-white">
+                    <div className="absolute bottom-4 sm:bottom-6 left-4 sm:left-8 flex items-center space-x-2.5 px-4 sm:px-5 py-2 sm:py-2.5 rounded-full bg-black/80 backdrop-blur-md border border-white/10 text-xs sm:text-sm font-mono text-white shadow-xl">
                       <Icon className="w-4 h-4 text-apple-blue" />
                       <span>{ch.badge}</span>
                     </div>
                   </div>
 
                   {/* Title & Metadata with Line Masks */}
-                  <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 pt-1">
-                    <div className="space-y-2 max-w-3xl">
-                      <div className="flex items-center space-x-3 text-xs font-mono text-apple-subtle">
+                  <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 pt-1 w-full">
+                    <div className="space-y-2 max-w-4xl">
+                      <div className="flex items-center space-x-3 text-xs sm:text-sm font-mono text-apple-subtle">
                         <span className="text-apple-blue uppercase font-bold">{project.category}</span>
                         <span>// {project.year}</span>
                         <span>// CHAPTER 0{idx + 1} OF 04</span>
                       </div>
 
                       <div className="overflow-hidden">
-                        <h3 className="font-sans text-2xl sm:text-4xl lg:text-5xl font-bold text-white tracking-apple-tightest leading-tight">
+                        <h3 className="font-sans text-3xl sm:text-5xl lg:text-6xl font-bold text-white tracking-apple-tightest leading-tight">
                           {project.title}
                         </h3>
                       </div>
 
-                      <p className="text-apple-subtle text-xs sm:text-sm lg:text-base leading-relaxed font-normal">
+                      <p className="text-apple-subtle text-sm sm:text-base lg:text-lg leading-relaxed font-normal max-w-3xl">
                         {project.executivePitch}
                       </p>
                     </div>
 
                     {/* Metric Cards with Slotted Odometers */}
-                    <div className="flex flex-col sm:flex-row lg:flex-col items-start sm:items-center lg:items-end gap-3.5 flex-shrink-0">
+                    <div className="flex flex-col sm:flex-row lg:flex-col items-start sm:items-center lg:items-end gap-4 flex-shrink-0">
                       <div className="flex gap-3">
                         {ch.stats.map((st, sIdx) => (
                           <div
                             key={sIdx}
-                            className="p-3 sm:p-3.5 px-4 sm:px-5 rounded-2xl bg-[#161617] border border-white/10 text-center min-w-[95px] sm:min-w-[110px] shadow-lg"
+                            className="p-3.5 sm:p-4 px-5 sm:px-6 rounded-2xl bg-[#161617] border border-white/10 text-center min-w-[110px] sm:min-w-[130px] shadow-xl"
                           >
-                            <div className="text-[9px] sm:text-[10px] text-apple-subtle uppercase font-mono">
+                            <div className="text-[10px] sm:text-[11px] text-apple-subtle uppercase font-mono tracking-wider">
                               {st.label}
                             </div>
-                            <div className="font-sans text-lg sm:text-2xl font-bold text-white flex items-center justify-center">
+                            <div className="font-sans text-xl sm:text-2xl lg:text-3xl font-bold text-white flex items-center justify-center mt-0.5">
                               <Odometer value={st.value} duration={0.6} />
                             </div>
                           </div>
@@ -343,7 +343,7 @@ export function AppleBentoShowcase({
                       <MagneticButton>
                         <button
                           onClick={() => onSelectProject(project)}
-                          className="inline-flex items-center space-x-2 px-6 py-3 rounded-full bg-white text-black hover:bg-neutral-200 transition-colors text-xs sm:text-sm font-semibold shadow-xl active:scale-95 cursor-pointer"
+                          className="inline-flex items-center space-x-2.5 px-7 py-3.5 rounded-full bg-white text-black hover:bg-neutral-200 transition-colors text-xs sm:text-sm font-semibold shadow-2xl active:scale-95 cursor-pointer"
                           data-cursor-interactive="true"
                           data-cursor-label="INSPECT"
                         >
@@ -359,7 +359,7 @@ export function AppleBentoShowcase({
           </motion.div>
 
           {/* Bottom Segmented Intra-Chapter Progress Rail */}
-          <div className="relative z-20 max-w-7xl mx-auto w-full flex items-center justify-between font-mono text-xs text-apple-subtle pt-4 border-t border-white/10">
+          <div className="relative z-20 max-w-[95vw] 2xl:max-w-[1760px] mx-auto w-full flex items-center justify-between font-mono text-xs sm:text-sm text-apple-subtle pt-4 border-t border-white/10">
             <div className="flex items-center space-x-2">
               <span className="w-2 h-2 rounded-full bg-apple-blue animate-pulse" />
               <span className="uppercase tracking-wider">SCROLL TO PROGRESS FLAGSHIPS</span>
@@ -391,7 +391,7 @@ export function AppleBentoShowcase({
       {/* =========================================================================
           PART 2: THE EXTENDED PRO SUITE (THE OTHER 5 ARCHITECTURES DIRECTLY BELOW)
          ========================================================================= */}
-      <div className="py-28 px-6 sm:px-12 max-w-7xl mx-auto border-t border-white/10">
+      <div className="py-28 px-4 sm:px-8 lg:px-12 max-w-[95vw] 2xl:max-w-[1760px] mx-auto border-t border-white/10">
         {/* Section Header */}
         <div className="space-y-3 mb-16 text-center sm:text-left">
           <span className="text-xs sm:text-sm font-semibold tracking-widest uppercase text-apple-subtle font-mono">

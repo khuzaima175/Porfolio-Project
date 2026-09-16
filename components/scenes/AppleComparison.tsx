@@ -106,7 +106,7 @@ export function AppleComparison() {
   ];
 
   return (
-    <section id="compare" className="py-28 px-6 sm:px-12 max-w-6xl mx-auto text-center border-t border-white/10">
+    <section id="compare" className="py-28 px-4 sm:px-8 lg:px-12 max-w-[95vw] 2xl:max-w-[1760px] mx-auto text-center border-t border-white/10">
       {/* Overline & Heading */}
       <div className="space-y-4 max-w-4xl mx-auto">
         <span className="text-xs sm:text-sm font-semibold tracking-widest uppercase text-apple-subtle font-mono">

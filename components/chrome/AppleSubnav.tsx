@@ -61,7 +61,7 @@ export function AppleSubnav() {
   }, []);
 
   return (
-    <div className="sticky top-4 z-50 max-w-6xl mx-auto px-4 pointer-events-none">
+    <div className="sticky top-4 z-50 max-w-[95vw] 2xl:max-w-[1760px] mx-auto px-4 pointer-events-none">
       <motion.div
         initial={false}
         animate={{

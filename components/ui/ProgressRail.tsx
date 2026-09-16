@@ -60,7 +60,7 @@ export function ProgressRail() {
               <div
                 className={`w-2 h-2 rounded-full transition-all duration-300 ${
                   isActive
-                    ? "bg-apple-blue shadow-md shadow-apple-blue/50 scale-125"
+                    ? "bg-brand-blue shadow-md shadow-brand-blue/50 scale-125"
                     : "bg-white/25 group-hover:bg-white/60"
                 }`}
               />
@@ -69,7 +69,7 @@ export function ProgressRail() {
                 <motion.div
                   layoutId="progress-rail-ring"
                   transition={SPRING_LAYOUT}
-                  className="absolute inset-0 border border-apple-blue/60 rounded-full scale-150 pointer-events-none"
+                  className="absolute inset-0 border border-brand-blue/60 rounded-full scale-150 pointer-events-none"
                 />
               )}
             </button>

@@ -178,10 +178,10 @@ export function CommandPalette({ onSelectProject }: CommandPaletteProps) {
       <div className="fixed bottom-6 left-6 z-40 hidden sm:block">
         <button
           onClick={() => setOpen(true)}
-          className="flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-[#161617]/85 backdrop-blur-xl border border-white/10 text-apple-subtle hover:text-white hover:border-white/25 transition-all text-xs font-mono shadow-xl hover:scale-105 active:scale-95"
+          className="flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-[#161617]/85 backdrop-blur-xl border border-white/10 text-brand-subtle hover:text-white hover:border-white/25 transition-all text-xs font-mono shadow-xl hover:scale-105 active:scale-95"
           data-cursor-interactive="true"
         >
-          <Search className="w-3.5 h-3.5 text-apple-blue" />
+          <Search className="w-3.5 h-3.5 text-brand-blue" />
           <span>Quick Jump</span>
           <kbd className="px-1.5 py-0.5 rounded bg-white/10 text-[10px] text-white font-mono">⌘K</kbd>
         </button>
@@ -211,7 +211,7 @@ export function CommandPalette({ onSelectProject }: CommandPaletteProps) {
             >
               {/* Search input header */}
               <div className="flex items-center px-5 py-4 border-b border-white/10 space-x-3 bg-[#18181a]">
-                <Search className="w-5 h-5 text-apple-blue flex-shrink-0" />
+                <Search className="w-5 h-5 text-brand-blue flex-shrink-0" />
                 <input
                   ref={inputRef}
                   value={query}
@@ -225,16 +225,16 @@ export function CommandPalette({ onSelectProject }: CommandPaletteProps) {
                 />
                 <button
                   onClick={() => setOpen(false)}
-                  className="p-1.5 rounded-full hover:bg-white/10 text-apple-subtle hover:text-white transition-colors"
+                  className="p-1.5 rounded-full hover:bg-white/10 text-brand-subtle hover:text-white transition-colors"
                 >
                   <X className="w-4 h-4" />
                 </button>
               </div>
 
               {/* Command List */}
-              <div className="overflow-y-auto p-2 space-y-1 divide-y divide-white/5 apple-scrollbar">
+              <div className="overflow-y-auto p-2 space-y-1 divide-y divide-white/5 custom-scrollbar">
                 {filteredCommands.length === 0 ? (
-                  <div className="py-12 text-center text-apple-subtle font-mono text-xs">
+                  <div className="py-12 text-center text-brand-subtle font-mono text-xs">
                     No matching architectures or sections found.
                   </div>
                 ) : (
@@ -248,7 +248,7 @@ export function CommandPalette({ onSelectProject }: CommandPaletteProps) {
                         onClick={cmd.action}
                         onMouseEnter={() => setSelectedIndex(idx)}
                         className={`flex items-center justify-between px-4 py-3 rounded-2xl cursor-pointer transition-all ${
-                          isSelected ? "bg-white/10 text-white" : "text-apple-subtle hover:text-white"
+                          isSelected ? "bg-white/10 text-white" : "text-brand-subtle hover:text-white"
                         }`}
                         data-cursor-interactive="true"
                       >
@@ -256,8 +256,8 @@ export function CommandPalette({ onSelectProject }: CommandPaletteProps) {
                           <div
                             className={`w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0 ${
                               isSelected
-                                ? "bg-apple-blue text-white"
-                                : "bg-white/5 text-apple-subtle"
+                                ? "bg-brand-blue text-white"
+                                : "bg-white/5 text-brand-subtle"
                             }`}
                           >
                             <Icon className="w-4 h-4" />
@@ -266,17 +266,17 @@ export function CommandPalette({ onSelectProject }: CommandPaletteProps) {
                             <div className="font-sans text-sm font-semibold text-white truncate">
                               {cmd.title}
                             </div>
-                            <div className="font-mono text-[11px] text-apple-subtle truncate">
+                            <div className="font-mono text-[11px] text-brand-subtle truncate">
                               {cmd.subtitle}
                             </div>
                           </div>
                         </div>
 
                         <div className="flex items-center space-x-2 flex-shrink-0 font-mono text-[10px]">
-                          <span className="px-2 py-0.5 rounded bg-white/5 border border-white/10 text-apple-subtle">
+                          <span className="px-2 py-0.5 rounded bg-white/5 border border-white/10 text-brand-subtle">
                             {cmd.category}
                           </span>
-                          {isSelected && <ArrowRight className="w-3.5 h-3.5 text-apple-blue" />}
+                          {isSelected && <ArrowRight className="w-3.5 h-3.5 text-brand-blue" />}
                         </div>
                       </div>
                     );
@@ -285,7 +285,7 @@ export function CommandPalette({ onSelectProject }: CommandPaletteProps) {
               </div>
 
               {/* Footer navigation hints */}
-              <div className="px-5 py-2.5 bg-[#101012] border-t border-white/10 flex items-center justify-between text-[11px] font-mono text-apple-subtle">
+              <div className="px-5 py-2.5 bg-[#101012] border-t border-white/10 flex items-center justify-between text-[11px] font-mono text-brand-subtle">
                 <div className="flex items-center space-x-3">
                   <span><kbd className="px-1 py-0.5 rounded bg-white/10 text-white">↑↓</kbd> Navigate</span>
                   <span><kbd className="px-1 py-0.5 rounded bg-white/10 text-white">↵</kbd> Select</span>

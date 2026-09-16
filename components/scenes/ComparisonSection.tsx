@@ -5,7 +5,7 @@ import { ChevronDown, ChevronUp } from "lucide-react";
 import { ScrollTextReveal } from "@/components/ui/ScrollTextReveal";
 import { Odometer } from "@/components/ui/Odometer";
 import { motion, AnimatePresence } from "framer-motion";
-import { EASE_ENTER, EASE_EXIT, SPRING_LAYOUT } from "@/lib/motion/tokens";
+import { EASE_ENTER, SPRING_LAYOUT } from "@/lib/motion/tokens";
 
 interface ComparisonPreset {
   id: string;
@@ -16,7 +16,7 @@ interface ComparisonPreset {
   stat3: { label: string; value: string; desc: string; ratio: number };
 }
 
-export function AppleComparison() {
+export function ComparisonSection() {
   const presets: ComparisonPreset[] = [
     {
       id: "gnss",
@@ -109,16 +109,16 @@ export function AppleComparison() {
     <section id="compare" className="py-28 px-4 sm:px-8 lg:px-12 max-w-[95vw] 2xl:max-w-[1760px] mx-auto text-center border-t border-white/10">
       {/* Overline & Heading */}
       <div className="space-y-4 max-w-4xl mx-auto">
-        <span className="text-xs sm:text-sm font-semibold tracking-widest uppercase text-apple-subtle font-mono">
+        <span className="text-xs sm:text-sm font-semibold tracking-widest uppercase text-brand-subtle font-mono">
           The sovereign upgrade
         </span>
 
-        <h2 className="font-sans text-5xl sm:text-7xl md:text-8xl font-bold tracking-apple-tightest text-white leading-none">
+        <h2 className="font-sans text-5xl sm:text-7xl md:text-8xl font-bold tracking-tightest-editorial text-white leading-none">
           Most wanted.
         </h2>
 
         {/* Word-by-Word Scroll-Illuminated Body */}
-        <div className="pt-6 max-w-3xl mx-auto text-base sm:text-xl font-normal leading-relaxed text-apple-subtle">
+        <div className="pt-6 max-w-3xl mx-auto text-base sm:text-xl font-normal leading-relaxed text-brand-subtle">
           <ScrollTextReveal
             text="Every system is purpose-built for unprecedented performance. Eliminate battery-draining screen recording with native Win32 ctypes daemons. Run software-defined GNSS multi-stream fusion to cut vehicle positioning error by 88.4 percent. Synthesize real-time biquad DSP cascades directly inside the browser — everything a mission-critical architecture requires."
             highlightWords={[
@@ -143,13 +143,13 @@ export function AppleComparison() {
         {heroStats.map((s, i) => (
           <div
             key={i}
-            className="flex items-center space-x-3 px-5 py-3 apple-card rounded-full border border-white/10 shadow-lg"
+            className="flex items-center space-x-3 px-5 py-3 pro-card rounded-full border border-white/10 shadow-lg"
           >
-            <span className="text-[10px] font-mono text-apple-subtle uppercase">{s.label}</span>
+            <span className="text-[10px] font-mono text-brand-subtle uppercase">{s.label}</span>
             <span className="font-sans text-xl font-bold text-white tabular-nums">
               <Odometer value={s.value} />
             </span>
-            <span className="text-[11px] text-apple-subtle">{s.desc}</span>
+            <span className="text-[11px] text-brand-subtle">{s.desc}</span>
           </div>
         ))}
       </div>
@@ -157,17 +157,17 @@ export function AppleComparison() {
       {/* Expand/collapse toggle */}
       <button
         onClick={() => setExpanded((v) => !v)}
-        className="mt-8 inline-flex items-center space-x-2 px-5 py-2.5 rounded-full border border-white/15 text-apple-subtle hover:text-white hover:border-white/30 transition-all font-mono text-xs shadow-sm hover:scale-105 active:scale-95"
+        className="mt-8 inline-flex items-center space-x-2 px-5 py-2.5 rounded-full border border-white/15 text-brand-subtle hover:text-white hover:border-white/30 transition-all font-mono text-xs shadow-sm hover:scale-105 active:scale-95"
         data-cursor-interactive="true"
       >
         {expanded ? (
           <>
-            <ChevronUp className="w-3.5 h-3.5 text-apple-blue" />
+            <ChevronUp className="w-3.5 h-3.5 text-brand-blue" />
             <span>COLLAPSE BENCHMARK MATRIX</span>
           </>
         ) : (
           <>
-            <ChevronDown className="w-3.5 h-3.5 text-apple-blue" />
+            <ChevronDown className="w-3.5 h-3.5 text-brand-blue" />
             <span>COMPARE ALL 9 ARCHITECTURES</span>
           </>
         )}
@@ -186,25 +186,25 @@ export function AppleComparison() {
           >
             {/* Dropdown Selector */}
             <div className="pt-12 pb-8 relative max-w-md mx-auto">
-              <div className="text-xs text-apple-subtle uppercase tracking-wider mb-2 font-mono">
+              <div className="text-xs text-brand-subtle uppercase tracking-wider mb-2 font-mono">
                 Compare with
               </div>
 
               <button
                 onClick={() => setDropdownOpen(!dropdownOpen)}
-                className="w-full flex items-center justify-between px-6 py-3.5 rounded-full bg-apple-gray/90 border border-white/15 text-white hover:border-white/30 transition-all shadow-xl font-medium text-sm"
+                className="w-full flex items-center justify-between px-6 py-3.5 rounded-full bg-brand-gray/90 border border-white/15 text-white hover:border-white/30 transition-all shadow-xl font-medium text-sm"
                 data-cursor-interactive="true"
               >
                 <span className="truncate">{current.name}</span>
                 <ChevronDown
-                  className={`w-4 h-4 text-apple-subtle ml-2 transition-transform duration-300 ${
-                    dropdownOpen ? "rotate-180 text-apple-blue" : ""
+                  className={`w-4 h-4 text-brand-subtle ml-2 transition-transform duration-300 ${
+                    dropdownOpen ? "rotate-180 text-brand-blue" : ""
                   }`}
                 />
               </button>
 
               {dropdownOpen && (
-                <div className="absolute top-[85px] left-0 right-0 z-30 rounded-2xl bg-apple-gray/95 backdrop-blur-2xl border border-white/15 overflow-hidden shadow-2xl divide-y divide-white/5 text-left">
+                <div className="absolute top-[85px] left-0 right-0 z-30 rounded-2xl bg-brand-gray/95 backdrop-blur-2xl border border-white/15 overflow-hidden shadow-2xl divide-y divide-white/5 text-left">
                   {presets.map((preset) => (
                     <button
                       key={preset.id}
@@ -214,13 +214,13 @@ export function AppleComparison() {
                       }}
                       className={`w-full px-5 py-3 text-xs sm:text-sm font-medium transition-colors flex items-center justify-between ${
                         preset.id === selectedId
-                          ? "bg-apple-blue/15 text-apple-blue font-semibold"
-                          : "text-apple-text hover:bg-white/5"
+                          ? "bg-brand-blue/15 text-brand-blue font-semibold"
+                          : "text-brand-text hover:bg-white/5"
                       }`}
                     >
                       <span>{preset.name}</span>
                       {preset.id === selectedId && (
-                        <span className="w-1.5 h-1.5 rounded-full bg-apple-blue" />
+                        <span className="w-1.5 h-1.5 rounded-full bg-brand-blue" />
                       )}
                     </button>
                   ))}
@@ -239,8 +239,8 @@ export function AppleComparison() {
                 className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-4"
               >
                 {[current.stat1, current.stat2, current.stat3].map((stat, i) => (
-                  <div key={i} className="p-8 rounded-3xl apple-card text-center space-y-3 relative overflow-hidden">
-                    <div className="text-xs text-apple-subtle font-mono uppercase tracking-wider">
+                  <div key={i} className="p-8 rounded-3xl pro-card text-center space-y-3 relative overflow-hidden">
+                    <div className="text-xs text-brand-subtle font-mono uppercase tracking-wider">
                       {stat.label}
                     </div>
 
@@ -250,7 +250,7 @@ export function AppleComparison() {
 
                     {/* Comparative baseline vs engine hairline bars */}
                     <div className="pt-2 pb-1 space-y-1.5 max-w-[200px] mx-auto">
-                      <div className="flex items-center justify-between text-[10px] font-mono text-apple-subtle">
+                      <div className="flex items-center justify-between text-[10px] font-mono text-brand-subtle">
                         <span>BASELINE</span>
                         <span>ENGINE</span>
                       </div>
@@ -259,12 +259,12 @@ export function AppleComparison() {
                           initial={{ width: 0 }}
                           animate={{ width: `${stat.ratio * 100}%` }}
                           transition={SPRING_LAYOUT}
-                          className="h-full bg-apple-blue rounded-full"
+                          className="h-full bg-brand-blue rounded-full"
                         />
                       </div>
                     </div>
 
-                    <div className="text-xs text-apple-subtle leading-relaxed pt-1">
+                    <div className="text-xs text-brand-subtle leading-relaxed pt-1">
                       {stat.desc}
                     </div>
                   </div>

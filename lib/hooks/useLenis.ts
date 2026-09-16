@@ -7,7 +7,7 @@ export function useLenis() {
   const lenisRef = useRef<Lenis | null>(null);
 
   useEffect(() => {
-    // Highly responsive Apple-grade smooth momentum scroll
+    // High-performance smooth momentum scroll
     const lenis = new Lenis({
       duration: 0.85,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),

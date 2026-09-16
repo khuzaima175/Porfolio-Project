@@ -5,13 +5,13 @@
 @tailwind utilities;
 
 :root {
-  --apple-black: #000000;
-  --apple-space: #0A0A0C;
-  --apple-surface: #161617;
-  --apple-card: #1D1D1F;
-  --apple-text: #F5F5F7;
-  --apple-subtle: #86868B;
-  --apple-blue: #2997FF;
+  --theme-black: #000000;
+  --theme-space: #0A0A0C;
+  --theme-surface: #161617;
+  --theme-card: #1D1D1F;
+  --theme-text: #F5F5F7;
+  --theme-subtle: #86868B;
+  --theme-blue: #2997FF;
 }
 
 * {
@@ -23,7 +23,7 @@
 html {
   background-color: #000000;
   color: #F5F5F7;
-  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Inter', system-ui, sans-serif;
+  font-family: 'Inter', system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
@@ -42,8 +42,9 @@ body {
   color: #FFFFFF;
 }
 
-/* Apple Pro Solid Elevation Card (GPU-Accelerated 120 FPS) */
-.apple-card {
+/* High-Performance Solid Elevation Card (GPU-Accelerated 120 FPS) */
+.pro-card,
+.surface-card {
   background: #161617;
   border: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.8);
@@ -52,14 +53,15 @@ body {
   will-change: transform;
 }
 
-.apple-card:hover {
+.pro-card:hover,
+.surface-card:hover {
   border-color: rgba(255, 255, 255, 0.22);
   box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.95);
   transform: translateY(-4px) translateZ(0);
 }
 
-/* Apple Subnav Pill */
-.apple-subnav {
+/* Floating Frosted Glass Subnav Pill */
+.nav-glass-pill {
   background: rgba(22, 22, 23, 0.82);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
@@ -97,7 +99,7 @@ html.lenis body {
   overflow: hidden;
 }
 
-/* Apple Pro custom scrollbar */
+/* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
@@ -172,27 +174,26 @@ html.lenis body {
   animation: text-sweep 3.5s ease-in-out infinite;
 }
 
-/* Apple Pro Scrollbar for modals and palettes */
-.apple-scrollbar::-webkit-scrollbar {
+/* Custom Scrollbar for modals and palettes */
+.custom-scrollbar::-webkit-scrollbar {
   width: 6px;
 }
 
-.apple-scrollbar::-webkit-scrollbar-track {
+.custom-scrollbar::-webkit-scrollbar-track {
   background: transparent;
 }
 
-.apple-scrollbar::-webkit-scrollbar-thumb {
+.custom-scrollbar::-webkit-scrollbar-thumb {
   background: rgba(255, 255, 255, 0.12);
   border-radius: 9999px;
 }
 
-.apple-scrollbar::-webkit-scrollbar-thumb:hover {
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
   background: rgba(255, 255, 255, 0.25);
 }
 
 /* Reduced motion support */
 @media (prefers-reduced-motion: reduce) {
-
   *,
   *::before,
   *::after {

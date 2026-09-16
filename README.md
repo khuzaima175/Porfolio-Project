@@ -1,12 +1,12 @@
 # Khuzaima Ahmed — Systems & AI Engineering Portfolio
 
-An editorial, Apple Pro-inspired cinematic scrollytelling engineering portfolio built with **Next.js 14**, **TypeScript**, **Tailwind CSS**, and **Framer Motion**. Engineered for maximum aesthetic polish, locked 120 FPS momentum physics, and rigorous technical proof.
+An editorial, cinematic scrollytelling engineering portfolio built with **Next.js 14**, **TypeScript**, **Tailwind CSS**, and **Framer Motion**. Engineered for maximum aesthetic polish, locked 120 FPS momentum physics, and rigorous technical proof.
 
 ---
 
 ## 🌟 Visual & Architectural Philosophy
 
-- **Apple Pro Cinematic Scrollytelling**: Pure carbon black (`#000000`), frosted glassmorphism, tight letter tracking (`tracking-apple-tightest`), and multi-stage pinned scroll storyboards.
+- **Cinematic Scrollytelling**: Pure carbon black (`#000000`), frosted glassmorphism, tight letter tracking (`tracking-tightest-editorial`), and multi-stage pinned scroll storyboards.
 - **Hardware-Accelerated 120 FPS Momentum**: Native GPU composite layers (`transform-gpu`, `translateZ(0)`), optimized backdrop filters, and dual-layer scoped **Lenis** smooth momentum scroll engines for both the viewport and deep-dive drawers.
 - **Show, Don't Tell**: Includes real mathematical models running in-browser (biquad Web Audio DSP synthesis, 6-state Newtonian Kalman filter simulation, and 0% CPU sensory daemons).
 
@@ -90,15 +90,14 @@ An editorial, Apple Pro-inspired cinematic scrollytelling engineering portfolio 
 
 ## 🛠️ Portfolio Page Architecture
 
-- **`AppleSubnav`**: Floating frosted-glass master navigation bar with Karachi PKT clock telemetry, live availability status pulse, and anchor links.
-- **`AppleHeroStory`**: 280vh pinned scrollytelling intro with dynamic specular lights and hardware parallax depth.
-- **`AppleComparison`**: Word-by-word illuminated text reveal and interactive 9-architecture comparison matrix.
-- **`AppleBentoShowcase`**:
+- **`Subnav`**: Floating frosted-glass master navigation bar with Karachi PKT clock telemetry, live availability status pulse, and anchor links.
+- **`HeroStory`**: 280vh pinned scrollytelling intro with dynamic specular lights and hardware parallax depth.
+- **`ComparisonSection`**: Word-by-word illuminated text reveal and interactive 9-architecture comparison matrix.
+- **`BentoShowcase`**:
   - **Part 1 (The Pinned Theater)**: 440vh pinned scrollytelling stage for the 4 core flagships with live chapter pills (`01 GNSS`, `02 AudioSage`, `03 Auditor`, `04 CinemaVault`).
-  - **Part 2 (The Extended Suite)**: Mathematically balanced 12-column studio grid (`6+6` and `4+4+4`) showcasing the remaining 5 specialized architectures.
-- **`SpecimensSection`**: Interactive in-browser DSP curve tuner, GNSS RTS filter simulator, and 24-hour biological sensory ribbon.
-- **`ProjectArchive`**: Instant full-text search and category-filtered index of all 9 architectures.
-- **`ProjectModal`**: Dedicated sliding inspection drawer powered by a scoped Lenis smooth momentum engine with non-blocking wheel scrolling.
+  - **Part 2 (The Extended Suite)**: Balanced 12-column studio grid (`6+6` and `4+4+4`) showcasing the remaining 5 specialized architectures.
+- **`ProjectArchive`**: Personal statement, kinetic capabilities marquee, 3 capability hubs, and 22-technology interactive telemetry visor.
+- **`ProjectModal`**: Dedicated sliding inspection drawer powered by a scoped Lenis smooth momentum engine with embedded live proof workbenches (DSP curve tuner, GNSS RTS filter simulator, 24-hour biological sensory ribbon).
 - **`EngineeringMethod`**: Four core architectural tenets (Zero Ghost Work, Physics-First Ground Truth, Local-First Privacy, Zero-Quota Efficiency).
 - **`ContactSection`**: Interactive dispatch terminal and 1-click clipboard email utility.
 

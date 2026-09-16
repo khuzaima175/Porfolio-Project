@@ -32,7 +32,7 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
     }
   }, [project?.id]);
 
-  // Dedicated Lenis instance inside the modal for buttery smooth momentum scrolling
+  // Dedicated Lenis instance inside the modal for smooth momentum scrolling
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
@@ -122,10 +122,10 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
             {/* Drawer Header (Condenses to one-line title on inner scroll > 120px) */}
             <div className="flex-shrink-0 bg-[#161617]/95 backdrop-blur-xl border-b border-white/10 p-4 sm:p-5 px-6 flex items-center justify-between z-20 transition-all duration-300">
               <div className="flex items-center space-x-3 overflow-hidden">
-                <span className="px-3 py-1 bg-apple-blue/15 border border-apple-blue/30 text-apple-blue font-mono text-[10px] uppercase rounded-full font-medium flex-shrink-0">
+                <span className="px-3 py-1 bg-brand-blue/15 border border-brand-blue/30 text-brand-blue font-mono text-[10px] uppercase rounded-full font-medium flex-shrink-0">
                   {project.category}
                 </span>
-                <span className="text-apple-subtle font-mono text-xs flex-shrink-0">// {project.year}</span>
+                <span className="text-brand-subtle font-mono text-xs flex-shrink-0">// {project.year}</span>
                 {isInnerScrolled && (
                   <motion.span
                     initial={{ opacity: 0, x: 10 }}
@@ -138,7 +138,7 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
               </div>
               <button
                 onClick={onClose}
-                className="p-2 text-apple-subtle hover:text-white hover:bg-white/10 rounded-full transition-colors duration-200 flex-shrink-0 ml-2"
+                className="p-2 text-brand-subtle hover:text-white hover:bg-white/10 rounded-full transition-colors duration-200 flex-shrink-0 ml-2"
                 data-cursor-interactive="true"
                 aria-label="Close modal"
               >
@@ -155,7 +155,7 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
                     key={tab}
                     onClick={() => setActiveTab(tab)}
                     className={`flex-1 py-3 text-xs font-mono uppercase tracking-widest transition-colors relative ${
-                      isActive ? "text-white font-semibold" : "text-apple-subtle hover:text-white"
+                      isActive ? "text-white font-semibold" : "text-brand-subtle hover:text-white"
                     }`}
                     data-cursor-interactive="true"
                   >
@@ -164,7 +164,7 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
                       <motion.div
                         layoutId="modal-tab-underline"
                         transition={SPRING_LAYOUT}
-                        className="absolute bottom-0 left-0 right-0 h-[2px] bg-apple-blue"
+                        className="absolute bottom-0 left-0 right-0 h-[2px] bg-brand-blue"
                       />
                     )}
                   </button>
@@ -176,7 +176,7 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
             <div
               ref={scrollWrapperRef}
               data-lenis-prevent="true"
-              className="flex-1 overflow-y-auto overscroll-contain min-h-0 apple-scrollbar"
+              className="flex-1 overflow-y-auto overscroll-contain min-h-0 custom-scrollbar"
               style={{ WebkitOverflowScrolling: "touch" }}
             >
               <div ref={scrollContentRef} className="p-6 sm:p-8 space-y-7">
@@ -193,10 +193,10 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
                     >
                       {/* Title & Tagline */}
                       <div>
-                        <h2 className="font-sans text-2xl sm:text-4xl font-bold text-white tracking-apple-tight leading-tight">
+                        <h2 className="font-sans text-2xl sm:text-4xl font-bold text-white tracking-tight-editorial leading-tight">
                           {project.title}
                         </h2>
-                        <p className="text-apple-subtle font-sans text-sm sm:text-base mt-2 leading-relaxed">
+                        <p className="text-brand-subtle font-sans text-sm sm:text-base mt-2 leading-relaxed">
                           {project.tagline}
                         </p>
                       </div>
@@ -212,15 +212,15 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
                             decoding="async"
                             className="w-full h-full object-cover grayscale contrast-125 hover:grayscale-0 transition-all duration-500 ease-out"
                           />
-                          <div className="absolute bottom-3 right-3 px-3 py-1.5 bg-black/80 backdrop-blur-md border border-white/10 text-apple-subtle font-mono text-[10px] rounded-full">
+                          <div className="absolute bottom-3 right-3 px-3 py-1.5 bg-black/80 backdrop-blur-md border border-white/10 text-brand-subtle font-mono text-[10px] rounded-full">
                             ARCHIVAL SPECIMEN // LIVE
                           </div>
                         </div>
                       )}
 
                       {/* Executive Briefing */}
-                      <div className="p-5 bg-apple-blue/10 border-l-2 border-apple-blue rounded-r-2xl">
-                        <h3 className="text-[10px] font-mono text-apple-blue uppercase tracking-wider mb-2 font-semibold">
+                      <div className="p-5 bg-brand-blue/10 border-l-2 border-brand-blue rounded-r-2xl">
+                        <h3 className="text-[10px] font-mono text-brand-blue uppercase tracking-wider mb-2 font-semibold">
                           Executive Briefing
                         </h3>
                         <p className="text-white text-sm leading-relaxed font-normal">
@@ -232,13 +232,13 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
                       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                         {project.metrics.map((metric, idx) => (
                           <div key={idx} className="p-4 bg-white/5 border border-white/10 rounded-2xl shadow-sm">
-                            <div className="text-apple-subtle font-mono text-[10px] uppercase">
+                            <div className="text-brand-subtle font-mono text-[10px] uppercase">
                               {metric.label}
                             </div>
-                            <div className="font-sans text-xl font-bold text-apple-blue tabular-nums mt-1 flex items-center">
+                            <div className="font-sans text-xl font-bold text-brand-blue tabular-nums mt-1 flex items-center">
                               <Odometer value={metric.value} />
                             </div>
-                            <div className="text-[11px] text-apple-subtle mt-1 leading-snug">
+                            <div className="text-[11px] text-brand-subtle mt-1 leading-snug">
                               {metric.description}
                             </div>
                           </div>
@@ -247,7 +247,7 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
 
                       {/* Tech tags */}
                       <div>
-                        <h3 className="text-[10px] font-mono text-apple-subtle uppercase tracking-wider mb-3">
+                        <h3 className="text-[10px] font-mono text-brand-subtle uppercase tracking-wider mb-3">
                           Technologies
                         </h3>
                         <div className="flex flex-wrap gap-2.5">
@@ -271,17 +271,17 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
                             data-cursor-interactive="true"
                           >
                             <div className="flex items-center space-x-2 text-xs font-mono">
-                              <Zap className="w-3.5 h-3.5 text-apple-blue" />
+                              <Zap className="w-3.5 h-3.5 text-brand-blue" />
                               <span className="text-white font-semibold uppercase tracking-wider">
                                 Run Live Proof
                               </span>
-                              <span className="text-apple-subtle">
+                              <span className="text-brand-subtle">
                                 — interactive model on client silicon
                               </span>
                             </div>
                             <ChevronDown
-                              className={`w-4 h-4 text-apple-subtle transition-transform duration-300 flex-shrink-0 ${
-                                specimenOpen ? "rotate-180 text-apple-blue" : ""
+                              className={`w-4 h-4 text-brand-subtle transition-transform duration-300 flex-shrink-0 ${
+                                specimenOpen ? "rotate-180 text-brand-blue" : ""
                               }`}
                             />
                           </button>
@@ -301,7 +301,7 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
                                   initial={{ left: "-100%" }}
                                   animate={{ left: "100%" }}
                                   transition={{ duration: 0.8, ease: EASE_ENTER }}
-                                  className="absolute top-0 h-[1.5px] w-1/3 bg-gradient-to-r from-transparent via-apple-blue to-transparent z-10"
+                                  className="absolute top-0 h-[1.5px] w-1/3 bg-gradient-to-r from-transparent via-brand-blue to-transparent z-10"
                                 />
 
                                 <div className="p-4">
@@ -318,7 +318,7 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
                       {/* CTA to deep-dive */}
                       <button
                         onClick={() => setActiveTab("deep-dive")}
-                        className="w-full py-3 rounded-2xl border border-white/10 text-apple-subtle hover:text-white hover:border-white/30 transition-colors font-mono text-xs uppercase tracking-widest"
+                        className="w-full py-3 rounded-2xl border border-white/10 text-brand-subtle hover:text-white hover:border-white/30 transition-colors font-mono text-xs uppercase tracking-widest"
                         data-cursor-interactive="true"
                       >
                         View Full Architecture →
@@ -341,14 +341,14 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
                         <h2 className="font-sans text-2xl sm:text-3xl font-semibold text-white tracking-tight leading-snug">
                           {project.title}
                         </h2>
-                        <p className="text-apple-subtle font-sans text-sm mt-1.5 font-normal">
+                        <p className="text-brand-subtle font-sans text-sm mt-1.5 font-normal">
                           Technical Architecture & Engineering Highlights
                         </p>
                       </div>
 
                       {/* Architecture Highlights */}
                       <div>
-                        <h3 className="text-xs font-mono text-apple-subtle uppercase tracking-wider mb-4">
+                        <h3 className="text-xs font-mono text-brand-subtle uppercase tracking-wider mb-4">
                           Core Architecture & Engineering Highlights
                         </h3>
                         <div className="space-y-3">
@@ -358,10 +358,10 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
                               className="p-4 bg-white/[0.03] border border-white/10 rounded-2xl hover:border-white/20 transition-colors"
                             >
                               <div className="flex items-center space-x-2 text-white font-sans text-sm font-semibold">
-                                <span className="text-apple-blue font-mono">0{idx + 1}.</span>
+                                <span className="text-brand-blue font-mono">0{idx + 1}.</span>
                                 <span>{arch.title}</span>
                               </div>
-                              <p className="text-apple-subtle text-sm sm:text-base mt-2 leading-relaxed font-normal">
+                              <p className="text-brand-subtle text-sm sm:text-base mt-2 leading-relaxed font-normal">
                                 {arch.detail}
                               </p>
                             </div>
@@ -372,13 +372,13 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
                       {/* Hard Metrics */}
                       {project.hardMetrics && project.hardMetrics.length > 0 && (
                         <div>
-                          <h3 className="text-xs font-mono text-apple-subtle uppercase tracking-wider mb-3">
+                          <h3 className="text-xs font-mono text-brand-subtle uppercase tracking-wider mb-3">
                             Hard Metrics & Quantitative Benchmarks
                           </h3>
                           <div className="p-5 bg-white/5 border border-white/10 rounded-2xl space-y-3">
                             {project.hardMetrics.map((hm, idx) => (
                               <div key={idx} className="flex items-start space-x-2 text-sm font-mono text-white leading-relaxed">
-                                <span className="text-apple-blue font-bold flex-shrink-0">[{idx + 1}]</span>
+                                <span className="text-brand-blue font-bold flex-shrink-0">[{idx + 1}]</span>
                                 <span>{hm}</span>
                               </div>
                             ))}
@@ -388,13 +388,13 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
 
                       {/* Engineering Impact Statements */}
                       <div>
-                        <h3 className="text-xs font-mono text-apple-subtle uppercase tracking-wider mb-3">
+                        <h3 className="text-xs font-mono text-brand-subtle uppercase tracking-wider mb-3">
                           Engineering Impact Statements
                         </h3>
                         <ul className="space-y-3">
                           {project.resumeBullets.map((bullet, idx) => (
-                            <li key={idx} className="flex items-start space-x-2.5 text-sm sm:text-base text-apple-subtle leading-relaxed">
-                              <span className="text-apple-blue mt-1 flex-shrink-0">&bull;</span>
+                            <li key={idx} className="flex items-start space-x-2.5 text-sm sm:text-base text-brand-subtle leading-relaxed">
+                              <span className="text-brand-blue mt-1 flex-shrink-0">&bull;</span>
                               <span>{bullet}</span>
                             </li>
                           ))}
@@ -407,11 +407,11 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
             </div>
 
             {/* Drawer Footer */}
-            <div className="flex-shrink-0 bg-[#161617]/95 backdrop-blur-xl border-t border-white/10 p-4 px-6 flex items-center justify-between text-apple-subtle font-mono text-xs z-20">
+            <div className="flex-shrink-0 bg-[#161617]/95 backdrop-blur-xl border-t border-white/10 p-4 px-6 flex items-center justify-between text-brand-subtle font-mono text-xs z-20">
               <span className="text-[11px]">REF ID: {project.id}</span>
               <button
                 onClick={onClose}
-                className="px-5 py-2.5 bg-white text-black hover:bg-apple-blue hover:text-white font-semibold transition-colors duration-200 rounded-full text-xs shadow-md"
+                className="px-5 py-2.5 bg-white text-black hover:bg-brand-blue hover:text-white font-semibold transition-colors duration-200 rounded-full text-xs shadow-md"
                 data-cursor-interactive="true"
               >
                 CLOSE INSPECTION

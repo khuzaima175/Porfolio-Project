@@ -21,15 +21,15 @@ import { MagneticButton } from "@/components/ui/MagneticButton";
 import { EASE_ENTER, SPRING_LAYOUT, SPRING_FLOAT } from "@/lib/motion/tokens";
 import { scrollToTarget } from "@/lib/utils/scroll";
 
-interface AppleBentoShowcaseProps {
+interface BentoShowcaseProps {
   projects: Project[];
   onSelectProject: (project: Project) => void;
 }
 
-export function AppleBentoShowcase({
+export function BentoShowcase({
   projects,
   onSelectProject,
-}: AppleBentoShowcaseProps) {
+}: BentoShowcaseProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
 
   const { scrollYProgress } = useScroll({
@@ -226,12 +226,12 @@ export function AppleBentoShowcase({
 
           {/* Top Header & Chapter Pill Switcher with Sliding Layout Pill */}
           <div className="relative z-20 max-w-[95vw] 2xl:max-w-[1760px] mx-auto w-full flex flex-col sm:flex-row items-center justify-between gap-4">
-            <div className="flex items-center space-x-2 text-xs sm:text-sm font-mono text-apple-subtle">
-              <Sparkles className="w-4 h-4 text-apple-blue" />
+            <div className="flex items-center space-x-2 text-xs sm:text-sm font-mono text-brand-subtle">
+              <Sparkles className="w-4 h-4 text-brand-blue" />
               <span className="uppercase tracking-wider">FLAGSHIP SHOWCASE // CINEMATIC ARCHITECTURE</span>
             </div>
 
-            {/* Apple Chapter Pills with layoutId sliding background */}
+            {/* Chapter Pills with layoutId sliding background */}
             <div className="flex items-center space-x-2 p-1.5 rounded-full bg-[#161617]/85 backdrop-blur-xl border border-white/10 shadow-xl overflow-x-auto max-w-full">
               {chapters.map((ch, idx) => {
                 const Icon = ch.icon;
@@ -243,7 +243,7 @@ export function AppleBentoShowcase({
                     className={`relative flex items-center space-x-2 px-4 sm:px-5 py-2 rounded-full text-xs sm:text-sm font-mono transition-colors z-10 ${
                       isActive
                         ? "text-black font-semibold"
-                        : "text-apple-subtle hover:text-white"
+                        : "text-brand-subtle hover:text-white"
                     }`}
                     data-cursor-interactive="true"
                   >
@@ -254,7 +254,7 @@ export function AppleBentoShowcase({
                         className="absolute inset-0 bg-white rounded-full -z-10 shadow-md"
                       />
                     )}
-                    <Icon className={`w-3.5 h-3.5 ${isActive ? "text-black" : "text-apple-blue"}`} />
+                    <Icon className={`w-3.5 h-3.5 ${isActive ? "text-black" : "text-brand-blue"}`} />
                     <span className="truncate">{ch.shortLabel}</span>
                   </button>
                 );
@@ -297,7 +297,7 @@ export function AppleBentoShowcase({
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent" />
                     <div className="absolute bottom-4 sm:bottom-6 left-4 sm:left-8 flex items-center space-x-2.5 px-4 sm:px-5 py-2 sm:py-2.5 rounded-full bg-black/80 backdrop-blur-md border border-white/10 text-xs sm:text-sm font-mono text-white shadow-xl">
-                      <Icon className="w-4 h-4 text-apple-blue" />
+                      <Icon className="w-4 h-4 text-brand-blue" />
                       <span>{ch.badge}</span>
                     </div>
                   </div>
@@ -305,19 +305,19 @@ export function AppleBentoShowcase({
                   {/* Title & Metadata with Line Masks */}
                   <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 pt-1 w-full">
                     <div className="space-y-2 max-w-4xl">
-                      <div className="flex items-center space-x-3 text-xs sm:text-sm font-mono text-apple-subtle">
-                        <span className="text-apple-blue uppercase font-bold">{project.category}</span>
+                      <div className="flex items-center space-x-3 text-xs sm:text-sm font-mono text-brand-subtle">
+                        <span className="text-brand-blue uppercase font-bold">{project.category}</span>
                         <span>// {project.year}</span>
                         <span>// CHAPTER 0{idx + 1} OF 04</span>
                       </div>
 
                       <div className="overflow-hidden">
-                        <h3 className="font-sans text-3xl sm:text-5xl lg:text-6xl font-bold text-white tracking-apple-tightest leading-tight">
+                        <h3 className="font-sans text-3xl sm:text-5xl lg:text-6xl font-bold text-white tracking-tightest-editorial leading-tight">
                           {project.title}
                         </h3>
                       </div>
 
-                      <p className="text-apple-subtle text-sm sm:text-base lg:text-lg leading-relaxed font-normal max-w-3xl">
+                      <p className="text-brand-subtle text-sm sm:text-base lg:text-lg leading-relaxed font-normal max-w-3xl">
                         {project.executivePitch}
                       </p>
                     </div>
@@ -330,7 +330,7 @@ export function AppleBentoShowcase({
                             key={sIdx}
                             className="p-3.5 sm:p-4 px-5 sm:px-6 rounded-2xl bg-[#161617] border border-white/10 text-center min-w-[110px] sm:min-w-[130px] shadow-xl"
                           >
-                            <div className="text-[10px] sm:text-[11px] text-apple-subtle uppercase font-mono tracking-wider">
+                            <div className="text-[10px] sm:text-[11px] text-brand-subtle uppercase font-mono tracking-wider">
                               {st.label}
                             </div>
                             <div className="font-sans text-xl sm:text-2xl lg:text-3xl font-bold text-white flex items-center justify-center mt-0.5">
@@ -359,9 +359,9 @@ export function AppleBentoShowcase({
           </motion.div>
 
           {/* Bottom Segmented Intra-Chapter Progress Rail */}
-          <div className="relative z-20 max-w-[95vw] 2xl:max-w-[1760px] mx-auto w-full flex items-center justify-between font-mono text-xs sm:text-sm text-apple-subtle pt-4 border-t border-white/10">
+          <div className="relative z-20 max-w-[95vw] 2xl:max-w-[1760px] mx-auto w-full flex items-center justify-between font-mono text-xs sm:text-sm text-brand-subtle pt-4 border-t border-white/10">
             <div className="flex items-center space-x-2">
-              <span className="w-2 h-2 rounded-full bg-apple-blue animate-pulse" />
+              <span className="w-2 h-2 rounded-full bg-brand-blue animate-pulse" />
               <span className="uppercase tracking-wider">SCROLL TO PROGRESS FLAGSHIPS</span>
             </div>
 
@@ -376,7 +376,7 @@ export function AppleBentoShowcase({
                   <div
                     className={`h-1.5 rounded-full transition-all duration-300 ${
                       activeChapter === segIdx
-                        ? "w-10 bg-apple-blue shadow-sm shadow-apple-blue/50"
+                        ? "w-10 bg-brand-blue shadow-sm shadow-brand-blue/50"
                         : "w-4 bg-white/20 group-hover:bg-white/40"
                     }`}
                   />
@@ -394,13 +394,13 @@ export function AppleBentoShowcase({
       <div className="py-28 px-4 sm:px-8 lg:px-12 max-w-[95vw] 2xl:max-w-[1760px] mx-auto border-t border-white/10">
         {/* Section Header */}
         <div className="space-y-3 mb-16 text-center sm:text-left">
-          <span className="text-xs sm:text-sm font-semibold tracking-widest uppercase text-apple-subtle font-mono">
+          <span className="text-xs sm:text-sm font-semibold tracking-widest uppercase text-brand-subtle font-mono">
             Specialized Architectures // Local-First & Cloud
           </span>
-          <h3 className="font-sans text-3xl sm:text-5xl font-bold tracking-apple-tightest text-white leading-tight">
+          <h3 className="font-sans text-3xl sm:text-5xl font-bold tracking-tightest-editorial text-white leading-tight">
             Engineered for the edge. Built for scale.
           </h3>
-          <p className="text-apple-subtle max-w-2xl text-sm sm:text-base font-normal">
+          <p className="text-brand-subtle max-w-2xl text-sm sm:text-base font-normal">
             Autonomous mobile geofencing, zero-quota creator intelligence, client-side NLP forensics,
             and offline-first SQLite desktop applications.
           </p>
@@ -420,7 +420,7 @@ export function AppleBentoShowcase({
                 viewport={{ once: true, margin: "-40px" }}
                 transition={{ duration: 0.6, ease: EASE_ENTER }}
                 onClick={() => onSelectProject(project)}
-                className={`${item.span} group apple-card rounded-[2.5rem] p-7 sm:p-9 flex flex-col justify-between overflow-hidden cursor-pointer relative transform-gpu hover:border-white/20 transition-all duration-300`}
+                className={`${item.span} group pro-card rounded-[2.5rem] p-7 sm:p-9 flex flex-col justify-between overflow-hidden cursor-pointer relative transform-gpu hover:border-white/20 transition-all duration-300`}
                 data-cursor-interactive="true"
                 data-cursor-label="INSPECT"
               >
@@ -437,7 +437,7 @@ export function AppleBentoShowcase({
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-80 pointer-events-none" />
                     <div className="absolute bottom-3.5 left-3.5 flex items-center space-x-2 px-3 py-1.5 rounded-full bg-black/80 border border-white/10 text-xs font-mono text-white pointer-events-none">
-                      <Icon className="w-3.5 h-3.5 text-apple-blue flex-shrink-0" />
+                      <Icon className="w-3.5 h-3.5 text-brand-blue flex-shrink-0" />
                       <span className="truncate max-w-[260px] sm:max-w-none">{item.badge}</span>
                     </div>
                   </div>
@@ -446,18 +446,18 @@ export function AppleBentoShowcase({
                 {/* Content Section */}
                 <div className="flex-1 flex flex-col justify-between space-y-4">
                   <div className="space-y-2">
-                    <div className="flex items-center justify-between text-xs font-medium text-apple-subtle">
-                      <span className="text-apple-blue uppercase tracking-wider font-mono">
+                    <div className="flex items-center justify-between text-xs font-medium text-brand-subtle">
+                      <span className="text-brand-blue uppercase tracking-wider font-mono">
                         {project.category}
                       </span>
                       <span className="font-mono">{project.year}</span>
                     </div>
 
-                    <h4 className="font-sans text-2xl sm:text-3xl font-bold text-white group-hover:text-apple-blue transition-colors duration-200 leading-tight">
+                    <h4 className="font-sans text-2xl sm:text-3xl font-bold text-white group-hover:text-brand-blue transition-colors duration-200 leading-tight">
                       {project.title}
                     </h4>
 
-                    <p className="text-apple-subtle text-xs sm:text-sm leading-relaxed line-clamp-2 pt-1 font-normal">
+                    <p className="text-brand-subtle text-xs sm:text-sm leading-relaxed line-clamp-2 pt-1 font-normal">
                       {project.executivePitch}
                     </p>
                   </div>
@@ -470,7 +470,7 @@ export function AppleBentoShowcase({
                           key={mIdx}
                           className="px-3 py-1.5 rounded-xl bg-white/5 border border-white/10"
                         >
-                          <div className="text-[9px] text-apple-subtle uppercase font-mono">
+                          <div className="text-[9px] text-brand-subtle uppercase font-mono">
                             {metric.label}
                           </div>
                           <div className="font-sans text-base sm:text-lg font-bold text-white tabular-nums">
@@ -491,7 +491,7 @@ export function AppleBentoShowcase({
                         </span>
                       ))}
                       {project.techStack.length > 4 && (
-                        <span className="text-xs font-mono px-2 py-1 text-apple-subtle font-medium">
+                        <span className="text-xs font-mono px-2 py-1 text-brand-subtle font-medium">
                           +{project.techStack.length - 4}
                         </span>
                       )}
@@ -502,7 +502,7 @@ export function AppleBentoShowcase({
                 {/* Magnetic Action Icon Button */}
                 <div className="absolute top-7 right-7">
                   <MagneticButton>
-                    <div className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center text-white group-hover:bg-apple-blue transition-colors duration-200 shadow-lg pointer-events-none">
+                    <div className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center text-white group-hover:bg-brand-blue transition-colors duration-200 shadow-lg pointer-events-none">
                       <ArrowUpRight className="w-4 h-4" />
                     </div>
                   </MagneticButton>

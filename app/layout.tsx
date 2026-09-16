@@ -33,7 +33,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="dark">
-      <body className="bg-black text-apple-text antialiased selection:bg-apple-blue selection:text-white font-sans">
+      <body className="bg-black text-brand-text antialiased selection:bg-brand-blue selection:text-white font-sans">
         {/* Precision Cursor */}
         <CustomCursor />
 

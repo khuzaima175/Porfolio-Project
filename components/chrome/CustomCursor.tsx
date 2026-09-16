@@ -59,7 +59,7 @@ export function CustomCursor() {
     <div className="pointer-events-none fixed inset-0 z-[9999] overflow-hidden">
       {/* Center dot */}
       <motion.div
-        className="fixed top-0 left-0 w-1.5 h-1.5 rounded-full bg-apple-blue"
+        className="fixed top-0 left-0 w-1.5 h-1.5 rounded-full bg-brand-blue"
         style={{
           x: cursorX,
           y: cursorY,

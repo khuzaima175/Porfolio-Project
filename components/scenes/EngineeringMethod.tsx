@@ -55,20 +55,20 @@ export function EngineeringMethod() {
       <Reveal variant="slide-right">
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
           <div className="space-y-2">
-            <span className="text-xs font-semibold tracking-widest uppercase text-apple-blue font-mono">
+            <span className="text-xs font-semibold tracking-widest uppercase text-brand-blue font-mono">
               Engineering Philosophy
             </span>
-            <h2 className="font-sans text-3xl sm:text-5xl font-bold tracking-apple-tightest text-white leading-tight">
+            <h2 className="font-sans text-3xl sm:text-5xl font-bold tracking-tightest-editorial text-white leading-tight">
               Architectural Tenets.
             </h2>
           </div>
-          <p className="max-w-sm text-xs sm:text-sm text-apple-subtle font-normal leading-relaxed">
+          <p className="max-w-sm text-xs sm:text-sm text-brand-subtle font-normal leading-relaxed">
             Engineered to run deterministically on real silicon, survive edge outages, and deliver mathematical certainty.
           </p>
         </div>
       </Reveal>
 
-      {/* Apple-Style Sticky Stacking Cards */}
+      {/* Sticky Stacking Cards */}
       <div className="space-y-8 relative">
         {principles.map((item, idx) => {
           const Icon = item.icon;
@@ -83,7 +83,7 @@ export function EngineeringMethod() {
               style={{
                 top: `calc(7rem + ${idx * 1.5}rem)`,
               }}
-              className="sticky apple-card rounded-[2.5rem] p-7 sm:p-10 border border-white/10 bg-[#141416]/95 backdrop-blur-2xl shadow-2xl overflow-hidden group"
+              className="sticky pro-card rounded-[2.5rem] p-7 sm:p-10 border border-white/10 bg-[#141416]/95 backdrop-blur-2xl shadow-2xl overflow-hidden group"
             >
               {/* Specular Radial Accent */}
               <div
@@ -93,8 +93,8 @@ export function EngineeringMethod() {
               <div className="relative z-10 space-y-6">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-3">
-                    <span className="font-mono text-sm font-bold text-apple-blue">{item.num}</span>
-                    <div className="w-9 h-9 rounded-xl bg-white/[0.08] border border-white/10 flex items-center justify-center text-apple-blue">
+                    <span className="font-mono text-sm font-bold text-brand-blue">{item.num}</span>
+                    <div className="w-9 h-9 rounded-xl bg-white/[0.08] border border-white/10 flex items-center justify-center text-brand-blue">
                       <Icon className="w-4 h-4" />
                     </div>
                     <span className="font-sans text-lg sm:text-xl font-bold text-white tracking-tight">
@@ -102,18 +102,18 @@ export function EngineeringMethod() {
                     </span>
                   </div>
 
-                  <span className="px-3.5 py-1 rounded-full text-[11px] font-mono font-semibold bg-white/5 border border-white/10 text-apple-subtle">
+                  <span className="px-3.5 py-1 rounded-full text-[11px] font-mono font-semibold bg-white/5 border border-white/10 text-brand-subtle">
                     {item.badge}
                   </span>
                 </div>
 
-                <p className="text-apple-subtle text-sm sm:text-base leading-relaxed font-normal max-w-4xl">
+                <p className="text-brand-subtle text-sm sm:text-base leading-relaxed font-normal max-w-4xl">
                   {item.desc}
                 </p>
 
                 <div className="pt-4 border-t border-white/10 flex flex-wrap items-center justify-between gap-3 text-xs font-mono text-neutral-400">
                   <span className="text-white font-medium">{item.fullTitle}</span>
-                  <span className="text-apple-blue">{item.metrics}</span>
+                  <span className="text-brand-blue">{item.metrics}</span>
                 </div>
               </div>
             </motion.div>

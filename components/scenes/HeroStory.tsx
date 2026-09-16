@@ -9,7 +9,7 @@ import { ScrambleText } from "@/components/ui/ScrambleText";
 import { SPRING_FLOAT } from "@/lib/motion/tokens";
 import { scrollToTarget } from "@/lib/utils/scroll";
 
-export function AppleHeroStory() {
+export function HeroStory() {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [isPastHero, setIsPastHero] = useState(false);
 
@@ -113,8 +113,8 @@ export function AppleHeroStory() {
             <div className="absolute inset-0" style={{ background: 'radial-gradient(circle, transparent 0%, rgba(0,0,0,0.2) 40%, rgba(0,0,0,0.8) 100%)' }} />
 
             {/* Subtle Plate Telemetry Watermark */}
-            <div className="absolute bottom-4 left-5 flex items-center space-x-2 font-mono text-[10px] text-apple-subtle/80 bg-black/60 px-3 py-1.5 rounded-full border border-white/5">
-              <span className="w-1.5 h-1.5 rounded-full bg-apple-blue animate-pulse" />
+            <div className="absolute bottom-4 left-5 flex items-center space-x-2 font-mono text-[10px] text-brand-subtle/80 bg-black/60 px-3 py-1.5 rounded-full border border-white/5">
+              <span className="w-1.5 h-1.5 rounded-full bg-brand-blue animate-pulse" />
               <span>LIVE AMBIENT SILICON PROOF // 30 FPS RTK FUSION</span>
             </div>
           </div>
@@ -123,10 +123,10 @@ export function AppleHeroStory() {
         {/* Top Telemetry Header with Smooth Scroll Fade */}
         <motion.div
           style={{ opacity: topHeaderOpacity, y: topHeaderY }}
-          className="z-10 flex items-center justify-between font-mono text-xs text-apple-subtle uppercase tracking-wider max-w-[95vw] 2xl:max-w-[1760px] mx-auto w-full"
+          className="z-10 flex items-center justify-between font-mono text-xs text-brand-subtle uppercase tracking-wider max-w-[95vw] 2xl:max-w-[1760px] mx-auto w-full"
         >
           <div className="flex items-center space-x-2">
-            <span className="w-2 h-2 rounded-full bg-apple-blue animate-pulse" />
+            <span className="w-2 h-2 rounded-full bg-brand-blue animate-pulse" />
             <ScrambleText text="Khuzaima Ahmed // Systems & AI Engineering" duration={500} />
           </div>
           <div className="hidden sm:block text-neutral-400">
@@ -139,7 +139,7 @@ export function AppleHeroStory() {
           {/* Radial Scrim Behind Headline to Eliminate Contour Bleed */}
           <div className="pointer-events-none absolute inset-0 -inset-x-12 -inset-y-8 blur-2xl -z-10" style={{ background: 'radial-gradient(circle, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.5) 40%, transparent 100%)' }} />
 
-          {/* Phase 1: Massive Apple Statement */}
+          {/* Phase 1: Massive Statement */}
           <motion.div
             style={{
               opacity: stage1Opacity,
@@ -154,7 +154,7 @@ export function AppleHeroStory() {
                 initial={{ y: "100%" }}
                 animate={{ y: 0 }}
                 transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-                className="inline-block text-xs sm:text-sm font-semibold tracking-widest uppercase text-apple-blue font-mono"
+                className="inline-block text-xs sm:text-sm font-semibold tracking-widest uppercase text-brand-blue font-mono"
               >
                 The Sovereign Architecture
               </motion.span>
@@ -167,7 +167,7 @@ export function AppleHeroStory() {
                   initial={{ y: "110%" }}
                   animate={{ y: 0 }}
                   transition={{ duration: 0.8, delay: 0.05, ease: [0.16, 1, 0.3, 1] }}
-                  className="font-sans text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-apple-tightest leading-[0.95] text-white"
+                  className="font-sans text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-tightest-editorial leading-[0.95] text-white"
                 >
                   Deterministic
                 </motion.h1>
@@ -177,7 +177,7 @@ export function AppleHeroStory() {
                   initial={{ y: "110%" }}
                   animate={{ y: 0 }}
                   transition={{ duration: 0.8, delay: 0.14, ease: [0.16, 1, 0.3, 1] }}
-                  className="font-sans text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-apple-tightest leading-[0.95] text-apple-subtle"
+                  className="font-sans text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-tightest-editorial leading-[0.95] text-brand-subtle"
                 >
                   by construction.
                 </motion.h1>
@@ -189,7 +189,7 @@ export function AppleHeroStory() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.7, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
-                className="max-w-2xl mx-auto text-apple-subtle text-sm sm:text-lg font-normal leading-relaxed pt-1"
+                className="max-w-2xl mx-auto text-brand-subtle text-sm sm:text-lg font-normal leading-relaxed pt-1"
               >
                 Zero overhead by proof. Native Win32 background daemons, 3D multi-stream GNSS
                 trajectory fusion, and real-time DSP audio synthesis.
@@ -207,43 +207,43 @@ export function AppleHeroStory() {
             }}
             className="absolute inset-0 flex flex-col justify-center items-center space-y-6"
           >
-            <span className="text-xs sm:text-sm font-semibold tracking-widest uppercase text-apple-blue font-mono">
+            <span className="text-xs sm:text-sm font-semibold tracking-widest uppercase text-brand-blue font-mono">
               Engineered From First Principles
             </span>
 
-            <h2 className="font-sans text-3xl sm:text-5xl md:text-6xl font-bold tracking-apple-tightest text-white leading-tight">
+            <h2 className="font-sans text-3xl sm:text-5xl md:text-6xl font-bold tracking-tightest-editorial text-white leading-tight">
               Uncompromising physics. <br />
               Zero measurable overhead.
             </h2>
 
-            {/* Apple 3-Column Stat Callouts with Rolling Odometers */}
+            {/* 3-Column Stat Callouts with Rolling Odometers */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 sm:gap-7 pt-3 w-full max-w-4xl">
-              <div className="text-center p-5 sm:p-6 bg-apple-gray/60 backdrop-blur-2xl rounded-3xl border border-white/10 shadow-2xl">
-                <div className="text-xs text-apple-subtle font-medium mb-1 uppercase font-mono">Up to</div>
+              <div className="text-center p-5 sm:p-6 bg-brand-gray/60 backdrop-blur-2xl rounded-3xl border border-white/10 shadow-2xl">
+                <div className="text-xs text-brand-subtle font-medium mb-1 uppercase font-mono">Up to</div>
                 <div className="font-sans text-3xl sm:text-5xl font-bold text-white tracking-tight flex items-center justify-center">
                   <Odometer value="88.4%" />
                 </div>
-                <div className="text-xs text-apple-subtle mt-2 leading-snug">
+                <div className="text-xs text-brand-subtle mt-2 leading-snug">
                   lower horizontal error <br /> (1.235m RTS smoothed RMS)
                 </div>
               </div>
 
-              <div className="text-center p-5 sm:p-6 bg-apple-gray/60 backdrop-blur-2xl rounded-3xl border border-white/10 shadow-2xl">
-                <div className="text-xs text-apple-subtle font-medium mb-1 uppercase font-mono">Exactly</div>
+              <div className="text-center p-5 sm:p-6 bg-brand-gray/60 backdrop-blur-2xl rounded-3xl border border-white/10 shadow-2xl">
+                <div className="text-xs text-brand-subtle font-medium mb-1 uppercase font-mono">Exactly</div>
                 <div className="font-sans text-3xl sm:text-5xl font-bold text-white tracking-tight flex items-center justify-center">
                   <Odometer value="0.0%" />
                 </div>
-                <div className="text-xs text-apple-subtle mt-2 leading-snug">
+                <div className="text-xs text-brand-subtle mt-2 leading-snug">
                   CPU sensory overhead <br /> (Win32 foreground ctypes)
                 </div>
               </div>
 
-              <div className="text-center p-5 sm:p-6 bg-apple-gray/60 backdrop-blur-2xl rounded-3xl border border-white/10 shadow-2xl">
-                <div className="text-xs text-apple-subtle font-medium mb-1 uppercase font-mono">Within</div>
+              <div className="text-center p-5 sm:p-6 bg-brand-gray/60 backdrop-blur-2xl rounded-3xl border border-white/10 shadow-2xl">
+                <div className="text-xs text-brand-subtle font-medium mb-1 uppercase font-mono">Within</div>
                 <div className="font-sans text-3xl sm:text-5xl font-bold text-white tracking-tight flex items-center justify-center">
                   <Odometer value="≤ 0.5 dB" />
                 </div>
-                <div className="text-xs text-apple-subtle mt-2 leading-snug">
+                <div className="text-xs text-brand-subtle mt-2 leading-snug">
                   automated PEQ residual error <br /> (Harman 301-pt curve match)
                 </div>
               </div>
@@ -259,7 +259,7 @@ export function AppleHeroStory() {
             }}
             className="absolute inset-0 flex flex-col justify-center items-center space-y-4"
           >
-            <span className="text-xs text-apple-subtle uppercase tracking-widest font-mono">
+            <span className="text-xs text-brand-subtle uppercase tracking-widest font-mono">
               Next // Flagship Systems
             </span>
             <h3 className="font-sans text-3xl sm:text-5xl font-bold text-white">
@@ -279,12 +279,12 @@ export function AppleHeroStory() {
         {/* Bottom Hairline Progress Indicator */}
         <motion.div
           style={{ opacity: indicatorOpacity }}
-          className="z-10 flex flex-col items-center justify-center space-y-2 text-apple-subtle text-xs font-mono"
+          className="z-10 flex flex-col items-center justify-center space-y-2 text-brand-subtle text-xs font-mono"
         >
           <div className="w-[1.5px] h-10 bg-white/15 rounded-full overflow-hidden relative">
             <motion.div
               style={{ scaleY: hairlineScaleY }}
-              className="w-full h-full bg-apple-blue origin-top"
+              className="w-full h-full bg-brand-blue origin-top"
             />
           </div>
           <span className="text-[10px] tracking-widest uppercase text-neutral-400">SCROLL</span>

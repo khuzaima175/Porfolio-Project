@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
-import { motion, AnimatePresence, useScroll, useVelocity, useSpring, useTransform } from "framer-motion";
+import { useState, useEffect } from "react";
+import { motion, useScroll, useVelocity, useSpring, useTransform } from "framer-motion";
 import {
   ArrowUpRight,
   Github,
@@ -14,7 +14,7 @@ import {
 import { ScrollTextReveal } from "@/components/ui/ScrollTextReveal";
 import { Odometer } from "@/components/ui/Odometer";
 import { Reveal } from "@/components/ui/Reveal";
-import { EASE_ENTER, SPRING_LAYOUT, SPRING_FLOAT } from "@/lib/motion/tokens";
+import { EASE_ENTER, SPRING_LAYOUT } from "@/lib/motion/tokens";
 
 interface TechDetail {
   name: string;
@@ -195,7 +195,7 @@ const CAPABILITY_HUBS = [
     subtitle: "Low-latency numerical algorithms, hardware sensory daemons, and audio signal processing.",
     accent: "from-blue-500/20 via-blue-500/5 to-transparent",
     borderHover: "hover:border-blue-500/40",
-    badgeGlow: "bg-apple-blue/15 text-apple-blue border-apple-blue/30",
+    badgeGlow: "bg-brand-blue/15 text-brand-blue border-brand-blue/30",
     icon: Activity,
     direction: "left",
     stats: [
@@ -290,16 +290,16 @@ export function ProjectArchive() {
       id="archive"
       className="py-28 px-4 sm:px-8 lg:px-12 max-w-[95vw] 2xl:max-w-[1760px] mx-auto border-t border-white/10 space-y-24 select-none overflow-hidden"
     >
-      {/* — 1. High-Impact Personal Statement & Executive Bio (Balanced Widescreen Layout) — */}
+      {/* — 1. Personal Statement & Executive Bio — */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-center">
         {/* Left Editorial Column */}
         <div className="lg:col-span-7 space-y-7">
           <Reveal variant="slide-right">
             <div className="flex items-center gap-3">
-              <span className="inline-block text-xs sm:text-sm font-sans font-semibold tracking-wider uppercase text-apple-blue font-mono">
+              <span className="inline-block text-xs sm:text-sm font-sans font-semibold tracking-wider uppercase text-brand-blue font-mono">
                 About // Systems & AI Engineer
               </span>
-              <span className="w-1.5 h-1.5 rounded-full bg-apple-blue/60" />
+              <span className="w-1.5 h-1.5 rounded-full bg-brand-blue/60" />
               <span className="text-xs sm:text-sm font-mono text-neutral-400">
                 Karachi, PK
               </span>
@@ -331,7 +331,7 @@ export function ProjectArchive() {
                 "edge",
                 "cases",
               ]}
-              className="text-base sm:text-xl font-normal leading-relaxed text-apple-subtle"
+              className="text-base sm:text-xl font-normal leading-relaxed text-brand-subtle"
             />
           </div>
 
@@ -349,14 +349,12 @@ export function ProjectArchive() {
               </a>
 
               <a
-                href="/cv.pdf"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-apple-blue hover:bg-blue-400 text-white text-sm font-semibold transition-all duration-200 shadow-lg shadow-apple-blue/25 hover:scale-[1.02] active:scale-[0.98]"
+                href={`mailto:khuzaima.ahmed.33820@gmail.com?subject=Resume%20Request%20-%20Khuzaima%20Ahmed`}
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-brand-blue hover:bg-blue-400 text-white text-sm font-semibold transition-all duration-200 shadow-lg shadow-brand-blue/25 hover:scale-[1.02] active:scale-[0.98]"
                 data-cursor-interactive="true"
               >
                 <FileText className="w-4 h-4" />
-                Download CV
+                Request CV / Dossier
                 <ArrowUpRight className="w-4 h-4" />
               </a>
 
@@ -382,31 +380,31 @@ export function ProjectArchive() {
 
             <div className="flex items-center justify-between border-b border-white/10 pb-4 relative z-10">
               <div className="flex items-center space-x-2.5">
-                <span className="w-2 h-2 rounded-full bg-apple-blue animate-pulse" />
+                <span className="w-2 h-2 rounded-full bg-brand-blue animate-pulse" />
                 <span className="font-mono text-xs uppercase tracking-wider text-white font-semibold">
                   Engineer Dossier // Verified
                 </span>
               </div>
-              <span className="font-mono text-[10px] text-apple-subtle uppercase px-2.5 py-0.5 rounded-full bg-white/5 border border-white/10">
+              <span className="font-mono text-[10px] text-brand-subtle uppercase px-2.5 py-0.5 rounded-full bg-white/5 border border-white/10">
                 2026 ACTIVE
               </span>
             </div>
 
             <div className="space-y-4 text-xs sm:text-sm font-sans relative z-10">
               <div className="flex items-center justify-between py-2 border-b border-white/5">
-                <span className="text-apple-subtle uppercase font-mono text-xs">Primary Discipline</span>
+                <span className="text-brand-subtle uppercase font-mono text-xs">Primary Discipline</span>
                 <span className="text-white font-semibold">Real-Time Systems & AI Engineering</span>
               </div>
               <div className="flex items-center justify-between py-2 border-b border-white/5">
-                <span className="text-apple-subtle uppercase font-mono text-xs">Core Stacks</span>
+                <span className="text-brand-subtle uppercase font-mono text-xs">Core Stacks</span>
                 <span className="text-white font-semibold">Python • TypeScript • Web Audio DSP • Ctypes</span>
               </div>
               <div className="flex items-center justify-between py-2 border-b border-white/5">
-                <span className="text-apple-subtle uppercase font-mono text-xs">Validation Metric</span>
-                <span className="text-apple-blue font-mono font-semibold">0.0% CPU • 1.235m RTS Smoothed</span>
+                <span className="text-brand-subtle uppercase font-mono text-xs">Validation Metric</span>
+                <span className="text-brand-blue font-mono font-semibold">0.0% CPU • 1.235m RTS Smoothed</span>
               </div>
               <div className="flex items-center justify-between py-2">
-                <span className="text-apple-subtle uppercase font-mono text-xs">Architectures Shipped</span>
+                <span className="text-brand-subtle uppercase font-mono text-xs">Architectures Shipped</span>
                 <span className="text-white font-semibold">9 Production Systems</span>
               </div>
             </div>
@@ -425,7 +423,7 @@ export function ProjectArchive() {
               key={idx}
               className="flex items-center space-x-4 text-xl sm:text-2xl lg:text-3xl font-bold tracking-tight text-neutral-600 hover:text-white transition-colors duration-300"
             >
-              <span className="w-1.5 h-1.5 rounded-full bg-apple-blue" />
+              <span className="w-1.5 h-1.5 rounded-full bg-brand-blue" />
               <span>{item}</span>
             </div>
           ))}
@@ -436,7 +434,7 @@ export function ProjectArchive() {
       <div className="space-y-10">
         <Reveal variant="slide-right">
           <div className="space-y-3">
-            <span className="text-xs sm:text-sm font-sans font-semibold tracking-wider uppercase text-apple-blue">
+            <span className="text-xs sm:text-sm font-sans font-semibold tracking-wider uppercase text-brand-blue">
               Core Toolchain & Architecture
             </span>
             <h3 className="font-sans text-3xl sm:text-5xl font-bold text-white tracking-tight">
@@ -472,7 +470,7 @@ export function ProjectArchive() {
                 <div className="space-y-6 relative z-10">
                   {/* Hub Header */}
                   <div className="flex items-center justify-between">
-                    <div className="w-11 h-11 rounded-2xl bg-white/[0.08] border border-white/15 flex items-center justify-center text-apple-blue shadow-lg group-hover:scale-110 transition-transform duration-300">
+                    <div className="w-11 h-11 rounded-2xl bg-white/[0.08] border border-white/15 flex items-center justify-center text-brand-blue shadow-lg group-hover:scale-110 transition-transform duration-300">
                       <Icon className="w-5 h-5" />
                     </div>
                     <span className={`px-3 py-1 rounded-full text-xs font-sans font-semibold border ${hub.badgeGlow}`}>
@@ -519,7 +517,7 @@ export function ProjectArchive() {
                             onClick={() => setHoveredTech(techName)}
                             className={`relative px-3.5 py-2 rounded-xl text-xs sm:text-sm font-sans font-semibold transition-all duration-200 border ${
                               isHovered
-                                ? "bg-apple-blue text-white border-apple-blue shadow-lg shadow-apple-blue/30 scale-105"
+                                ? "bg-brand-blue text-white border-brand-blue shadow-lg shadow-brand-blue/30 scale-105"
                                 : "bg-white/[0.06] hover:bg-white/[0.12] text-neutral-200 hover:text-white border-white/10 hover:border-white/30"
                             }`}
                             data-cursor-interactive="true"
@@ -528,7 +526,7 @@ export function ProjectArchive() {
                               <motion.div
                                 layoutId="active-tech-ring"
                                 transition={SPRING_LAYOUT}
-                                className="absolute -inset-1 border border-apple-blue/50 rounded-2xl pointer-events-none"
+                                className="absolute -inset-1 border border-brand-blue/50 rounded-2xl pointer-events-none"
                               />
                             )}
                             <span>{techName}</span>
@@ -545,7 +543,7 @@ export function ProjectArchive() {
                   className="pt-4 border-t border-white/10 flex items-center justify-between text-xs font-sans text-neutral-400 relative z-10"
                 >
                   <span className="line-clamp-1 pr-2">{hub.flagship}</span>
-                  <ChevronRight className="w-4 h-4 text-apple-blue flex-shrink-0 group-hover:translate-x-1 transition-transform duration-200" />
+                  <ChevronRight className="w-4 h-4 text-brand-blue flex-shrink-0 group-hover:translate-x-1 transition-transform duration-200" />
                 </div>
               </motion.div>
             );
@@ -561,13 +559,13 @@ export function ProjectArchive() {
           className="relative p-7 sm:p-10 rounded-3xl bg-[#0d0d0f] border border-white/15 overflow-hidden shadow-2xl backdrop-blur-2xl"
         >
           {/* Glowing Top Specular Line */}
-          <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-apple-blue to-transparent" />
+          <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-brand-blue to-transparent" />
 
           <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-8">
             <div className="space-y-3 flex-1">
               <div className="flex items-center space-x-3">
-                <span className="w-2.5 h-2.5 rounded-full bg-apple-blue animate-ping" />
-                <span className="text-xs sm:text-sm font-sans uppercase tracking-wider text-apple-blue font-bold">
+                <span className="w-2.5 h-2.5 rounded-full bg-brand-blue animate-ping" />
+                <span className="text-xs sm:text-sm font-sans uppercase tracking-wider text-brand-blue font-bold">
                   {activeTechInfo
                     ? `Live Telemetry // ${activeTechInfo.name}`
                     : "Interactive Capability Inspector"}
@@ -582,7 +580,7 @@ export function ProjectArchive() {
               {/* Monospace Typewriter Description */}
               <p className="font-sans text-base sm:text-xl text-white font-medium leading-relaxed min-h-[56px]">
                 {typedRole}
-                <span className="inline-block w-1.5 h-4 bg-apple-blue ml-1 animate-pulse" />
+                <span className="inline-block w-1.5 h-4 bg-brand-blue ml-1 animate-pulse" />
               </p>
             </div>
 
@@ -592,7 +590,7 @@ export function ProjectArchive() {
                 <span className="text-xs font-sans uppercase tracking-wider text-neutral-400 font-semibold block">
                   {activeTechInfo ? "Verified Metric" : "Quality Standard"}
                 </span>
-                <span className="text-sm sm:text-base font-sans text-apple-blue font-bold block">
+                <span className="text-sm sm:text-base font-sans text-brand-blue font-bold block">
                   {activeTechInfo ? activeTechInfo.metric : "Zero Bloat • Sub-Millisecond"}
                 </span>
               </div>

@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
+import { useState } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
 import {
   Mail,
   Check,
@@ -14,7 +14,6 @@ import {
   ShieldCheck,
   Clock,
   MapPin,
-  Sparkles,
 } from "lucide-react";
 import { Reveal } from "@/components/ui/Reveal";
 import { EASE_ENTER, SPRING_BOUNCE_SUBTLE } from "@/lib/motion/tokens";
@@ -86,14 +85,14 @@ export function ContactSection() {
       <div className="pb-16 border-b border-white/10">
         {/* Balanced Widescreen 2-Column Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
-          {/* Left Column: Asymmetric Editorial Narrative & Quick Actions (7 Cols) */}
+          {/* Left Column: Editorial Narrative & Quick Actions (7 Cols) */}
           <div className="lg:col-span-7 space-y-8">
             <Reveal variant="slide-right">
               <div className="flex items-center gap-3">
-                <span className="inline-block text-xs sm:text-sm font-sans font-semibold tracking-wider uppercase text-apple-blue font-mono">
+                <span className="inline-block text-xs sm:text-sm font-sans font-semibold tracking-wider uppercase text-brand-blue font-mono">
                   Get In Touch // Direct Dispatch
                 </span>
-                <span className="w-1.5 h-1.5 rounded-full bg-apple-blue/60" />
+                <span className="w-1.5 h-1.5 rounded-full bg-brand-blue/60" />
                 <span className="text-xs sm:text-sm font-mono text-emerald-400 flex items-center gap-1.5">
                   <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
                   Active 2026
@@ -129,7 +128,7 @@ export function ContactSection() {
                   className={`flex items-center space-x-2.5 px-6 py-3.5 font-sans text-sm font-semibold tracking-wide transition-all duration-200 rounded-full shadow-lg ${
                     copied
                       ? "bg-emerald-500 text-white shadow-emerald-500/30 scale-105"
-                      : "bg-white text-black hover:bg-apple-blue hover:text-white shadow-white/10 hover:shadow-apple-blue/25 hover:scale-[1.02] active:scale-[0.98]"
+                      : "bg-white text-black hover:bg-brand-blue hover:text-white shadow-white/10 hover:shadow-brand-blue/25 hover:scale-[1.02] active:scale-[0.98]"
                   }`}
                   data-cursor-interactive="true"
                 >
@@ -158,7 +157,7 @@ export function ContactSection() {
                   className="px-6 py-3.5 bg-white/[0.08] hover:bg-white/[0.15] border border-white/15 hover:border-white/30 rounded-full text-white font-sans text-sm font-semibold transition-all duration-200 flex items-center space-x-2.5 shadow-sm hover:scale-[1.02] active:scale-[0.98] backdrop-blur-md"
                   data-cursor-interactive="true"
                 >
-                  <Mail className="w-4 h-4 text-apple-blue" />
+                  <Mail className="w-4 h-4 text-brand-blue" />
                   <span>Open Email Client</span>
                 </a>
 
@@ -170,21 +169,21 @@ export function ContactSection() {
                   className="px-6 py-3.5 bg-white/[0.08] hover:bg-white/[0.15] border border-white/15 hover:border-white/30 rounded-full text-white font-sans text-sm font-semibold transition-all duration-200 flex items-center space-x-2.5 shadow-sm hover:scale-[1.02] active:scale-[0.98] backdrop-blur-md"
                   data-cursor-interactive="true"
                 >
-                  <Github className="w-4 h-4 text-apple-blue" />
+                  <Github className="w-4 h-4 text-brand-blue" />
                   <span>GitHub</span>
                   <ArrowUpRight className="w-3.5 h-3.5 opacity-60" />
                 </a>
               </div>
             </Reveal>
 
-            {/* Verified Operational Telemetry Badges */}
+            {/* Operational Telemetry Badges */}
             <div className="pt-4 grid grid-cols-1 sm:grid-cols-3 gap-3 max-w-xl">
               <div className="flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl bg-white/[0.03] border border-white/10 text-xs font-mono text-neutral-300">
                 <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0" />
                 <span>TLS 1.3 Verified</span>
               </div>
               <div className="flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl bg-white/[0.03] border border-white/10 text-xs font-mono text-neutral-300">
-                <Clock className="w-4 h-4 text-apple-blue shrink-0" />
+                <Clock className="w-4 h-4 text-brand-blue shrink-0" />
                 <span>&lt; 24h Response</span>
               </div>
               <div className="flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl bg-white/[0.03] border border-white/10 text-xs font-mono text-neutral-300">
@@ -209,7 +208,7 @@ export function ContactSection() {
               {/* Console Top Bar */}
               <div className="flex items-center justify-between pb-3 border-b border-white/10 text-neutral-400 relative z-10">
                 <div className="flex items-center space-x-2.5">
-                  <Terminal className="w-4 h-4 text-apple-blue" />
+                  <Terminal className="w-4 h-4 text-brand-blue" />
                   <span className="font-sans text-xs font-semibold uppercase tracking-wider text-white">
                     Direct Dispatch Console
                   </span>
@@ -221,9 +220,9 @@ export function ContactSection() {
               </div>
 
               {/* Simulated System Handshake Logs */}
-              <div className="space-y-1 font-mono text-[11px] text-apple-subtle bg-black/60 p-3 rounded-xl border border-white/10 relative z-10">
+              <div className="space-y-1 font-mono text-[11px] text-brand-subtle bg-black/60 p-3 rounded-xl border border-white/10 relative z-10">
                 <div className="flex items-center space-x-2">
-                  <span className="text-apple-blue">&gt;</span>
+                  <span className="text-brand-blue">&gt;</span>
                   <span>HANDSHAKE // 2048-BIT ENCRYPTED CHANNEL</span>
                 </div>
                 <div className="flex items-center space-x-2">
@@ -251,7 +250,7 @@ export function ContactSection() {
                       value={senderName}
                       onChange={(e) => setSenderName(e.target.value)}
                       placeholder="e.g. Sarah Connor"
-                      className="w-full bg-black/50 border border-white/10 rounded-xl px-3.5 py-2.5 text-white font-sans text-xs focus:outline-none focus:border-apple-blue transition-colors placeholder:text-neutral-600"
+                      className="w-full bg-black/50 border border-white/10 rounded-xl px-3.5 py-2.5 text-white font-sans text-xs focus:outline-none focus:border-brand-blue transition-colors placeholder:text-neutral-600"
                     />
                   </div>
                   <div>
@@ -263,7 +262,7 @@ export function ContactSection() {
                       value={senderContact}
                       onChange={(e) => setSenderContact(e.target.value)}
                       placeholder="e.g. sarah@cyberdyne.io"
-                      className="w-full bg-black/50 border border-white/10 rounded-xl px-3.5 py-2.5 text-white font-sans text-xs focus:outline-none focus:border-apple-blue transition-colors placeholder:text-neutral-600"
+                      className="w-full bg-black/50 border border-white/10 rounded-xl px-3.5 py-2.5 text-white font-sans text-xs focus:outline-none focus:border-brand-blue transition-colors placeholder:text-neutral-600"
                     />
                   </div>
                 </div>
@@ -277,12 +276,12 @@ export function ContactSection() {
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
                     placeholder="Brief project scope, engineering challenge, or collaboration proposal..."
-                    className="w-full bg-black/50 border border-white/10 rounded-xl p-3.5 text-white font-sans text-xs focus:outline-none focus:border-apple-blue transition-colors resize-none placeholder:text-neutral-600"
+                    className="w-full bg-black/50 border border-white/10 rounded-xl p-3.5 text-white font-sans text-xs focus:outline-none focus:border-brand-blue transition-colors resize-none placeholder:text-neutral-600"
                   />
                 </div>
 
                 <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pt-1">
-                  <span className="text-[11px] font-mono text-apple-subtle">
+                  <span className="text-[11px] font-mono text-brand-subtle">
                     {statusText || "Instant mailto routing with 1-click fallback"}
                   </span>
                   <button
@@ -290,7 +289,7 @@ export function ContactSection() {
                     disabled={isTransmitting || !message.trim()}
                     className={`flex items-center space-x-2 px-6 py-2.5 rounded-full font-sans font-semibold text-xs transition-all shadow-md active:scale-95 ${
                       message.trim()
-                        ? "bg-apple-blue text-white hover:bg-blue-400 shadow-apple-blue/25 hover:scale-105"
+                        ? "bg-brand-blue text-white hover:bg-blue-400 shadow-brand-blue/25 hover:scale-105"
                         : "bg-white/10 text-neutral-500 cursor-not-allowed"
                     }`}
                     data-cursor-interactive="true"
@@ -308,7 +307,7 @@ export function ContactSection() {
       {/* Signature Scaled Stroke-Only Footer Wordmark with Subtle Parallax */}
       <div className="pt-14 pb-8 overflow-hidden relative select-none">
         <motion.div
-          className="font-sans text-[7vw] sm:text-[7.2vw] font-black uppercase tracking-apple-tightest text-transparent leading-none whitespace-nowrap text-center opacity-20 hover:opacity-35 transition-opacity cursor-pointer duration-300"
+          className="font-sans text-[7vw] sm:text-[7.2vw] font-black uppercase tracking-tightest-editorial text-transparent leading-none whitespace-nowrap text-center opacity-20 hover:opacity-35 transition-opacity cursor-pointer duration-300"
           style={{
             WebkitTextStroke: "1.2px rgba(255, 255, 255, 0.4)",
             x: wordmarkX,
@@ -336,14 +335,14 @@ export function ContactSection() {
             data-cursor-interactive="true"
           >
             <span>BACK TO TOP</span>
-            <ArrowUp className="w-3 h-3 text-apple-blue" />
+            <ArrowUp className="w-3 h-3 text-brand-blue" />
           </button>
 
           <a
             href="https://github.com/khuzaima175"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center space-x-1.5 text-neutral-400 hover:text-apple-blue transition-colors"
+            className="flex items-center space-x-1.5 text-neutral-400 hover:text-brand-blue transition-colors"
             data-cursor-interactive="true"
           >
             <Github className="w-3.5 h-3.5" />
@@ -353,7 +352,7 @@ export function ContactSection() {
 
           <a
             href={`mailto:${email}`}
-            className="flex items-center space-x-1.5 text-neutral-400 hover:text-apple-blue transition-colors"
+            className="flex items-center space-x-1.5 text-neutral-400 hover:text-brand-blue transition-colors"
             data-cursor-interactive="true"
           >
             <Mail className="w-3.5 h-3.5" />

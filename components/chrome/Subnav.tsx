@@ -25,7 +25,7 @@ const ALL_SECTION_IDS = [
   "contact",
 ];
 
-export function AppleSubnav() {
+export function Subnav() {
   const localTime = useLocalTime();
   const [visible, setVisible] = useState(true);
   const activeSection = useScrollSpy(ALL_SECTION_IDS, 0.35);
@@ -93,7 +93,7 @@ export function AppleSubnav() {
         style={{
           opacity: visible ? topFadeOpacity : 0,
         }}
-        className={`apple-subnav relative rounded-full px-5 sm:px-7 transition-all duration-300 flex items-center justify-between shadow-2xl border border-white/15 bg-[#121215]/90 backdrop-blur-2xl overflow-hidden ${
+        className={`nav-glass-pill relative rounded-full px-5 sm:px-7 transition-all duration-300 flex items-center justify-between shadow-2xl border border-white/15 bg-[#121215]/90 backdrop-blur-2xl overflow-hidden ${
           isScrolledPastHero ? "py-2.5 sm:py-3" : "py-3 sm:py-3.5"
         } ${visible ? "pointer-events-auto" : "pointer-events-none"}`}
       >
@@ -101,7 +101,7 @@ export function AppleSubnav() {
         <div className="flex items-center space-x-4">
           <button
             onClick={() => scrollToTarget(0)}
-            className="text-sm sm:text-base font-bold tracking-tight text-white hover:text-apple-blue transition-colors flex items-center gap-2"
+            className="text-sm sm:text-base font-bold tracking-tight text-white hover:text-brand-blue transition-colors flex items-center gap-2"
             data-cursor-interactive="true"
           >
             <span>Khuzaima Ahmed</span>
@@ -116,7 +116,7 @@ export function AppleSubnav() {
           </div>
         </div>
 
-        {/* Center Navigation Tabs with Apple Spring Pill */}
+        {/* Center Navigation Tabs with Spring Pill */}
         <div className="hidden md:flex items-center space-x-1 sm:space-x-1.5 text-xs sm:text-sm font-medium relative">
           {SECTIONS.map((sec) => {
             const isActive = activeSection === sec.id;
@@ -148,11 +148,11 @@ export function AppleSubnav() {
         <div className="flex items-center space-x-3.5">
           {/* Real-Time Karachi Clock */}
           <div className="hidden sm:flex items-center space-x-2 font-mono text-xs sm:text-sm text-neutral-200 px-3.5 py-1.5 rounded-full bg-white/[0.06] border border-white/10 shadow-inner">
-            <span className="w-1.5 h-1.5 rounded-full bg-apple-blue animate-pulse" />
+            <span className="w-1.5 h-1.5 rounded-full bg-brand-blue animate-pulse" />
             <span className="tabular-nums font-semibold tracking-wider text-white">
               {localTime}
             </span>
-            <span className="text-apple-blue text-[11px] font-bold tracking-tight">
+            <span className="text-brand-blue text-[11px] font-bold tracking-tight">
               PKT
             </span>
           </div>
@@ -160,7 +160,7 @@ export function AppleSubnav() {
           {/* Dispatch CTA Button */}
           <button
             onClick={() => scrollToTarget("contact")}
-            className="inline-flex items-center space-x-1.5 px-4 sm:px-5 py-2 rounded-full bg-apple-blue hover:bg-blue-400 text-white text-xs sm:text-sm font-semibold tracking-tight transition-all duration-200 shadow-md shadow-apple-blue/20 hover:scale-105 active:scale-95"
+            className="inline-flex items-center space-x-1.5 px-4 sm:px-5 py-2 rounded-full bg-brand-blue hover:bg-blue-400 text-white text-xs sm:text-sm font-semibold tracking-tight transition-all duration-200 shadow-md shadow-brand-blue/20 hover:scale-105 active:scale-95"
             data-cursor-interactive="true"
           >
             <span>Dispatch</span>
@@ -171,7 +171,7 @@ export function AppleSubnav() {
         {/* Bottom Hairline Scroll Progress Bar */}
         <motion.div
           style={{ scaleX: smoothProgress }}
-          className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-apple-blue via-indigo-400 to-apple-blue origin-left"
+          className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-brand-blue via-indigo-400 to-brand-blue origin-left"
         />
       </motion.div>
     </div>

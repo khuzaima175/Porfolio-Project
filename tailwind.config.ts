@@ -9,33 +9,39 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        "apple-black": "#000000",
-        "apple-gray": "#161617",
-        "apple-card": "#1d1d1f",
-        "apple-subtle": "#86868b",
-        "apple-blue": "#2997ff",
-        "apple-text": "#f5f5f7",
+        "brand-black": "#000000",
+        "brand-gray": "#161617",
+        "brand-card": "#1d1d1f",
+        "brand-subtle": "#86868b",
+        "brand-blue": "#2997ff",
+        "brand-text": "#f5f5f7",
+        "surface-dark": "#161617",
+        "card-surface": "#1d1d1f",
+        "text-subtle": "#86868b",
+        "text-primary": "#f5f5f7",
+        "canvas-black": "#000000",
+        "accent-blue": "#2997ff",
       },
       fontFamily: {
         sans: ["Inter", "system-ui", "sans-serif"],
       },
       letterSpacing: {
-        "apple-tight": "-0.02em",
-        "apple-tighter": "-0.03em",
-        "apple-tightest": "-0.05em",
+        "tight-editorial": "-0.02em",
+        "tighter-editorial": "-0.03em",
+        "tightest-editorial": "-0.05em",
       },
       borderRadius: {
-        "apple-sm": "12px",
-        "apple-md": "18px",
-        "apple-lg": "28px",
-        "apple-xl": "40px",
+        "radius-sm": "12px",
+        "radius-md": "18px",
+        "radius-lg": "28px",
+        "radius-xl": "40px",
       },
       backgroundImage: {
         "glass-gradient":
           "linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.02) 100%)",
       },
       boxShadow: {
-        "apple-glow": "0 0 60px -15px rgba(41, 151, 255, 0.4)",
+        "accent-glow": "0 0 60px -15px rgba(41, 151, 255, 0.4)",
       },
     },
   },

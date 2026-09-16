@@ -30,7 +30,7 @@ function Word({
         className={`inline-block transition-colors duration-200 ${
           isHighlight
             ? "font-semibold text-white"
-            : "text-apple-subtle"
+            : "text-brand-subtle"
         }`}
       >
         {word}
@@ -56,7 +56,7 @@ export function ScrollTextReveal({
   return (
     <p
       ref={containerRef}
-      className={`leading-relaxed text-apple-subtle transition-all select-none ${className}`}
+      className={`leading-relaxed text-brand-subtle transition-all select-none ${className}`}
     >
       {words.map((word, i) => {
         const start = i / words.length;

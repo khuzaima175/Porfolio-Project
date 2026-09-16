@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { Sliders, Volume2, RotateCcw, Activity } from "lucide-react";
+import { RotateCcw } from "lucide-react";
 
 interface EQBand {
   id: string;
@@ -46,7 +46,7 @@ export function AcousticVisualizer() {
       const logF = logMin + (i / numPoints) * (logMax - logMin);
       const f = Math.pow(10, logF);
 
-      // Simple biquad bell filter approximation: gain * exp(-((ln(f/f0))^2)/(2*(1/q)^2))
+      // Biquad bell filter approximation: gain * exp(-((ln(f/f0))^2)/(2*(1/q)^2))
       let totalGain = 0;
       for (const b of bands) {
         const delta = Math.log(f / b.freq);
@@ -60,7 +60,7 @@ export function AcousticVisualizer() {
     return points;
   }, [bands, logMin, logMax]);
 
-  // Harman Target Curve points (simplified authentic approximation of 301-pt in-ear dataset)
+  // Harman Target Curve points (authentic approximation of 301-pt in-ear dataset)
   const harmanPoints = useMemo(() => {
     const numPoints = 100;
     const points: [number, number][] = [];
@@ -137,30 +137,30 @@ export function AcousticVisualizer() {
   }, [curvePoints, harmanPoints]);
 
   return (
-    <div className="apple-card rounded-3xl p-6 sm:p-8">
+    <div className="pro-card rounded-3xl p-6 sm:p-8">
       {/* Specimen Telemetry Header */}
       <div className="flex flex-wrap items-center justify-between gap-4 pb-6 border-b border-white/10">
         <div>
-          <div className="flex items-center space-x-2 font-mono text-xs text-apple-blue">
-            <span className="w-2 h-2 rounded-full bg-apple-blue animate-pulse" />
+          <div className="flex items-center space-x-2 font-mono text-xs text-brand-blue">
+            <span className="w-2 h-2 rounded-full bg-brand-blue animate-pulse" />
             <span>AUDIOSAGE // DSP BIQUAD SYNTHESIS ENGINE</span>
           </div>
-          <h3 className="font-sans text-xl sm:text-2xl font-bold text-white mt-1 tracking-apple-tight">
+          <h3 className="font-sans text-xl sm:text-2xl font-bold text-white mt-1 tracking-tight-editorial">
             Real-Time Logarithmic PEQ Filter Workbench
           </h3>
         </div>
 
         <div className="flex items-center space-x-3">
           <div className="px-4 py-1.5 bg-white/5 border border-white/10 rounded-full font-mono text-xs">
-            <span className="text-apple-subtle">RMS ERROR: </span>
-            <span className="text-apple-blue font-semibold tabular-nums">{rmsError} dB</span>
+            <span className="text-brand-subtle">RMS ERROR: </span>
+            <span className="text-brand-blue font-semibold tabular-nums">{rmsError} dB</span>
           </div>
           <button
             onClick={() => setShowHarman(!showHarman)}
             className={`px-4 py-1.5 font-mono text-xs rounded-full border transition-all duration-300 ${
               showHarman
-                ? "bg-apple-blue/15 border-apple-blue/40 text-white"
-                : "bg-white/5 border-white/10 text-apple-subtle"
+                ? "bg-brand-blue/15 border-brand-blue/40 text-white"
+                : "bg-white/5 border-white/10 text-brand-subtle"
             }`}
             data-cursor-interactive="true"
           >
@@ -168,7 +168,7 @@ export function AcousticVisualizer() {
           </button>
           <button
             onClick={resetBands}
-            className="p-2 bg-white/5 border border-white/10 text-apple-subtle hover:text-white hover:border-white/30 rounded-full transition-all"
+            className="p-2 bg-white/5 border border-white/10 text-brand-subtle hover:text-white hover:border-white/30 rounded-full transition-all"
             title="Reset Filters"
             data-cursor-interactive="true"
           >
@@ -293,13 +293,13 @@ export function AcousticVisualizer() {
         {/* Legend Overlay */}
         <div className="absolute top-3 right-4 flex items-center space-x-4 font-mono text-[10px]">
           <div className="flex items-center space-x-1.5">
-            <span className="w-3 h-0.5 bg-apple-blue" />
+            <span className="w-3 h-0.5 bg-brand-blue" />
             <span className="text-white">Synthesized Response</span>
           </div>
           {showHarman && (
             <div className="flex items-center space-x-1.5">
-              <span className="w-3 h-0.5 border-t border-dashed border-apple-subtle" />
-              <span className="text-apple-subtle">Harman 2019 In-Ear</span>
+              <span className="w-3 h-0.5 border-t border-dashed border-brand-subtle" />
+              <span className="text-brand-subtle">Harman 2019 In-Ear</span>
             </div>
           )}
         </div>
@@ -315,12 +315,12 @@ export function AcousticVisualizer() {
               onClick={() => setActiveBandId(b.id)}
               className={`flex-1 text-left px-3 py-2.5 font-mono text-xs rounded-xl border transition-all duration-300 ${
                 b.id === activeBandId
-                  ? "bg-apple-blue/15 border-apple-blue/40 text-white"
-                  : "bg-white/5 border-white/10 text-apple-subtle hover:text-white"
+                  ? "bg-brand-blue/15 border-brand-blue/40 text-white"
+                  : "bg-white/5 border-white/10 text-brand-subtle hover:text-white"
               }`}
               data-cursor-interactive="true"
             >
-              <div className="text-[10px] text-apple-subtle">{b.name}</div>
+              <div className="text-[10px] text-brand-subtle">{b.name}</div>
               <div className="font-semibold">{Math.round(b.freq)} Hz</div>
             </button>
           ))}
@@ -328,7 +328,7 @@ export function AcousticVisualizer() {
 
         {/* Frequency Slider */}
         <div className="space-y-1.5">
-          <div className="flex justify-between font-mono text-xs text-apple-subtle">
+          <div className="flex justify-between font-mono text-xs text-brand-subtle">
             <span>FREQUENCY</span>
             <span className="text-white tabular-nums">{Math.round(activeBand.freq)} Hz</span>
           </div>
@@ -341,7 +341,7 @@ export function AcousticVisualizer() {
             onChange={(e) => updateBand("freq", parseFloat(e.target.value))}
             className="w-full accent-blue-500 cursor-pointer"
           />
-          <div className="flex justify-between font-mono text-[10px] text-apple-subtle">
+          <div className="flex justify-between font-mono text-[10px] text-brand-subtle">
             <span>20Hz</span>
             <span>1kHz</span>
             <span>18kHz</span>
@@ -350,9 +350,9 @@ export function AcousticVisualizer() {
 
         {/* Gain Slider */}
         <div className="space-y-1.5">
-          <div className="flex justify-between font-mono text-xs text-apple-subtle">
+          <div className="flex justify-between font-mono text-xs text-brand-subtle">
             <span>PEQ GAIN</span>
-            <span className="text-apple-blue tabular-nums font-semibold">
+            <span className="text-brand-blue tabular-nums font-semibold">
               {activeBand.gain > 0 ? `+${activeBand.gain.toFixed(1)}` : activeBand.gain.toFixed(1)} dB
             </span>
           </div>
@@ -365,7 +365,7 @@ export function AcousticVisualizer() {
             onChange={(e) => updateBand("gain", parseFloat(e.target.value))}
             className="w-full accent-blue-500 cursor-pointer"
           />
-          <div className="flex justify-between font-mono text-[10px] text-apple-subtle">
+          <div className="flex justify-between font-mono text-[10px] text-brand-subtle">
             <span>-12dB</span>
             <span>0dB</span>
             <span>+12dB</span>
@@ -374,7 +374,7 @@ export function AcousticVisualizer() {
 
         {/* Q Factor Slider */}
         <div className="space-y-1.5">
-          <div className="flex justify-between font-mono text-xs text-apple-subtle">
+          <div className="flex justify-between font-mono text-xs text-brand-subtle">
             <span>BANDWIDTH (Q)</span>
             <span className="text-white tabular-nums">{activeBand.q.toFixed(2)}</span>
           </div>
@@ -387,7 +387,7 @@ export function AcousticVisualizer() {
             onChange={(e) => updateBand("q", parseFloat(e.target.value))}
             className="w-full accent-blue-500 cursor-pointer"
           />
-          <div className="flex justify-between font-mono text-[10px] text-apple-subtle">
+          <div className="flex justify-between font-mono text-[10px] text-brand-subtle">
             <span>0.3 (Wide)</span>
             <span>1.4</span>
             <span>4.0 (Notch)</span>

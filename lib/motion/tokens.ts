@@ -1,5 +1,5 @@
 /**
- * Unified Apple-Grade Motion Design Tokens
+ * Unified High-Performance Motion Design Tokens
  * 
  * Strict grammar across the entire portfolio:
  * - Hover / micro-interactions: DUR_MICRO + SPRING_UI

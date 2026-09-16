@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Play, Pause, RotateCcw, AlertTriangle, ShieldCheck, Compass, Gauge } from "lucide-react";
+import { Play, Pause, AlertTriangle, ShieldCheck, Compass } from "lucide-react";
 
 interface GNSSSimulatorProps {
   ambientMode?: boolean;
@@ -182,15 +182,15 @@ export function GNSSSimulator({ ambientMode = false, paused = false }: GNSSSimul
   }
 
   return (
-    <div ref={containerRef} className="apple-card rounded-3xl p-6 sm:p-8 mt-8">
+    <div ref={containerRef} className="pro-card rounded-3xl p-6 sm:p-8 mt-8">
       {/* Header */}
       <div className="flex flex-wrap items-center justify-between gap-4 pb-6 border-b border-white/10">
         <div>
-          <div className="flex items-center space-x-2 font-mono text-xs text-apple-blue">
+          <div className="flex items-center space-x-2 font-mono text-xs text-brand-blue">
             <Compass className="w-3.5 h-3.5" />
             <span>GNSS MULTI-STREAM FUSION // BENCHMARK BENCH</span>
           </div>
-          <h3 className="font-sans text-xl sm:text-2xl font-bold text-white mt-1 tracking-apple-tight">
+          <h3 className="font-sans text-xl sm:text-2xl font-bold text-white mt-1 tracking-tight-editorial">
             Rauch-Tung-Striebel (RTS) Trajectory Filter Simulator
           </h3>
         </div>
@@ -204,7 +204,7 @@ export function GNSSSimulator({ ambientMode = false, paused = false }: GNSSSimul
                 key={sp}
                 onClick={() => setSpeedMultiplier(sp)}
                 className={`px-2.5 py-1 rounded-full transition-colors ${
-                  speedMultiplier === sp ? "bg-apple-blue text-white font-bold" : "text-apple-subtle hover:text-white"
+                  speedMultiplier === sp ? "bg-brand-blue text-white font-bold" : "text-brand-subtle hover:text-white"
                 }`}
               >
                 {sp}x
@@ -214,10 +214,10 @@ export function GNSSSimulator({ ambientMode = false, paused = false }: GNSSSimul
 
           <button
             onClick={() => setIsPlaying(!isPlaying)}
-            className="flex items-center space-x-1.5 px-3.5 py-1.5 bg-white/5 border border-white/10 rounded-full font-mono text-xs text-white hover:border-apple-blue transition-all"
+            className="flex items-center space-x-1.5 px-3.5 py-1.5 bg-white/5 border border-white/10 rounded-full font-mono text-xs text-white hover:border-brand-blue transition-all"
             data-cursor-interactive="true"
           >
-            {isPlaying ? <Pause className="w-3 h-3 text-apple-blue" /> : <Play className="w-3 h-3 text-emerald-400" />}
+            {isPlaying ? <Pause className="w-3 h-3 text-brand-blue" /> : <Play className="w-3 h-3 text-emerald-400" />}
             <span>{isPlaying ? "PAUSE" : "PLAY"}</span>
           </button>
 
@@ -226,7 +226,7 @@ export function GNSSSimulator({ ambientMode = false, paused = false }: GNSSSimul
             className={`flex items-center space-x-1.5 px-3.5 py-1.5 font-mono text-xs rounded-full border transition-all ${
               simBlackout
                 ? "bg-amber-950/40 border-amber-500 text-amber-300"
-                : "bg-white/5 border-white/10 text-apple-subtle hover:text-white"
+                : "bg-white/5 border-white/10 text-brand-subtle hover:text-white"
             }`}
             data-cursor-interactive="true"
           >
@@ -246,19 +246,19 @@ export function GNSSSimulator({ ambientMode = false, paused = false }: GNSSSimul
         />
 
         {/* Floating Telemetry HUD */}
-        <div className="absolute top-3 left-4 space-y-1 font-mono text-[11px] text-apple-subtle bg-black/80 backdrop-blur-xl p-3 border border-white/10 rounded-2xl">
+        <div className="absolute top-3 left-4 space-y-1 font-mono text-[11px] text-brand-subtle bg-black/80 backdrop-blur-xl p-3 border border-white/10 rounded-2xl">
           <div className="flex items-center space-x-3">
-            <span className="text-apple-subtle">EPOCH:</span>
+            <span className="text-brand-subtle">EPOCH:</span>
             <span className="text-white font-semibold tabular-nums">{epoch} / 2493</span>
           </div>
           <div className="flex items-center space-x-3">
-            <span className="text-apple-subtle">DRIFT RATE:</span>
+            <span className="text-brand-subtle">DRIFT RATE:</span>
             <span className="text-emerald-400 font-semibold tabular-nums">
               {simBlackout ? "0.062 m/s (DR)" : "0.003 m/s"}
             </span>
           </div>
           <div className="flex items-center space-x-3">
-            <span className="text-apple-subtle">RAIM STATUS:</span>
+            <span className="text-brand-subtle">RAIM STATUS:</span>
             <span className="text-white flex items-center space-x-1">
               <ShieldCheck className="w-3 h-3 text-emerald-500" />
               <span>LODO-CV LOCKED</span>
@@ -270,9 +270,9 @@ export function GNSSSimulator({ ambientMode = false, paused = false }: GNSSSimul
         <div className="absolute bottom-3 right-4 flex flex-wrap items-center gap-4 font-mono text-[10px] bg-black/80 backdrop-blur-xl p-2.5 border border-white/10 rounded-2xl">
           <button
             onClick={() => setShowRTS(!showRTS)}
-            className="flex items-center space-x-1.5 text-white hover:text-apple-blue"
+            className="flex items-center space-x-1.5 text-white hover:text-brand-blue"
           >
-            <span className="w-3 h-1 bg-apple-blue rounded-full" />
+            <span className="w-3 h-1 bg-brand-blue rounded-full" />
             <span>RTS Smoothed (1.235m RMS)</span>
           </button>
           <button
@@ -282,7 +282,7 @@ export function GNSSSimulator({ ambientMode = false, paused = false }: GNSSSimul
             <span className="w-3 h-0.5 bg-amber-400 rounded-full" />
             <span>Raw GPS SPP L1 (10.89m RMS)</span>
           </button>
-          <div className="flex items-center space-x-1.5 text-apple-subtle">
+          <div className="flex items-center space-x-1.5 text-brand-subtle">
             <span className="w-3 h-0.5 bg-white/40 rounded-full" />
             <span>NovAtel 2cm RTK Truth</span>
           </div>
@@ -292,21 +292,21 @@ export function GNSSSimulator({ ambientMode = false, paused = false }: GNSSSimul
       {/* Benchmark Comparisons Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2 font-mono text-xs">
         <div className="p-4 bg-white/5 border border-white/10 rounded-2xl">
-          <div className="text-apple-subtle text-[10px]">RAW CONSUMER GPS</div>
+          <div className="text-brand-subtle text-[10px]">RAW CONSUMER GPS</div>
           <div className="font-sans text-lg text-amber-400 font-bold mt-1">10.89 m RMS</div>
-          <div className="text-apple-subtle text-[11px] mt-0.5">High multipath and ionospheric delay</div>
+          <div className="text-brand-subtle text-[11px] mt-0.5">High multipath and ionospheric delay</div>
         </div>
 
         <div className="p-4 bg-white/5 border border-white/10 rounded-2xl">
-          <div className="text-apple-subtle text-[10px]">RTS BACKWARD SMOOTHER</div>
-          <div className="font-sans text-lg text-apple-blue font-bold mt-1">1.235 m RMS</div>
-          <div className="text-apple-subtle text-[11px] mt-0.5">88.4% error reduction (p = 9.3e-6)</div>
+          <div className="text-brand-subtle text-[10px]">RTS BACKWARD SMOOTHER</div>
+          <div className="font-sans text-lg text-brand-blue font-bold mt-1">1.235 m RMS</div>
+          <div className="text-brand-subtle text-[11px] mt-0.5">88.4% error reduction (p = 9.3e-6)</div>
         </div>
 
         <div className="p-4 bg-white/5 border border-white/10 rounded-2xl">
-          <div className="text-apple-subtle text-[10px]">TUNNEL DEAD-RECKONING</div>
+          <div className="text-brand-subtle text-[10px]">TUNNEL DEAD-RECKONING</div>
           <div className="font-sans text-lg text-white font-bold mt-1">0.062 m/s</div>
-          <div className="text-apple-subtle text-[11px] mt-0.5">Tested across 60s total signal outage</div>
+          <div className="text-brand-subtle text-[11px] mt-0.5">Tested across 60s total signal outage</div>
         </div>
       </div>
     </div>

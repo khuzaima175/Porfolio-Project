@@ -83,15 +83,15 @@ export function HeroStory() {
       className="relative h-[280vh] bg-black text-white"
     >
       {/* Sticky Fullscreen Stage */}
-      <div className="sticky top-0 h-screen w-full overflow-hidden flex flex-col justify-between pt-16 pb-6 px-6 sm:pt-20 sm:pb-10 sm:px-12 select-none">
+      <div className="sticky top-0 h-[100dvh] w-full overflow-hidden flex flex-col justify-between pt-14 pb-5 px-4 sm:pt-20 sm:pb-10 sm:px-12 select-none">
         {/* Dynamic Multi-Layer Ambient Specular Lights */}
         <motion.div
           style={{ opacity: blueGlowOpacity }}
-          className="pointer-events-none absolute top-1/4 left-1/2 -translate-x-1/2 w-[750px] h-[520px] blue-glow blur-[120px]"
+          className="pointer-events-none absolute top-1/4 left-1/2 -translate-x-1/2 w-[90vw] sm:w-[750px] h-[350px] sm:h-[520px] blue-glow blur-[40px] sm:blur-[120px]"
         />
         <motion.div
           style={{ opacity: amberGlowOpacity }}
-          className="pointer-events-none absolute bottom-1/4 right-1/4 w-[650px] h-[520px] amber-glow blur-[140px]"
+          className="pointer-events-none absolute bottom-1/4 right-1/4 w-[80vw] sm:w-[650px] h-[300px] sm:h-[520px] amber-glow blur-[50px] sm:blur-[140px]"
         />
 
         {/* Live Ambient Hardware Plate Layer (First-Paint Silicon Proof) */}

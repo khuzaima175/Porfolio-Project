@@ -77,7 +77,7 @@ export function Subnav() {
   }, []);
 
   return (
-    <div className="sticky top-5 z-50 max-w-[95vw] 2xl:max-w-[1760px] mx-auto px-4 sm:px-6 pointer-events-none">
+    <div className="sticky top-3 sm:top-5 z-50 max-w-[98vw] 2xl:max-w-[1760px] mx-auto px-2 sm:px-6 pointer-events-none">
       <motion.div
         initial={false}
         animate={{
@@ -93,15 +93,15 @@ export function Subnav() {
         style={{
           opacity: visible ? topFadeOpacity : 0,
         }}
-        className={`nav-glass-pill relative rounded-full px-5 sm:px-7 transition-all duration-300 flex items-center justify-between shadow-2xl border border-white/15 bg-[#121215]/90 backdrop-blur-2xl overflow-hidden ${
-          isScrolledPastHero ? "py-2.5 sm:py-3" : "py-3 sm:py-3.5"
+        className={`nav-glass-pill relative rounded-full px-3.5 sm:px-7 transition-all duration-300 flex items-center justify-between shadow-2xl border border-white/15 bg-[#121215]/90 backdrop-blur-2xl overflow-hidden ${
+          isScrolledPastHero ? "py-2 sm:py-3" : "py-2.5 sm:py-3.5"
         } ${visible ? "pointer-events-auto" : "pointer-events-none"}`}
       >
         {/* Left Branding & Availability Badge */}
-        <div className="flex items-center space-x-4">
+        <div className="flex items-center space-x-3 sm:space-x-4">
           <button
             onClick={() => scrollToTarget(0)}
-            className="text-sm sm:text-base font-bold tracking-tight text-white hover:text-brand-blue transition-colors flex items-center gap-2"
+            className="text-xs sm:text-base font-bold tracking-tight text-white hover:text-brand-blue transition-colors flex items-center gap-2 py-1 min-h-[36px]"
             data-cursor-interactive="true"
           >
             <span>Khuzaima Ahmed</span>

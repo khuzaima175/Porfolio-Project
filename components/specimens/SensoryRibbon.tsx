@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Cpu, Clock, Zap, Play, Pause, Mic } from "lucide-react";
 
 interface TimeBlock {
@@ -83,6 +83,18 @@ export function SensoryRibbon() {
 
   const current = blocks.find((b) => b.hour === selectedHour) || blocks[14];
 
+  const ribbonRef = useRef<HTMLDivElement | null>(null);
+
+  const handleTouchScrub = (clientX: number) => {
+    if (!ribbonRef.current) return;
+    const rect = ribbonRef.current.getBoundingClientRect();
+    const clampedX = Math.max(0, Math.min(rect.width, clientX - rect.left));
+    const fraction = clampedX / rect.width;
+    const hour = Math.min(23, Math.max(0, Math.floor(fraction * 24)));
+    setSelectedHour(hour);
+    setIsAutoPlaying(false);
+  };
+
   return (
     <div className="pro-card rounded-3xl p-6 sm:p-8 mt-8">
       {/* Header */}
@@ -100,7 +112,7 @@ export function SensoryRibbon() {
         <div className="flex items-center space-x-3 font-mono text-xs">
           <button
             onClick={() => setIsAutoPlaying(!isAutoPlaying)}
-            className="flex items-center space-x-1.5 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-white hover:border-brand-blue transition-colors"
+            className="flex items-center space-x-1.5 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-white hover:border-brand-blue transition-colors min-h-[36px]"
             data-cursor-interactive="true"
           >
             {isAutoPlaying ? <Pause className="w-3 h-3 text-brand-blue" /> : <Play className="w-3 h-3 text-emerald-400" />}
@@ -119,11 +131,21 @@ export function SensoryRibbon() {
       <div className="my-6">
         <div className="text-[11px] font-mono text-brand-subtle mb-2 flex justify-between">
           <span>00:00 (MIDNIGHT)</span>
-          <span>SCRUB 24H BIOLOGICAL DAY TO INSPECT TELEMETRY</span>
+          <span className="hidden sm:inline">SCRUB 24H BIOLOGICAL DAY TO INSPECT TELEMETRY</span>
+          <span className="sm:hidden">SLIDE TO SCRUB</span>
           <span>23:59</span>
         </div>
 
-        <div className="grid grid-cols-24 gap-1 h-12 bg-black/60 p-1 border border-white/10 rounded-2xl">
+        <div
+          ref={ribbonRef}
+          onTouchStart={(e) => {
+            if (e.touches[0]) handleTouchScrub(e.touches[0].clientX);
+          }}
+          onTouchMove={(e) => {
+            if (e.touches[0]) handleTouchScrub(e.touches[0].clientX);
+          }}
+          className="grid grid-cols-24 gap-0.5 sm:gap-1 h-14 sm:h-12 bg-black/60 p-1 border border-white/10 rounded-2xl touch-none select-none"
+        >
           {blocks.map((b) => {
             const isSelected = b.hour === selectedHour;
             let bgColor = "bg-white/10";

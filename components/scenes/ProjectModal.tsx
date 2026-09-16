@@ -61,9 +61,27 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
     };
   }, [project, onClose]);
 
-  // Initialize smooth momentum scroll inside the modal body + track inner scroll
+  // Initialize smooth momentum scroll inside the modal body on desktop, or native scroll on touch
   useEffect(() => {
     if (!project || !scrollWrapperRef.current) return;
+
+    const isTouchDevice =
+      typeof window !== "undefined" &&
+      (window.matchMedia("(pointer: coarse)").matches ||
+        "ontouchstart" in window ||
+        navigator.maxTouchPoints > 0);
+
+    if (isTouchDevice) {
+      // Native compositor scroll on mobile
+      const el = scrollWrapperRef.current;
+      const handleNativeScroll = () => {
+        setIsInnerScrolled(el.scrollTop > 120);
+      };
+      el.addEventListener("scroll", handleNativeScroll, { passive: true });
+      return () => {
+        el.removeEventListener("scroll", handleNativeScroll);
+      };
+    }
 
     const modalLenis = new Lenis({
       wrapper: scrollWrapperRef.current,
@@ -74,7 +92,8 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
       gestureOrientation: "vertical",
       smoothWheel: true,
       wheelMultiplier: 1.0,
-      touchMultiplier: 1.5,
+      touchMultiplier: 1.0,
+      syncTouch: false,
     });
 
     modalLenis.on("scroll", (e: any) => {
@@ -117,7 +136,7 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
             transition={{ duration: 0.4, ease: EASE_ENTER }}
-            className="relative w-full max-w-3xl bg-[#141415] border-l border-white/10 h-screen max-h-screen flex flex-col shadow-2xl z-10 overflow-hidden text-white select-text transform-gpu"
+            className="relative w-full max-w-3xl bg-[#141415] border-l border-white/10 h-[100dvh] max-h-[100dvh] flex flex-col shadow-2xl z-10 overflow-hidden text-white select-text transform-gpu"
           >
             {/* Drawer Header (Condenses to one-line title on inner scroll > 120px) */}
             <div className="flex-shrink-0 bg-[#161617]/95 backdrop-blur-xl border-b border-white/10 p-4 sm:p-5 px-6 flex items-center justify-between z-20 transition-all duration-300">

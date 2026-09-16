@@ -266,6 +266,8 @@ export function AcousticVisualizer() {
                 className="cursor-pointer"
                 onClick={() => setActiveBandId(b.id)}
               >
+                {/* Large transparent touch target for mobile fingertips */}
+                <circle cx={cx} cy={cy} r={24} fill="transparent" />
                 <circle
                   cx={cx}
                   cy={cy}

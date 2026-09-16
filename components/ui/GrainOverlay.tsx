@@ -5,7 +5,7 @@ import React from "react";
 export function GrainOverlay() {
   return (
     <div
-      className="pointer-events-none fixed inset-0 z-[9990] opacity-[0.035] mix-blend-screen select-none overflow-hidden"
+      className="hidden md:block pointer-events-none fixed inset-0 z-[9990] opacity-[0.035] mix-blend-screen select-none overflow-hidden"
       aria-hidden="true"
     >
       <svg className="w-full h-full" xmlns="http://www.w3.org/2000/svg">

@@ -19,7 +19,7 @@ export function GNSSSimulator({ ambientMode = false, paused = false }: GNSSSimul
   const [epoch, setEpoch] = useState(420);
   const [isIntersecting, setIsIntersecting] = useState(true);
 
-  // Automatic offscreen pause via IntersectionObserver
+  // Automatic offscreen pause via IntersectionObserver and tab visibility
   useEffect(() => {
     if (!containerRef.current) return;
     const observer = new IntersectionObserver(
@@ -29,7 +29,23 @@ export function GNSSSimulator({ ambientMode = false, paused = false }: GNSSSimul
       { rootMargin: "100px" }
     );
     observer.observe(containerRef.current);
-    return () => observer.disconnect();
+
+    const handleVisibility = () => {
+      if (document.visibilityState === "hidden") {
+        setIsIntersecting(false);
+      } else if (containerRef.current) {
+        // Re-check intersection when returning to tab
+        const rect = containerRef.current.getBoundingClientRect();
+        setIsIntersecting(rect.top < window.innerHeight + 100 && rect.bottom > -100);
+      }
+    };
+
+    document.addEventListener("visibilitychange", handleVisibility);
+
+    return () => {
+      observer.disconnect();
+      document.removeEventListener("visibilitychange", handleVisibility);
+    };
   }, []);
 
   useEffect(() => {
@@ -38,10 +54,12 @@ export function GNSSSimulator({ ambientMode = false, paused = false }: GNSSSimul
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
+    const isMobileScreen = typeof window !== "undefined" && window.innerWidth < 768;
     let animId: number;
     let t = epoch;
     let lastFrameTime = performance.now();
-    const targetInterval = ambientMode ? 1000 / 30 : 1000 / 60; // 30 FPS cap in ambient mode
+    // 24 FPS cap in ambient mode on mobile, 30 FPS on desktop, 60 FPS in interactive specimen
+    const targetInterval = ambientMode ? (isMobileScreen ? 1000 / 24 : 1000 / 30) : 1000 / 60;
 
     const render = (currentTime: number) => {
       animId = requestAnimationFrame(render);
@@ -66,10 +84,10 @@ export function GNSSSimulator({ ambientMode = false, paused = false }: GNSSSimul
       const cx = canvas.width / 2;
       const cy = canvas.height / 2;
 
-      // Draw subtle geodetic grid
+      // Draw subtle geodetic grid (lighter on mobile)
       ctx.strokeStyle = ambientMode ? "rgba(41, 151, 255, 0.04)" : "rgba(255, 255, 255, 0.05)";
       ctx.lineWidth = 1;
-      const gridSize = ambientMode ? 50 : 40;
+      const gridSize = ambientMode ? (isMobileScreen ? 80 : 50) : 40;
       for (let x = 0; x < canvas.width; x += gridSize) {
         ctx.beginPath();
         ctx.moveTo(x, 0);
@@ -92,11 +110,13 @@ export function GNSSSimulator({ ambientMode = false, paused = false }: GNSSSimul
         return { x, y };
       };
 
+      const stepSize = isMobileScreen && ambientMode ? 4 : 2;
+
       // 1. Draw Ground Truth Path (NovAtel ProPak6 2cm NRTK)
       ctx.strokeStyle = ambientMode ? "rgba(255, 255, 255, 0.15)" : "rgba(255, 255, 255, 0.25)";
       ctx.lineWidth = ambientMode ? 1.2 : 1.5;
       ctx.beginPath();
-      for (let i = 0; i < 450; i += 2) {
+      for (let i = 0; i < 450; i += stepSize) {
         const pt = getRTKPoint(i * 2.5);
         if (i === 0) ctx.moveTo(pt.x, pt.y);
         else ctx.lineTo(pt.x, pt.y);
@@ -108,7 +128,7 @@ export function GNSSSimulator({ ambientMode = false, paused = false }: GNSSSimul
         ctx.strokeStyle = ambientMode ? "rgba(255, 180, 50, 0.2)" : "rgba(255, 180, 50, 0.4)";
         ctx.lineWidth = 1;
         ctx.beginPath();
-        for (let i = 0; i < 450; i += 3) {
+        for (let i = 0; i < 450; i += (stepSize + 1)) {
           const pt = getRTKPoint(i * 2.5);
           const noiseX = Math.sin(i * 12.3) * 16 + Math.cos(i * 5.1) * 8;
           const noiseY = Math.cos(i * 8.7) * 14 + Math.sin(i * 3.4) * 9;
@@ -125,7 +145,7 @@ export function GNSSSimulator({ ambientMode = false, paused = false }: GNSSSimul
         ctx.strokeStyle = ambientMode ? "rgba(41, 151, 255, 0.75)" : "#2997ff";
         ctx.lineWidth = ambientMode ? 2.0 : 2.5;
         ctx.beginPath();
-        for (let i = 0; i < 450; i += 2) {
+        for (let i = 0; i < 450; i += stepSize) {
           const pt = getRTKPoint(i * 2.5);
           const smoothNoiseX = Math.sin(i * 0.8) * 2.2;
           const smoothNoiseY = Math.cos(i * 0.8) * 1.8;

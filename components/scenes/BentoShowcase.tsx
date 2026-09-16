@@ -217,10 +217,10 @@ export function BentoShowcase({
          ========================================================================= */}
       <div ref={containerRef} className="relative h-[440vh] select-none">
         {/* Pinned Cinematic Theater Viewport */}
-        <div className="sticky top-0 h-screen w-full overflow-hidden flex flex-col justify-between py-6 sm:py-8 px-6 sm:px-12">
+        <div className="sticky top-0 h-[100dvh] w-full overflow-hidden flex flex-col justify-between py-4 sm:py-8 px-4 sm:px-12">
           {/* Dynamic Ambient Specular Glow Behind the Theater */}
           <div
-            className="pointer-events-none absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1600px] h-[900px] rounded-full blur-[190px] transition-colors duration-1000"
+            className="pointer-events-none absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90vw] sm:w-[1600px] h-[350px] sm:h-[900px] rounded-full blur-[60px] sm:blur-[190px] transition-colors duration-1000"
             style={{ backgroundColor: activeGlow }}
           />
 
@@ -323,17 +323,17 @@ export function BentoShowcase({
                     </div>
 
                     {/* Metric Cards with Slotted Odometers */}
-                    <div className="flex flex-col sm:flex-row lg:flex-col items-start sm:items-center lg:items-end gap-4 flex-shrink-0">
-                      <div className="flex gap-3">
+                    <div className="flex flex-col sm:flex-row lg:flex-col items-start sm:items-center lg:items-end gap-3 sm:gap-4 flex-shrink-0">
+                      <div className="flex gap-2 sm:gap-3 w-full sm:w-auto justify-between sm:justify-start">
                         {ch.stats.map((st, sIdx) => (
                           <div
                             key={sIdx}
-                            className="p-3.5 sm:p-4 px-5 sm:px-6 rounded-2xl bg-[#161617] border border-white/10 text-center min-w-[110px] sm:min-w-[130px] shadow-xl"
+                            className="p-2 sm:p-4 px-3 sm:px-6 rounded-2xl bg-[#161617] border border-white/10 text-center flex-1 sm:flex-none min-w-[75px] sm:min-w-[130px] shadow-xl"
                           >
-                            <div className="text-[10px] sm:text-[11px] text-brand-subtle uppercase font-mono tracking-wider">
+                            <div className="text-[9px] sm:text-[11px] text-brand-subtle uppercase font-mono tracking-wider">
                               {st.label}
                             </div>
-                            <div className="font-sans text-xl sm:text-2xl lg:text-3xl font-bold text-white flex items-center justify-center mt-0.5">
+                            <div className="font-sans text-base sm:text-2xl lg:text-3xl font-bold text-white flex items-center justify-center mt-0.5">
                               <Odometer value={st.value} duration={0.6} />
                             </div>
                           </div>
@@ -343,7 +343,7 @@ export function BentoShowcase({
                       <MagneticButton>
                         <button
                           onClick={() => onSelectProject(project)}
-                          className="inline-flex items-center space-x-2.5 px-7 py-3.5 rounded-full bg-white text-black hover:bg-neutral-200 transition-colors text-xs sm:text-sm font-semibold shadow-2xl active:scale-95 cursor-pointer"
+                          className="w-full sm:w-auto inline-flex items-center justify-center space-x-2.5 px-6 sm:px-7 py-3 sm:py-3.5 rounded-full bg-white text-black hover:bg-neutral-200 transition-colors text-xs sm:text-sm font-semibold shadow-2xl active:scale-95 cursor-pointer min-h-[44px]"
                           data-cursor-interactive="true"
                           data-cursor-label="INSPECT"
                         >

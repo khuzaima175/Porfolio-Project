@@ -7,15 +7,24 @@ export function useLenis() {
   const lenisRef = useRef<Lenis | null>(null);
 
   useEffect(() => {
-    // High-performance smooth momentum scroll
+    // Detect touch / mobile screen
+    const isTouchDevice =
+      typeof window !== "undefined" &&
+      (window.matchMedia("(pointer: coarse)").matches ||
+        "ontouchstart" in window ||
+        navigator.maxTouchPoints > 0);
+
+    // On mobile devices, delegate to native hardware-accelerated GPU compositor scrolling
+    // to prevent main-thread touch hijacking and battery drain on low-end CPUs
     const lenis = new Lenis({
       duration: 0.85,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       orientation: "vertical",
       gestureOrientation: "vertical",
-      smoothWheel: true,
+      smoothWheel: !isTouchDevice,
       wheelMultiplier: 1.0,
-      touchMultiplier: 1.5,
+      touchMultiplier: 1.0,
+      syncTouch: false,
     });
 
     lenisRef.current = lenis;
@@ -23,14 +32,27 @@ export function useLenis() {
       (window as any).__lenis = lenis;
     }
 
+    let rafId: number;
+    let isTabActive = true;
+
     function raf(time: number) {
-      lenis.raf(time);
-      requestAnimationFrame(raf);
+      if (isTabActive) {
+        lenis.raf(time);
+      }
+      rafId = requestAnimationFrame(raf);
     }
 
-    const rafId = requestAnimationFrame(raf);
+    rafId = requestAnimationFrame(raf);
+
+    // Pause RAF when browser tab is inactive / backgrounded (conserves mobile battery & CPU)
+    const handleVisibilityChange = () => {
+      isTabActive = document.visibilityState === "visible";
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
 
     return () => {
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
       cancelAnimationFrame(rafId);
       lenis.destroy();
       lenisRef.current = null;

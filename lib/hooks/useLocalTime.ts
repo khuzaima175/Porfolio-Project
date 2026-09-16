@@ -3,19 +3,28 @@
 import { useEffect, useState } from "react";
 
 export function useLocalTime() {
-  const [time, setTime] = useState<string>("");
+  const [time, setTime] = useState<string>("--:--:--");
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
+
     function updateClock() {
       const now = new Date();
-      const formatter = new Intl.DateTimeFormat("en-US", {
-        timeZone: "Asia/Karachi",
-        hour: "2-digit",
-        minute: "2-digit",
-        second: "2-digit",
-        hour12: false,
-      });
-      setTime(formatter.format(now));
+      try {
+        const formatter = new Intl.DateTimeFormat("en-GB", {
+          timeZone: "Asia/Karachi",
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit",
+          hour12: false,
+        });
+        setTime(formatter.format(now));
+      } catch {
+        // Fallback to local time if timezone string fails
+        const pad = (n: number) => n.toString().padStart(2, "0");
+        setTime(`${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`);
+      }
     }
 
     updateClock();
@@ -23,5 +32,5 @@ export function useLocalTime() {
     return () => clearInterval(interval);
   }, []);
 
-  return time || "17:00:00";
+  return { time, mounted };
 }

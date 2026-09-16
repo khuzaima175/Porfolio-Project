@@ -50,6 +50,7 @@ export function AppleHeroStory() {
   const stage1Opacity = useTransform(scrollYProgress, [0, 0.22, 0.38], [1, 1, 0]);
   const stage1Y = useTransform(scrollYProgress, [0, 0.22, 0.38], [0, 0, -35]);
   const stage1Scale = useTransform(scrollYProgress, [0, 0.22, 0.38], [1, 1, 0.96]);
+  const stage1PointerEvents = useTransform(stage1Opacity, (o) => (o > 0.15 ? "auto" : "none"));
 
   // Central Plate Parallax & Scale
   const plateScale = useTransform(scrollYProgress, [0, 0.35, 0.7], [1.12, 1.0, 0.92]);
@@ -59,10 +60,12 @@ export function AppleHeroStory() {
   const stage2Opacity = useTransform(scrollYProgress, [0.22, 0.38, 0.65, 0.80], [0, 1, 1, 0]);
   const stage2Y = useTransform(scrollYProgress, [0.22, 0.38, 0.65, 0.80], [35, 0, 0, -35]);
   const stage2Scale = useTransform(scrollYProgress, [0.22, 0.38, 0.65, 0.80], [0.96, 1, 1, 0.96]);
+  const stage2PointerEvents = useTransform(stage2Opacity, (o) => (o > 0.15 ? "auto" : "none"));
 
   // Stage 3 Transforms (0.65 -> 1.00)
   const stage3Opacity = useTransform(scrollYProgress, [0.65, 0.80, 1.0], [0, 1, 1]);
   const stage3Y = useTransform(scrollYProgress, [0.65, 0.80, 1.0], [35, 0, 0]);
+  const stage3PointerEvents = useTransform(stage3Opacity, (o) => (o > 0.15 ? "auto" : "none"));
 
   // Scroll Hairline fill
   const hairlineScaleY = useTransform(scrollYProgress, [0, 0.3], [0, 1]);
@@ -76,7 +79,7 @@ export function AppleHeroStory() {
       className="relative h-[280vh] bg-black text-white"
     >
       {/* Sticky Fullscreen Stage */}
-      <div className="sticky top-0 h-screen w-full overflow-hidden flex flex-col justify-between p-6 sm:p-12 select-none">
+      <div className="sticky top-0 h-screen w-full overflow-hidden flex flex-col justify-between pt-16 pb-6 px-6 sm:pt-20 sm:pb-10 sm:px-12 select-none">
         {/* Dynamic Multi-Layer Ambient Specular Lights */}
         <motion.div
           style={{ opacity: blueGlowOpacity }}
@@ -135,8 +138,9 @@ export function AppleHeroStory() {
               opacity: stage1Opacity,
               y: stage1Y,
               scale: stage1Scale,
+              pointerEvents: stage1PointerEvents,
             }}
-            className="space-y-6"
+            className="space-y-5"
           >
             <div className="overflow-hidden">
               <motion.span
@@ -156,7 +160,7 @@ export function AppleHeroStory() {
                   initial={{ y: "110%" }}
                   animate={{ y: 0 }}
                   transition={{ duration: 0.8, delay: 0.05, ease: [0.16, 1, 0.3, 1] }}
-                  className="font-sans text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-bold tracking-apple-tightest leading-[0.92] text-white"
+                  className="font-sans text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-apple-tightest leading-[0.95] text-white"
                 >
                   Deterministic
                 </motion.h1>
@@ -166,7 +170,7 @@ export function AppleHeroStory() {
                   initial={{ y: "110%" }}
                   animate={{ y: 0 }}
                   transition={{ duration: 0.8, delay: 0.14, ease: [0.16, 1, 0.3, 1] }}
-                  className="font-sans text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-bold tracking-apple-tightest leading-[0.92] text-apple-subtle"
+                  className="font-sans text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-apple-tightest leading-[0.95] text-apple-subtle"
                 >
                   by construction.
                 </motion.h1>
@@ -178,7 +182,7 @@ export function AppleHeroStory() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.7, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
-                className="max-w-2xl mx-auto text-apple-subtle text-base sm:text-xl font-normal leading-relaxed pt-2"
+                className="max-w-2xl mx-auto text-apple-subtle text-sm sm:text-lg font-normal leading-relaxed pt-1"
               >
                 Zero overhead by proof. Native Win32 background daemons, 3D multi-stream GNSS
                 trajectory fusion, and real-time DSP audio synthesis.
@@ -188,23 +192,28 @@ export function AppleHeroStory() {
 
           {/* Phase 2: 3-Column Comparative Metrics with Odometers */}
           <motion.div
-            style={{ opacity: stage2Opacity, y: stage2Y, scale: stage2Scale }}
-            className="absolute inset-0 flex flex-col justify-center items-center space-y-8 pointer-events-auto"
+            style={{
+              opacity: stage2Opacity,
+              y: stage2Y,
+              scale: stage2Scale,
+              pointerEvents: stage2PointerEvents,
+            }}
+            className="absolute inset-0 flex flex-col justify-center items-center space-y-6"
           >
             <span className="text-xs sm:text-sm font-semibold tracking-widest uppercase text-apple-blue font-mono">
               Engineered From First Principles
             </span>
 
-            <h2 className="font-sans text-4xl sm:text-6xl md:text-7xl font-bold tracking-apple-tightest text-white leading-tight">
+            <h2 className="font-sans text-3xl sm:text-5xl md:text-6xl font-bold tracking-apple-tightest text-white leading-tight">
               Uncompromising physics. <br />
               Zero measurable overhead.
             </h2>
 
             {/* Apple 3-Column Stat Callouts with Rolling Odometers */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8 pt-4 w-full max-w-4xl">
-              <div className="text-center p-6 bg-apple-gray/60 backdrop-blur-2xl rounded-3xl border border-white/10 shadow-2xl">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 sm:gap-7 pt-3 w-full max-w-4xl">
+              <div className="text-center p-5 sm:p-6 bg-apple-gray/60 backdrop-blur-2xl rounded-3xl border border-white/10 shadow-2xl">
                 <div className="text-xs text-apple-subtle font-medium mb-1 uppercase font-mono">Up to</div>
-                <div className="font-sans text-4xl sm:text-5xl font-bold text-white tracking-tight flex items-center justify-center">
+                <div className="font-sans text-3xl sm:text-5xl font-bold text-white tracking-tight flex items-center justify-center">
                   <Odometer value="88.4%" />
                 </div>
                 <div className="text-xs text-apple-subtle mt-2 leading-snug">
@@ -212,9 +221,9 @@ export function AppleHeroStory() {
                 </div>
               </div>
 
-              <div className="text-center p-6 bg-apple-gray/60 backdrop-blur-2xl rounded-3xl border border-white/10 shadow-2xl">
+              <div className="text-center p-5 sm:p-6 bg-apple-gray/60 backdrop-blur-2xl rounded-3xl border border-white/10 shadow-2xl">
                 <div className="text-xs text-apple-subtle font-medium mb-1 uppercase font-mono">Exactly</div>
-                <div className="font-sans text-4xl sm:text-5xl font-bold text-white tracking-tight flex items-center justify-center">
+                <div className="font-sans text-3xl sm:text-5xl font-bold text-white tracking-tight flex items-center justify-center">
                   <Odometer value="0.0%" />
                 </div>
                 <div className="text-xs text-apple-subtle mt-2 leading-snug">
@@ -222,9 +231,9 @@ export function AppleHeroStory() {
                 </div>
               </div>
 
-              <div className="text-center p-6 bg-apple-gray/60 backdrop-blur-2xl rounded-3xl border border-white/10 shadow-2xl">
+              <div className="text-center p-5 sm:p-6 bg-apple-gray/60 backdrop-blur-2xl rounded-3xl border border-white/10 shadow-2xl">
                 <div className="text-xs text-apple-subtle font-medium mb-1 uppercase font-mono">Within</div>
-                <div className="font-sans text-4xl sm:text-5xl font-bold text-white tracking-tight flex items-center justify-center">
+                <div className="font-sans text-3xl sm:text-5xl font-bold text-white tracking-tight flex items-center justify-center">
                   <Odometer value="≤ 0.5 dB" />
                 </div>
                 <div className="text-xs text-apple-subtle mt-2 leading-snug">
@@ -236,8 +245,12 @@ export function AppleHeroStory() {
 
           {/* Phase 3: Transition Prompt */}
           <motion.div
-            style={{ opacity: stage3Opacity, y: stage3Y }}
-            className="absolute inset-0 flex flex-col justify-center items-center space-y-4 pointer-events-auto"
+            style={{
+              opacity: stage3Opacity,
+              y: stage3Y,
+              pointerEvents: stage3PointerEvents,
+            }}
+            className="absolute inset-0 flex flex-col justify-center items-center space-y-4"
           >
             <span className="text-xs text-apple-subtle uppercase tracking-widest font-mono">
               Next // Flagship Systems
@@ -256,7 +269,7 @@ export function AppleHeroStory() {
           </motion.div>
         </div>
 
-        {/* Bottom Hairline Progress Indicator (Replaces Generic Chevron) */}
+        {/* Bottom Hairline Progress Indicator */}
         <motion.div
           style={{ opacity: indicatorOpacity }}
           className="z-10 flex flex-col items-center justify-center space-y-2 text-apple-subtle text-xs font-mono"

@@ -3,40 +3,50 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, useScroll, useSpring } from "framer-motion";
 import { useLocalTime } from "@/lib/hooks/useLocalTime";
-import { ArrowUpRight } from "lucide-react";
-import { Odometer } from "@/components/ui/Odometer";
+import { ArrowUpRight, Clock, Sparkles } from "lucide-react";
 import { EASE_ENTER, SPRING_LAYOUT } from "@/lib/motion/tokens";
 import { useScrollSpy } from "@/lib/hooks/useScrollSpy";
 import { scrollToTarget } from "@/lib/utils/scroll";
 
 const SECTIONS = [
   { id: "storyboard", label: "Overview" },
-  { id: "compare", label: "Compare" },
+  { id: "compare", label: "Comparison" },
   { id: "bento", label: "Flagships" },
-  { id: "archive", label: "About" },
+  { id: "archive", label: "About & Stacks" },
+  { id: "method", label: "Tenets" },
 ];
 
-const ALL_SECTION_IDS = ["storyboard", "compare", "bento", "archive", "method", "contact"];
+const ALL_SECTION_IDS = [
+  "storyboard",
+  "compare",
+  "bento",
+  "archive",
+  "method",
+  "contact",
+];
 
 export function AppleSubnav() {
-  const localTime = useLocalTime();
+  const { time, mounted } = useLocalTime();
   const [visible, setVisible] = useState(true);
   const activeSection = useScrollSpy(ALL_SECTION_IDS, 0.35);
-  const [isScrolledPast400, setIsScrolledPast400] = useState(false);
+  const [isScrolledPast300, setIsScrolledPast300] = useState(false);
   const lastScrollY = useRef(0);
 
   const { scrollYProgress } = useScroll();
-  const smoothProgress = useSpring(scrollYProgress, { stiffness: 300, damping: 30 });
+  const smoothProgress = useSpring(scrollYProgress, {
+    stiffness: 300,
+    damping: 30,
+  });
 
   // Directional scroll listener + scroll depth detection
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
 
-      setIsScrolledPast400(currentScrollY > 400);
+      setIsScrolledPast300(currentScrollY > 300);
 
       // Always show near top of page
-      if (currentScrollY <= 80) {
+      if (currentScrollY <= 100) {
         setVisible(true);
         lastScrollY.current = currentScrollY;
         return;
@@ -45,12 +55,12 @@ export function AppleSubnav() {
       const diff = currentScrollY - lastScrollY.current;
 
       // Scrolling DOWN -> smoothly vanish
-      if (diff > 12) {
+      if (diff > 14) {
         setVisible(false);
         lastScrollY.current = currentScrollY;
       }
       // Scrolling BACK UP -> smoothly reappear
-      else if (diff < -12) {
+      else if (diff < -14) {
         setVisible(true);
         lastScrollY.current = currentScrollY;
       }
@@ -61,47 +71,53 @@ export function AppleSubnav() {
   }, []);
 
   return (
-    <div className="sticky top-4 z-50 max-w-[95vw] 2xl:max-w-[1760px] mx-auto px-4 pointer-events-none">
+    <div className="sticky top-5 z-50 max-w-[95vw] 2xl:max-w-[1760px] mx-auto px-4 sm:px-6 pointer-events-none">
       <motion.div
         initial={false}
         animate={{
-          y: visible ? 0 : -80,
+          y: visible ? 0 : -85,
           opacity: visible ? 1 : 0,
-          scale: visible ? (isScrolledPast400 ? 0.98 : 1) : 0.95,
+          scale: visible ? (isScrolledPast300 ? 0.99 : 1) : 0.96,
         }}
         transition={{
           duration: 0.35,
           ease: EASE_ENTER,
         }}
-        className={`apple-subnav relative rounded-full px-5 sm:px-6 transition-all duration-300 flex items-center justify-between shadow-2xl border border-white/10 bg-[#161617]/85 backdrop-blur-2xl overflow-hidden ${
-          isScrolledPast400 ? "py-2 sm:py-2.5" : "py-2.5 sm:py-3"
+        className={`apple-subnav relative rounded-full px-5 sm:px-7 transition-all duration-300 flex items-center justify-between shadow-2xl border border-white/15 bg-[#121215]/90 backdrop-blur-2xl overflow-hidden ${
+          isScrolledPast300 ? "py-2.5 sm:py-3" : "py-3 sm:py-3.5"
         } ${visible ? "pointer-events-auto" : "pointer-events-none"}`}
       >
-        {/* Left branding & availability */}
-        <div className="flex items-center space-x-3">
+        {/* Left Branding & Status Badge */}
+        <div className="flex items-center space-x-4">
           <button
             onClick={() => scrollToTarget(0)}
-            className="text-sm font-semibold tracking-tight text-white hover:opacity-80 transition-opacity"
+            className="text-sm sm:text-base font-bold tracking-tight text-white hover:text-apple-blue transition-colors flex items-center gap-2"
             data-cursor-interactive="true"
           >
-            Khuzaima Ahmed
+            <span>Khuzaima Ahmed</span>
           </button>
-          <div className="hidden lg:flex items-center space-x-1.5 text-[11px] font-mono text-apple-subtle border-l border-white/10 pl-3">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-            <span>AVAILABLE FOR ROLES</span>
+
+          <div className="hidden xl:flex items-center space-x-2 text-xs font-mono text-neutral-300 border-l border-white/15 pl-4">
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400" />
+            </span>
+            <span className="font-semibold text-emerald-400">OPEN FOR ROLES</span>
           </div>
         </div>
 
-        {/* Center section links with animated sliding layout pill */}
-        <div className="hidden md:flex items-center space-x-1 text-xs text-apple-subtle font-medium relative">
+        {/* Center Navigation Tabs with Apple Spring Pill */}
+        <div className="hidden md:flex items-center space-x-1 sm:space-x-1.5 text-xs sm:text-sm font-medium relative">
           {SECTIONS.map((sec) => {
             const isActive = activeSection === sec.id;
             return (
               <button
                 key={sec.id}
                 onClick={() => scrollToTarget(sec.id)}
-                className={`relative px-3.5 py-1.5 rounded-full transition-colors z-10 ${
-                  isActive ? "text-white font-semibold" : "text-apple-subtle hover:text-white"
+                className={`relative px-4 py-1.5 sm:py-2 rounded-full transition-all duration-200 z-10 select-none ${
+                  isActive
+                    ? "text-white font-semibold"
+                    : "text-neutral-400 hover:text-white"
                 }`}
                 data-cursor-interactive="true"
               >
@@ -109,7 +125,7 @@ export function AppleSubnav() {
                   <motion.div
                     layoutId="subnav-active-pill"
                     transition={SPRING_LAYOUT}
-                    className="absolute inset-0 bg-white/10 border border-white/15 rounded-full -z-10 shadow-sm"
+                    className="absolute inset-0 bg-white/15 border border-white/20 rounded-full -z-10 shadow-sm backdrop-blur-sm"
                   />
                 )}
                 <span>{sec.label}</span>
@@ -118,27 +134,34 @@ export function AppleSubnav() {
           })}
         </div>
 
-        {/* Right: Karachi Clock with Odometer digits + Dispatch CTA */}
-        <div className="flex items-center space-x-3">
-          <div className="hidden sm:flex items-center space-x-1.5 font-mono text-[11px] text-apple-subtle px-2.5 py-1 rounded-full bg-white/5 border border-white/10">
-            <Odometer value={localTime} className="text-white tabular-nums font-semibold" />
-            <span className="text-apple-blue text-[10px] font-bold">PKT</span>
+        {/* Right Area: Karachi Live Time Pill & Dispatch CTA */}
+        <div className="flex items-center space-x-3.5">
+          {/* Real-Time Karachi Clock */}
+          <div className="hidden sm:flex items-center space-x-2 font-mono text-xs sm:text-sm text-neutral-200 px-3.5 py-1.5 rounded-full bg-white/[0.06] border border-white/10 shadow-inner">
+            <span className="w-1.5 h-1.5 rounded-full bg-apple-blue animate-pulse" />
+            <span className="tabular-nums font-semibold tracking-wider text-white">
+              {mounted ? time : "08:50:00"}
+            </span>
+            <span className="text-apple-blue text-[11px] font-bold tracking-tight">
+              PKT
+            </span>
           </div>
 
+          {/* Dispatch CTA Button */}
           <button
             onClick={() => scrollToTarget("contact")}
-            className="inline-flex items-center space-x-1 px-4 py-1.5 rounded-full bg-apple-blue hover:bg-blue-400 text-white text-xs font-semibold tracking-tight transition-all shadow-md hover:shadow-apple-blue/25 active:scale-95"
+            className="inline-flex items-center space-x-1.5 px-4 sm:px-5 py-2 rounded-full bg-apple-blue hover:bg-blue-400 text-white text-xs sm:text-sm font-semibold tracking-tight transition-all duration-200 shadow-md shadow-apple-blue/20 hover:scale-105 active:scale-95"
             data-cursor-interactive="true"
           >
             <span>Dispatch</span>
-            <ArrowUpRight className="w-3.5 h-3.5" />
+            <ArrowUpRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
           </button>
         </div>
 
-        {/* Bottom hairline scroll progress bar */}
+        {/* Bottom Hairline Scroll Progress Bar */}
         <motion.div
           style={{ scaleX: smoothProgress }}
-          className="absolute bottom-0 left-0 right-0 h-[1.5px] bg-apple-blue origin-left"
+          className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-apple-blue via-indigo-400 to-apple-blue origin-left"
         />
       </motion.div>
     </div>

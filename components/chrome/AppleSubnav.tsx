@@ -44,8 +44,6 @@ export function AppleSubnav() {
 
   // Smooth directional scroll listener with hysteresis & velocity awareness
   useEffect(() => {
-    let timeoutId: NodeJS.Timeout;
-
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
 
@@ -75,7 +73,6 @@ export function AppleSubnav() {
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => {
       window.removeEventListener("scroll", handleScroll);
-      clearTimeout(timeoutId);
     };
   }, []);
 

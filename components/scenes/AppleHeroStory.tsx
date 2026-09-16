@@ -71,6 +71,10 @@ export function AppleHeroStory() {
   const hairlineScaleY = useTransform(scrollYProgress, [0, 0.3], [0, 1]);
   const indicatorOpacity = useTransform(scrollYProgress, [0, 0.12], [1, 0]);
 
+  // Top Telemetry Header Transform (0.00 -> 0.12)
+  const topHeaderOpacity = useTransform(scrollYProgress, [0, 0.12], [1, 0]);
+  const topHeaderY = useTransform(scrollYProgress, [0, 0.12], [0, -15]);
+
   return (
     <div
       id="storyboard"
@@ -116,8 +120,11 @@ export function AppleHeroStory() {
           </div>
         </motion.div>
 
-        {/* Top Telemetry Header */}
-        <div className="z-10 flex items-center justify-between font-mono text-xs text-apple-subtle uppercase tracking-wider max-w-[95vw] 2xl:max-w-[1760px] mx-auto w-full">
+        {/* Top Telemetry Header with Smooth Scroll Fade */}
+        <motion.div
+          style={{ opacity: topHeaderOpacity, y: topHeaderY }}
+          className="z-10 flex items-center justify-between font-mono text-xs text-apple-subtle uppercase tracking-wider max-w-[95vw] 2xl:max-w-[1760px] mx-auto w-full"
+        >
           <div className="flex items-center space-x-2">
             <span className="w-2 h-2 rounded-full bg-apple-blue animate-pulse" />
             <ScrambleText text="Khuzaima Ahmed // Systems & AI Engineering" duration={500} />
@@ -125,7 +132,7 @@ export function AppleHeroStory() {
           <div className="hidden sm:block text-neutral-400">
             <ScrambleText text="Scroll to explore architecture" delay={200} duration={400} />
           </div>
-        </div>
+        </motion.div>
 
         {/* Center Stage Storyboard */}
         <div className="z-10 my-auto w-full max-w-[95vw] 2xl:max-w-[1760px] mx-auto text-center relative">

@@ -1,9 +1,9 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { motion, useScroll, useSpring } from "framer-motion";
+import { motion, useScroll, useSpring, useTransform, useVelocity } from "framer-motion";
 import { useLocalTime } from "@/lib/hooks/useLocalTime";
-import { ArrowUpRight, Clock, Sparkles } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import { EASE_ENTER, SPRING_LAYOUT } from "@/lib/motion/tokens";
 import { useScrollSpy } from "@/lib/hooks/useScrollSpy";
 import { scrollToTarget } from "@/lib/utils/scroll";
@@ -29,24 +29,30 @@ export function AppleSubnav() {
   const { time, mounted } = useLocalTime();
   const [visible, setVisible] = useState(true);
   const activeSection = useScrollSpy(ALL_SECTION_IDS, 0.35);
-  const [isScrolledPast300, setIsScrolledPast300] = useState(false);
+  const [isScrolledPastHero, setIsScrolledPastHero] = useState(false);
   const lastScrollY = useRef(0);
 
-  const { scrollYProgress } = useScroll();
+  const { scrollY, scrollYProgress } = useScroll();
+  const scrollVelocity = useVelocity(scrollY);
   const smoothProgress = useSpring(scrollYProgress, {
     stiffness: 300,
     damping: 30,
   });
 
-  // Directional scroll listener + scroll depth detection
+  // Continuous progressive opacity/blur when scrolling in top zone
+  const topFadeOpacity = useTransform(scrollY, [0, 80, 200], [1, 0.98, 0.95]);
+
+  // Smooth directional scroll listener with hysteresis & velocity awareness
   useEffect(() => {
+    let timeoutId: NodeJS.Timeout;
+
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
 
-      setIsScrolledPast300(currentScrollY > 300);
+      setIsScrolledPastHero(currentScrollY > 350);
 
-      // Always show near top of page
-      if (currentScrollY <= 100) {
+      // Top anchor zone: Always fully present
+      if (currentScrollY <= 80) {
         setVisible(true);
         lastScrollY.current = currentScrollY;
         return;
@@ -54,20 +60,23 @@ export function AppleSubnav() {
 
       const diff = currentScrollY - lastScrollY.current;
 
-      // Scrolling DOWN -> smoothly vanish
-      if (diff > 14) {
+      // Scrolling DOWN with intent -> gracefully dissolve and glide out
+      if (diff > 8) {
         setVisible(false);
         lastScrollY.current = currentScrollY;
       }
-      // Scrolling BACK UP -> smoothly reappear
-      else if (diff < -14) {
+      // Scrolling BACK UP with intent -> gracefully glide down and crystallize
+      else if (diff < -8) {
         setVisible(true);
         lastScrollY.current = currentScrollY;
       }
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      clearTimeout(timeoutId);
+    };
   }, []);
 
   return (
@@ -77,17 +86,21 @@ export function AppleSubnav() {
         animate={{
           y: visible ? 0 : -85,
           opacity: visible ? 1 : 0,
-          scale: visible ? (isScrolledPast300 ? 0.99 : 1) : 0.96,
+          scale: visible ? (isScrolledPastHero ? 0.99 : 1) : 0.95,
+          filter: visible ? "blur(0px)" : "blur(10px)",
         }}
         transition={{
-          duration: 0.35,
+          duration: 0.42,
           ease: EASE_ENTER,
         }}
+        style={{
+          opacity: visible ? topFadeOpacity : 0,
+        }}
         className={`apple-subnav relative rounded-full px-5 sm:px-7 transition-all duration-300 flex items-center justify-between shadow-2xl border border-white/15 bg-[#121215]/90 backdrop-blur-2xl overflow-hidden ${
-          isScrolledPast300 ? "py-2.5 sm:py-3" : "py-3 sm:py-3.5"
+          isScrolledPastHero ? "py-2.5 sm:py-3" : "py-3 sm:py-3.5"
         } ${visible ? "pointer-events-auto" : "pointer-events-none"}`}
       >
-        {/* Left Branding & Status Badge */}
+        {/* Left Branding & Availability Badge */}
         <div className="flex items-center space-x-4">
           <button
             onClick={() => scrollToTarget(0)}

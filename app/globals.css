@@ -26,18 +26,19 @@ html {
   font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Inter', system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
 body {
   background-color: #000000;
   color: #F5F5F7;
   min-height: 100vh;
-  overflow-x: hidden;
+  overflow-x: clip;
   cursor: default;
 }
 
 ::selection {
-  background-color: #2997FF;
+  background-color: rgba(41, 151, 255, 0.28);
   color: #FFFFFF;
 }
 
@@ -71,7 +72,7 @@ body {
 }
 
 .blue-glow {
-  background: radial-gradient(circle at 50% 50%, rgba(41, 151, 255, 0.12) 0%, transparent 70%);
+  background: radial-gradient(circle at 50% 50%, rgba(41, 151, 255, 0.14) 0%, transparent 70%);
 }
 
 .amber-glow {
@@ -96,10 +97,10 @@ html.lenis body {
   overflow: hidden;
 }
 
-/* Apple subtle scrollbar */
+/* Apple Pro custom scrollbar */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 8px;
+  height: 8px;
 }
 
 ::-webkit-scrollbar-track {
@@ -107,12 +108,13 @@ html.lenis body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #333336;
+  background: #2a2a2c;
   border-radius: 9999px;
+  border: 2px solid #000000;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #555559;
+  background: #444448;
 }
 
 /* Kinetic Infinite Capabilities Marquee */
@@ -129,8 +131,73 @@ html.lenis body {
   display: flex;
   width: max-content;
   animation: marquee 28s linear infinite;
+  will-change: transform;
 }
 
 .animate-marquee:hover {
   animation-play-state: paused;
+}
+
+/* Mask fade edges for marquee */
+.marquee-mask {
+  mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
+}
+
+/* Shimmer Gradient Text Sweep */
+@keyframes text-sweep {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+.text-gradient-sweep {
+  background: linear-gradient(90deg, #86868b 0%, #ffffff 50%, #86868b 100%);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: text-sweep 4s ease-in-out infinite;
+}
+
+.text-blue-sweep {
+  background: linear-gradient(90deg, #2997ff 0%, #ffffff 50%, #2997ff 100%);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: text-sweep 3.5s ease-in-out infinite;
+}
+
+/* Apple Pro Scrollbar for modals and palettes */
+.apple-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.apple-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.apple-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 9999px;
+}
+
+.apple-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .animate-marquee {
+    animation: none !important;
+  }
 }

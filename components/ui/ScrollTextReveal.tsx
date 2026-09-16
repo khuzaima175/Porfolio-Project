@@ -20,22 +20,22 @@ function Word({
   range: [number, number];
   isHighlight: boolean;
 }) {
-  const opacity = useTransform(progress, range, [0.22, 1]);
-  const y = useTransform(progress, range, [2, 0]);
+  const opacity = useTransform(progress, range, [0.18, 1]);
+  const y = useTransform(progress, range, [8, 0]);
 
   return (
-    <>
-      <span className="inline-block mr-[0.28em] relative">
-        <motion.span
-          style={{ opacity, y }}
-          className={`inline-block transition-colors duration-200 ${
-            isHighlight ? "font-semibold text-white" : "text-apple-text"
-          }`}
-        >
-          {word}
-        </motion.span>
-      </span>{" "}
-    </>
+    <span className="inline-block mr-[0.28em] relative">
+      <motion.span
+        style={{ opacity, y }}
+        className={`inline-block transition-colors duration-200 ${
+          isHighlight
+            ? "font-semibold text-white"
+            : "text-apple-subtle"
+        }`}
+      >
+        {word}
+      </motion.span>
+    </span>
   );
 }
 
@@ -47,7 +47,7 @@ export function ScrollTextReveal({
   const containerRef = useRef<HTMLParagraphElement | null>(null);
   const { scrollYProgress } = useScroll({
     target: containerRef,
-    offset: ["start 0.88", "end 0.45"],
+    offset: ["start 0.90", "end 0.40"],
   });
 
   const words = text.split(" ");

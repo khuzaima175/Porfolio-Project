@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { Cpu, Shield, Mic, Clock, Zap } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Cpu, Shield, Mic, Clock, Zap, Play, Pause } from "lucide-react";
 
 interface TimeBlock {
   hour: number;
@@ -15,6 +15,16 @@ interface TimeBlock {
 
 export function SensoryRibbon() {
   const [selectedHour, setSelectedHour] = useState<number>(14);
+  const [isAutoPlaying, setIsAutoPlaying] = useState<boolean>(false);
+
+  // Auto-playhead sweep across the 24-hour day
+  useEffect(() => {
+    if (!isAutoPlaying) return;
+    const timer = setInterval(() => {
+      setSelectedHour((prev) => (prev + 1) % 24);
+    }, 1000);
+    return () => clearInterval(timer);
+  }, [isAutoPlaying]);
 
   // 24-hour synthetic timeline demonstrating daily tracking
   const blocks: TimeBlock[] = Array.from({ length: 24 }, (_, i) => {
@@ -87,11 +97,20 @@ export function SensoryRibbon() {
           </h3>
         </div>
 
-        <div className="flex items-center space-x-2 font-mono text-xs">
+        <div className="flex items-center space-x-3 font-mono text-xs">
+          <button
+            onClick={() => setIsAutoPlaying(!isAutoPlaying)}
+            className="flex items-center space-x-1.5 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-white hover:border-apple-blue transition-colors"
+            data-cursor-interactive="true"
+          >
+            {isAutoPlaying ? <Pause className="w-3 h-3 text-apple-blue" /> : <Play className="w-3 h-3 text-emerald-400" />}
+            <span>{isAutoPlaying ? "PAUSE SWEEP" : "AUTO SWEEP"}</span>
+          </button>
+
           <div className="flex items-center space-x-1.5 px-4 py-1.5 bg-white/5 border border-white/10 rounded-full">
             <Cpu className="w-3 h-3 text-apple-blue" />
-            <span className="text-apple-subtle">CPU IMPACT:</span>
-            <span className="text-emerald-400 font-bold tabular-nums">0.0% MEASURABLE</span>
+            <span className="text-apple-subtle">CPU:</span>
+            <span className="text-emerald-400 font-bold tabular-nums">0.0% IMPACT</span>
           </div>
         </div>
       </div>
@@ -116,8 +135,13 @@ export function SensoryRibbon() {
             return (
               <button
                 key={b.hour}
-                onClick={() => setSelectedHour(b.hour)}
-                onMouseEnter={() => setSelectedHour(b.hour)}
+                onClick={() => {
+                  setSelectedHour(b.hour);
+                  setIsAutoPlaying(false);
+                }}
+                onMouseEnter={() => {
+                  if (!isAutoPlaying) setSelectedHour(b.hour);
+                }}
                 className={`relative h-full rounded-sm transition-all ${bgColor} ${
                   isSelected ? "ring-2 ring-white z-10 scale-105" : "hover:opacity-80"
                 }`}

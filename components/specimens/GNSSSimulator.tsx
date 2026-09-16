@@ -1,15 +1,36 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Play, Pause, RotateCcw, AlertTriangle, ShieldCheck, Compass } from "lucide-react";
+import { Play, Pause, RotateCcw, AlertTriangle, ShieldCheck, Compass, Gauge } from "lucide-react";
 
-export function GNSSSimulator() {
+interface GNSSSimulatorProps {
+  ambientMode?: boolean;
+  paused?: boolean;
+}
+
+export function GNSSSimulator({ ambientMode = false, paused = false }: GNSSSimulatorProps) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const containerRef = useRef<HTMLDivElement | null>(null);
   const [isPlaying, setIsPlaying] = useState(true);
   const [showRaw, setShowRaw] = useState(true);
   const [showRTS, setShowRTS] = useState(true);
   const [simBlackout, setSimBlackout] = useState(false);
+  const [speedMultiplier, setSpeedMultiplier] = useState<number>(1);
   const [epoch, setEpoch] = useState(420);
+  const [isIntersecting, setIsIntersecting] = useState(true);
+
+  // Automatic offscreen pause via IntersectionObserver
+  useEffect(() => {
+    if (!containerRef.current) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsIntersecting(entry.isIntersecting);
+      },
+      { rootMargin: "100px" }
+    );
+    observer.observe(containerRef.current);
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -19,24 +40,36 @@ export function GNSSSimulator() {
 
     let animId: number;
     let t = epoch;
+    let lastFrameTime = performance.now();
+    const targetInterval = ambientMode ? 1000 / 30 : 1000 / 60; // 30 FPS cap in ambient mode
 
-    const render = () => {
+    const render = (currentTime: number) => {
+      animId = requestAnimationFrame(render);
+
+      if (paused || !isIntersecting) return;
+
+      const elapsed = currentTime - lastFrameTime;
+      if (elapsed < targetInterval) return;
+      lastFrameTime = currentTime - (elapsed % targetInterval);
+
       if (isPlaying) {
-        t += 0.5;
+        const step = ambientMode ? 0.35 : 0.5 * speedMultiplier;
+        t += step;
         if (t > 1200) t = 0;
-        setEpoch(Math.round(t));
+        if (!ambientMode && Math.random() < 0.2) {
+          setEpoch(Math.round(t));
+        }
       }
 
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      // Coordinate center
       const cx = canvas.width / 2;
       const cy = canvas.height / 2;
 
       // Draw subtle geodetic grid
-      ctx.strokeStyle = "rgba(255, 255, 255, 0.05)";
+      ctx.strokeStyle = ambientMode ? "rgba(41, 151, 255, 0.04)" : "rgba(255, 255, 255, 0.05)";
       ctx.lineWidth = 1;
-      const gridSize = 40;
+      const gridSize = ambientMode ? 50 : 40;
       for (let x = 0; x < canvas.width; x += gridSize) {
         ctx.beginPath();
         ctx.moveTo(x, 0);
@@ -53,14 +86,15 @@ export function GNSSSimulator() {
       // Trajectory mathematical formula (Lissajous / racetrack curve simulating 20 KM drive)
       const getRTKPoint = (timeVal: number) => {
         const rad = timeVal * 0.015;
-        const x = cx + 240 * Math.sin(rad) + 50 * Math.cos(2 * rad);
-        const y = cy + 100 * Math.cos(rad) + 30 * Math.sin(3 * rad);
+        const scale = ambientMode ? 1.15 : 1.0;
+        const x = cx + (240 * Math.sin(rad) + 50 * Math.cos(2 * rad)) * scale;
+        const y = cy + (100 * Math.cos(rad) + 30 * Math.sin(3 * rad)) * scale;
         return { x, y };
       };
 
       // 1. Draw Ground Truth Path (NovAtel ProPak6 2cm NRTK)
-      ctx.strokeStyle = "rgba(255, 255, 255, 0.25)";
-      ctx.lineWidth = 1.5;
+      ctx.strokeStyle = ambientMode ? "rgba(255, 255, 255, 0.15)" : "rgba(255, 255, 255, 0.25)";
+      ctx.lineWidth = ambientMode ? 1.2 : 1.5;
       ctx.beginPath();
       for (let i = 0; i < 450; i += 2) {
         const pt = getRTKPoint(i * 2.5);
@@ -70,13 +104,12 @@ export function GNSSSimulator() {
       ctx.stroke();
 
       // 2. Draw Raw GPS L1 (High Variance / Noisy)
-      if (showRaw) {
-        ctx.strokeStyle = "rgba(255, 180, 50, 0.4)";
+      if (showRaw || ambientMode) {
+        ctx.strokeStyle = ambientMode ? "rgba(255, 180, 50, 0.2)" : "rgba(255, 180, 50, 0.4)";
         ctx.lineWidth = 1;
         ctx.beginPath();
         for (let i = 0; i < 450; i += 3) {
           const pt = getRTKPoint(i * 2.5);
-          // Noise variance simulating 10.89m RMS
           const noiseX = Math.sin(i * 12.3) * 16 + Math.cos(i * 5.1) * 8;
           const noiseY = Math.cos(i * 8.7) * 14 + Math.sin(i * 3.4) * 9;
           const rx = pt.x + noiseX;
@@ -88,13 +121,12 @@ export function GNSSSimulator() {
       }
 
       // 3. Draw RTS Backward Smoothed Trajectory (1.235m RMS)
-      if (showRTS) {
-        ctx.strokeStyle = "#2997ff";
-        ctx.lineWidth = 2.5;
+      if (showRTS || ambientMode) {
+        ctx.strokeStyle = ambientMode ? "rgba(41, 151, 255, 0.75)" : "#2997ff";
+        ctx.lineWidth = ambientMode ? 2.0 : 2.5;
         ctx.beginPath();
         for (let i = 0; i < 450; i += 2) {
           const pt = getRTKPoint(i * 2.5);
-          // Tight residual ~1.2m
           const smoothNoiseX = Math.sin(i * 0.8) * 2.2;
           const smoothNoiseY = Math.cos(i * 0.8) * 1.8;
           const sx = pt.x + smoothNoiseX;
@@ -112,33 +144,45 @@ export function GNSSSimulator() {
       // Draw Vehicle marker (RTK)
       ctx.fillStyle = "#f5f5f7";
       ctx.beginPath();
-      ctx.arc(currentRTK.x, currentRTK.y, 4, 0, Math.PI * 2);
+      ctx.arc(currentRTK.x, currentRTK.y, ambientMode ? 3 : 4, 0, Math.PI * 2);
       ctx.fill();
 
       // Draw Filtered RTS estimate with uncertainty ellipse
-      if (showRTS) {
+      if (showRTS || ambientMode) {
         ctx.strokeStyle = "#2997ff";
         ctx.lineWidth = 1.5;
         ctx.beginPath();
         ctx.arc(
           currentRTK.x + blackoutOffset,
           currentRTK.y + blackoutOffset * 0.5,
-          simBlackout ? 14 : 7,
+          simBlackout ? 14 : ambientMode ? 6 : 7,
           0,
           Math.PI * 2
         );
         ctx.stroke();
       }
-
-      animId = requestAnimationFrame(render);
     };
 
-    render();
+    animId = requestAnimationFrame(render);
     return () => cancelAnimationFrame(animId);
-  }, [isPlaying, showRaw, showRTS, simBlackout]);
+  }, [isPlaying, showRaw, showRTS, simBlackout, speedMultiplier, ambientMode, paused, isIntersecting]);
+
+  // If in ambient hero background mode, render pure canvas layer
+  if (ambientMode) {
+    return (
+      <div ref={containerRef} className="w-full h-full relative pointer-events-none select-none">
+        <canvas
+          ref={canvasRef}
+          width={900}
+          height={480}
+          className="w-full h-full object-contain block opacity-75"
+        />
+      </div>
+    );
+  }
 
   return (
-    <div className="apple-card rounded-3xl p-6 sm:p-8 mt-8">
+    <div ref={containerRef} className="apple-card rounded-3xl p-6 sm:p-8 mt-8">
       {/* Header */}
       <div className="flex flex-wrap items-center justify-between gap-4 pb-6 border-b border-white/10">
         <div>
@@ -152,19 +196,34 @@ export function GNSSSimulator() {
         </div>
 
         {/* Live Controls */}
-        <div className="flex items-center space-x-3">
+        <div className="flex items-center space-x-2.5">
+          {/* Speed Selector */}
+          <div className="flex items-center p-1 rounded-full bg-white/5 border border-white/10 text-xs font-mono">
+            {[1, 4, 16].map((sp) => (
+              <button
+                key={sp}
+                onClick={() => setSpeedMultiplier(sp)}
+                className={`px-2.5 py-1 rounded-full transition-colors ${
+                  speedMultiplier === sp ? "bg-apple-blue text-white font-bold" : "text-apple-subtle hover:text-white"
+                }`}
+              >
+                {sp}x
+              </button>
+            ))}
+          </div>
+
           <button
             onClick={() => setIsPlaying(!isPlaying)}
-            className="flex items-center space-x-2 px-4 py-2 bg-white/5 border border-white/10 rounded-full font-mono text-xs text-white hover:border-apple-blue transition-all"
+            className="flex items-center space-x-1.5 px-3.5 py-1.5 bg-white/5 border border-white/10 rounded-full font-mono text-xs text-white hover:border-apple-blue transition-all"
             data-cursor-interactive="true"
           >
             {isPlaying ? <Pause className="w-3 h-3 text-apple-blue" /> : <Play className="w-3 h-3 text-emerald-400" />}
-            <span>{isPlaying ? "PAUSE" : "RESUME"}</span>
+            <span>{isPlaying ? "PAUSE" : "PLAY"}</span>
           </button>
 
           <button
             onClick={() => setSimBlackout(!simBlackout)}
-            className={`flex items-center space-x-2 px-4 py-2 font-mono text-xs rounded-full border transition-all ${
+            className={`flex items-center space-x-1.5 px-3.5 py-1.5 font-mono text-xs rounded-full border transition-all ${
               simBlackout
                 ? "bg-amber-950/40 border-amber-500 text-amber-300"
                 : "bg-white/5 border-white/10 text-apple-subtle hover:text-white"
@@ -172,7 +231,7 @@ export function GNSSSimulator() {
             data-cursor-interactive="true"
           >
             <AlertTriangle className="w-3 h-3" />
-            <span>TUNNEL BLACKOUT [{simBlackout ? "ACTIVE" : "OFF"}]</span>
+            <span>BLACKOUT [{simBlackout ? "ON" : "OFF"}]</span>
           </button>
         </div>
       </div>

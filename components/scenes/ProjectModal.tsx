@@ -8,6 +8,8 @@ import { Project } from "@/lib/data/projects";
 import { AcousticVisualizer } from "@/components/specimens/AcousticVisualizer";
 import { GNSSSimulator } from "@/components/specimens/GNSSSimulator";
 import { SensoryRibbon } from "@/components/specimens/SensoryRibbon";
+import { Odometer } from "@/components/ui/Odometer";
+import { EASE_ENTER, SPRING_LAYOUT } from "@/lib/motion/tokens";
 
 interface ProjectModalProps {
   project: Project | null;
@@ -19,12 +21,14 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
   const scrollContentRef = useRef<HTMLDivElement | null>(null);
   const [activeTab, setActiveTab] = useState<"overview" | "deep-dive">("overview");
   const [specimenOpen, setSpecimenOpen] = useState(false);
+  const [isInnerScrolled, setIsInnerScrolled] = useState(false);
 
   // Reset tabs when a new project opens
   useEffect(() => {
     if (project) {
       setActiveTab("overview");
       setSpecimenOpen(false);
+      setIsInnerScrolled(false);
     }
   }, [project?.id]);
 
@@ -57,7 +61,7 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
     };
   }, [project, onClose]);
 
-  // Initialize smooth momentum scroll inside the modal body
+  // Initialize smooth momentum scroll inside the modal body + track inner scroll
   useEffect(() => {
     if (!project || !scrollWrapperRef.current) return;
 
@@ -71,6 +75,10 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
       smoothWheel: true,
       wheelMultiplier: 1.0,
       touchMultiplier: 1.5,
+    });
+
+    modalLenis.on("scroll", (e: any) => {
+      setIsInnerScrolled(e.scroll > 120);
     });
 
     let rafId: number;
@@ -108,20 +116,29 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
             initial={{ x: "100%" }}
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
-            transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 0.4, ease: EASE_ENTER }}
             className="relative w-full max-w-3xl bg-[#141415] border-l border-white/10 h-screen max-h-screen flex flex-col shadow-2xl z-10 overflow-hidden text-white select-text transform-gpu"
           >
-            {/* Drawer Header */}
-            <div className="flex-shrink-0 bg-[#161617]/95 backdrop-blur-xl border-b border-white/10 p-5 px-6 flex items-center justify-between z-20">
-              <div className="flex items-center space-x-3">
-                <span className="px-3 py-1 bg-apple-blue/15 border border-apple-blue/30 text-apple-blue font-mono text-[10px] uppercase rounded-full font-medium">
+            {/* Drawer Header (Condenses to one-line title on inner scroll > 120px) */}
+            <div className="flex-shrink-0 bg-[#161617]/95 backdrop-blur-xl border-b border-white/10 p-4 sm:p-5 px-6 flex items-center justify-between z-20 transition-all duration-300">
+              <div className="flex items-center space-x-3 overflow-hidden">
+                <span className="px-3 py-1 bg-apple-blue/15 border border-apple-blue/30 text-apple-blue font-mono text-[10px] uppercase rounded-full font-medium flex-shrink-0">
                   {project.category}
                 </span>
-                <span className="text-apple-subtle font-mono text-xs">// {project.year}</span>
+                <span className="text-apple-subtle font-mono text-xs flex-shrink-0">// {project.year}</span>
+                {isInnerScrolled && (
+                  <motion.span
+                    initial={{ opacity: 0, x: 10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    className="font-sans text-xs font-semibold text-white truncate border-l border-white/10 pl-3"
+                  >
+                    {project.title}
+                  </motion.span>
+                )}
               </div>
               <button
                 onClick={onClose}
-                className="p-2 text-apple-subtle hover:text-white hover:bg-white/10 rounded-full transition-colors duration-200"
+                className="p-2 text-apple-subtle hover:text-white hover:bg-white/10 rounded-full transition-colors duration-200 flex-shrink-0 ml-2"
                 data-cursor-interactive="true"
                 aria-label="Close modal"
               >
@@ -129,22 +146,30 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
               </button>
             </div>
 
-            {/* Tab switcher */}
-            <div className="flex-shrink-0 flex border-b border-white/10 bg-[#141415]">
-              {(["overview", "deep-dive"] as const).map((tab) => (
-                <button
-                  key={tab}
-                  onClick={() => setActiveTab(tab)}
-                  className={`flex-1 py-3 text-xs font-mono uppercase tracking-widest transition-colors ${
-                    activeTab === tab
-                      ? "text-white border-b-2 border-apple-blue"
-                      : "text-apple-subtle hover:text-white border-b-2 border-transparent"
-                  }`}
-                  data-cursor-interactive="true"
-                >
-                  {tab === "overview" ? "Overview" : "Technical Deep-Dive"}
-                </button>
-              ))}
+            {/* Tab switcher with layoutId underline */}
+            <div className="flex-shrink-0 flex border-b border-white/10 bg-[#141415] relative">
+              {(["overview", "deep-dive"] as const).map((tab) => {
+                const isActive = activeTab === tab;
+                return (
+                  <button
+                    key={tab}
+                    onClick={() => setActiveTab(tab)}
+                    className={`flex-1 py-3 text-xs font-mono uppercase tracking-widest transition-colors relative ${
+                      isActive ? "text-white font-semibold" : "text-apple-subtle hover:text-white"
+                    }`}
+                    data-cursor-interactive="true"
+                  >
+                    {tab === "overview" ? "Overview" : "Technical Deep-Dive"}
+                    {isActive && (
+                      <motion.div
+                        layoutId="modal-tab-underline"
+                        transition={SPRING_LAYOUT}
+                        className="absolute bottom-0 left-0 right-0 h-[2px] bg-apple-blue"
+                      />
+                    )}
+                  </button>
+                );
+              })}
             </div>
 
             {/* Dedicated Smooth Scroll Wrapper */}
@@ -155,16 +180,15 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
               style={{ WebkitOverflowScrolling: "touch" }}
             >
               <div ref={scrollContentRef} className="p-6 sm:p-8 space-y-7">
-
                 {/* --- OVERVIEW TAB --- */}
                 <AnimatePresence mode="wait">
                   {activeTab === "overview" && (
                     <motion.div
                       key="overview"
-                      initial={{ opacity: 0, y: 12 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -8 }}
-                      transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+                      initial={{ opacity: 0, x: -16 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: -16 }}
+                      transition={{ duration: 0.3, ease: EASE_ENTER }}
                       className="space-y-7"
                     >
                       {/* Title & Tagline */}
@@ -177,10 +201,11 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
                         </p>
                       </div>
 
-                      {/* Media Graphic */}
+                      {/* Shared-Element Media Graphic */}
                       {project.image && (
                         <div className="relative border border-white/10 overflow-hidden bg-black rounded-3xl aspect-video shadow-2xl">
-                          <img
+                          <motion.img
+                            layoutId={`media-${project.id}`}
                             src={project.image}
                             alt={project.title}
                             loading="eager"
@@ -203,15 +228,15 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
                         </p>
                       </div>
 
-                      {/* Validated Metrics */}
+                      {/* Validated Metrics with Odometers */}
                       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                         {project.metrics.map((metric, idx) => (
-                          <div key={idx} className="p-4 bg-white/5 border border-white/10 rounded-2xl">
+                          <div key={idx} className="p-4 bg-white/5 border border-white/10 rounded-2xl shadow-sm">
                             <div className="text-apple-subtle font-mono text-[10px] uppercase">
                               {metric.label}
                             </div>
-                            <div className="font-sans text-xl font-bold text-apple-blue tabular-nums mt-1">
-                              {metric.value}
+                            <div className="font-sans text-xl font-bold text-apple-blue tabular-nums mt-1 flex items-center">
+                              <Odometer value={metric.value} />
                             </div>
                             <div className="text-[11px] text-apple-subtle mt-1 leading-snug">
                               {metric.description}
@@ -237,9 +262,9 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
                         </div>
                       </div>
 
-                      {/* Live Proof section — only for projects with a specimen */}
+                      {/* Live Proof section with power-on sweep line */}
                       {hasSpecimen && (
-                        <div className="border border-white/10 rounded-2xl overflow-hidden">
+                        <div className="border border-white/10 rounded-2xl overflow-hidden relative">
                           <button
                             onClick={() => setSpecimenOpen((v) => !v)}
                             className="w-full flex items-center justify-between px-5 py-4 bg-white/[0.03] hover:bg-white/[0.06] transition-colors"
@@ -251,7 +276,7 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
                                 Run Live Proof
                               </span>
                               <span className="text-apple-subtle">
-                                — interactive model in your browser
+                                — interactive model on client silicon
                               </span>
                             </div>
                             <ChevronDown
@@ -268,9 +293,17 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
                                 initial={{ height: 0, opacity: 0 }}
                                 animate={{ height: "auto", opacity: 1 }}
                                 exit={{ height: 0, opacity: 0 }}
-                                transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-                                className="overflow-hidden border-t border-white/10"
+                                transition={{ duration: 0.4, ease: EASE_ENTER }}
+                                className="overflow-hidden border-t border-white/10 relative"
                               >
+                                {/* Power-on sweep line */}
+                                <motion.div
+                                  initial={{ left: "-100%" }}
+                                  animate={{ left: "100%" }}
+                                  transition={{ duration: 0.8, ease: EASE_ENTER }}
+                                  className="absolute top-0 h-[1.5px] w-1/3 bg-gradient-to-r from-transparent via-apple-blue to-transparent z-10"
+                                />
+
                                 <div className="p-4">
                                   {project.specimenType === "acoustic" && <AcousticVisualizer />}
                                   {project.specimenType === "gnss" && <GNSSSimulator />}
@@ -297,10 +330,10 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
                   {activeTab === "deep-dive" && (
                     <motion.div
                       key="deep-dive"
-                      initial={{ opacity: 0, y: 12 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -8 }}
-                      transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+                      initial={{ opacity: 0, x: 16 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: 16 }}
+                      transition={{ duration: 0.3, ease: EASE_ENTER }}
                       className="space-y-7"
                     >
                       {/* Title repeat for context */}

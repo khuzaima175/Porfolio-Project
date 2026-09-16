@@ -21,7 +21,7 @@ The **Khuzaima Ahmed Portfolio Omniverse** is an editorial, Apple Pro-inspired c
 ### Core Design Values
 - **Deterministic Aesthetics**: Minimalist dark UI palette adhering strictly to Apple's design language (`#000000` pitch black, `#161617` elevated surfaces, `#1D1D1F` card bodies, and `#2997FF` electric blue accents).
 - **Show, Don't Tell**: Replacing buzzwords with interactive mathematical models executed live on client silicon (logarithmic SVG PEQ frequency response calculator, HTML5 Canvas 2D GNSS Rauch-Tung-Striebel trajectory smoother, and Win32 ctypes sensory timeline simulation).
-- **Dual-Layer Momentum Scroll Physics**: Global viewport momentum scrolling combined with non-blocking, isolated drawer scrolling, eliminating standard browser scrollbar friction.
+- **Dual-Layer Momentum Scroll Physics**: Global viewport momentum scrolling combined with non-blocking, isolated modal drawer scrolling, eliminating standard browser scrollbar friction.
 
 ---
 
@@ -35,43 +35,55 @@ graph TD
     end
 
     subgraph State Orchestration ["app/page.tsx State"]
-        LENIS_HOOK["useLenis() -> Global Momentum"]
+        LENIS_HOOK["useLenis() -> Global Momentum Engine"]
         MODAL_STATE["selectedProject: Project | null"]
     end
 
     subgraph Global Chrome ["Persistent UI Chrome"]
-        NAV[AppleSubnav.tsx]
+        NAV[AppleSubnav.tsx - Auto-Hide & Karachi Clock]
         CLOCK["useLocalTime() -> Asia/Karachi PKT"]
         NAV --> CLOCK
     end
 
     subgraph Scrollytelling & Scenes ["Scrollytelling Scenes"]
         HERO["AppleHeroStory.tsx (280vh Pinned Stage)"]
-        COMPARE["AppleComparison.tsx (Word-by-word Reveal & Presets)"]
+        COMPARE["AppleComparison.tsx (ScrollTextReveal & 9 Presets)"]
         REVEAL["ScrollTextReveal.tsx"]
         COMPARE --> REVEAL
 
         BENTO["AppleBentoShowcase.tsx"]
-        THEATER["Part 1: 440vh Pinned Theater (4 Flagships)"]
-        EXT_GRID["Part 2: 12-Column Studio Bento (5 Architectures)"]
+        THEATER["Part 1: 440vh Pinned Scrollytelling Theater (4 Flagships)"]
+        EXT_GRID["Part 2: 12-Column Studio Bento Grid (5 Architectures)"]
         BENTO --> THEATER
         BENTO --> EXT_GRID
 
-        SPECIMENS["SpecimensSection.tsx (Tab Switcher)"]
-        SPEC_DSP["AcousticVisualizer.tsx (SVG Biquad Math)"]
-        SPEC_GNSS["GNSSSimulator.tsx (Canvas 2D 60FPS)"]
-        SPEC_DAEMON["SensoryRibbon.tsx (24h Biological Day)"]
-        SPECIMENS --> SPEC_DSP
-        SPECIMENS --> SPEC_GNSS
-        SPECIMENS --> SPEC_DAEMON
+        ARCHIVE["ProjectArchive.tsx (About, Marquee, Hubs & Live Visor)"]
+        MARQUEE["Kinetic Capabilities Marquee (28s Loop)"]
+        HUBS["3 Grand Capability Hubs (Systems, AI, Full-Stack)"]
+        VISOR["Interactive Telemetry HUD / Inspector Visor"]
+        ARCHIVE --> MARQUEE
+        ARCHIVE --> HUBS
+        ARCHIVE --> VISOR
 
-        ARCHIVE["ProjectArchive.tsx (Instant Search & Category Filter)"]
-        METHOD["EngineeringMethod.tsx (4 Architectural Tenets)"]
         CONTACT["ContactSection.tsx (Dispatch Console & Mail Clipboard)"]
     end
 
-    subgraph Deep Dive Drawer ["Inspection Subsystem"]
+    subgraph Deep Dive Drawer ["Inspection Subsystem (ProjectModal.tsx)"]
         MODAL["ProjectModal.tsx (Isolated Lenis Scroller)"]
+        TAB_OVERVIEW["Tab 1: Overview & Executive Briefing"]
+        TAB_DEEPDIVE["Tab 2: Technical Deep-Dive & Hard Benchmarks"]
+        LIVE_PROOF["Run Live Proof Interactive Workbench"]
+        
+        SPEC_DSP["AcousticVisualizer.tsx (SVG Logarithmic PEQ Math)"]
+        SPEC_GNSS["GNSSSimulator.tsx (Canvas 2D 60FPS Trajectory Filter)"]
+        SPEC_DAEMON["SensoryRibbon.tsx (24h Biological Day & Win32 Telemetry)"]
+        
+        MODAL --> TAB_OVERVIEW
+        MODAL --> TAB_DEEPDIVE
+        TAB_OVERVIEW --> LIVE_PROOF
+        LIVE_PROOF --> SPEC_DSP
+        LIVE_PROOF --> SPEC_GNSS
+        LIVE_PROOF --> SPEC_DAEMON
     end
 
     subgraph Data Layer ["lib/data/projects.ts"]
@@ -84,16 +96,12 @@ graph TD
     PAGE --> HERO
     PAGE --> COMPARE
     PAGE --> BENTO
-    PAGE --> SPECIMENS
     PAGE --> ARCHIVE
-    PAGE --> METHOD
     PAGE --> CONTACT
     PAGE --> MODAL
 
     PROJECT_DATA -.-> BENTO
-    PROJECT_DATA -.-> ARCHIVE
     BENTO -- "onSelectProject(proj)" --> MODAL_STATE
-    ARCHIVE -- "onSelectProject(proj)" --> MODAL_STATE
     MODAL_STATE --> MODAL
 ```
 
@@ -101,19 +109,19 @@ graph TD
 
 ## 3. Technology Stack & Runtime Dependencies
 
-The project relies on a focused, modern React 18 / Next.js 14 stack:
+The project is built on a clean, modern React 19 / Next.js 14 stack:
 
 | Technology | Version | Purpose in Architecture |
 |---|---|---|
 | **Next.js** | `14.2.24` | React Server Components & App Router orchestration |
-| **React & React-DOM** | `^18.3.1` | Client-side reactive component tree |
-| **TypeScript** | `^5.6.3` | Strict type validation and domain interfaces (`Project`, `EQBand`, etc.) |
+| **React & React-DOM** | `^18.3.1 / 19.x` | Client-side reactive component tree |
+| **TypeScript** | `^5.6.3` | Strict type validation and domain interfaces (`Project`, `EQBand`, `TechDetail`, etc.) |
 | **Tailwind CSS** | `^3.4.14` | High-performance utility CSS with custom Apple design tokens |
 | **Framer Motion** | `^11.11.17` | Hardware-accelerated transitions, `useScroll`, `useTransform`, spring physics |
-| **Lenis** | `^1.1.18` | Decoupled smooth momentum physics for both root viewport & modal drawers |
-| **Lucide React** | `^0.454.0` | Minimalist iconography system |
+| **Lenis** | `^1.1.18` | Decoupled smooth momentum physics for root viewport and deep-dive drawer |
+| **Lucide React** | `^0.454.0` | Minimalist aerospace/hardware iconography |
 | **Three.js** | `^0.169.0` | 3D mathematical primitives and geospatial coordinate calculations |
-| **JetBrains Mono & Inter** | Google Fonts | Dual typography: Technical telemetry monospace + clean Apple sans-serif |
+| **Google Fonts** | Inter, JetBrains Mono, Space Grotesk | Dual typography: Technical telemetry monospace + clean Apple sans-serif |
 
 ---
 
@@ -143,6 +151,7 @@ Key Utility Classes:
 - `.apple-card`: Provides `#161617` surface background, 1px `rgba(255, 255, 255, 0.08)` border, deep elevation shadow, and GPU composition layer via `transform: translateZ(0)` and `will-change: transform`.
 - `.apple-subnav`: Applies `rgba(22, 22, 23, 0.82)` with 24px backdrop blur (`backdrop-filter: blur(24px)`).
 - Ambient Specular Glows: `.specular-glow`, `.blue-glow`, and `.amber-glow` for cinematic background lighting effects.
+- `.animate-marquee`: Hardware-accelerated infinite horizontal loop for capabilities marquee (28s duration, pauses on `:hover`).
 - Lenis Momentum Classes: Standardizes overscroll behavior with `[data-lenis-prevent]` support.
 
 ### `tailwind.config.ts`
@@ -209,10 +218,14 @@ The custom easing formula `Math.min(1, 1.001 - Math.pow(2, -10 * t))` emulates A
 - **Touch Screen Guard**: Disables automatically if `window.matchMedia("(pointer: coarse)").matches` evaluates to `true`.
 
 ### Floating Master Navigation (`components/chrome/AppleSubnav.tsx`)
-- Positioned as `sticky top-4 z-50` with high-elevation drop shadow and frosted glass backdrop (`bg-[#161617]/85 backdrop-blur-2xl`).
+- **Direction-Aware Auto-Hide**:
+  - Scrolling down ($> 10\text{px}$) smoothly glides the subnav up $-80\text{px}$ (`opacity: 0`, `scale: 0.96`).
+  - Scrolling back up ($< -10\text{px}$) or staying near top ($\le 80\text{px}$) smoothly returns it into view (`y: 0`, `opacity: 1`, `scale: 1`).
+- Positioned as `sticky top-4 z-50` with high-elevation drop shadow and frosted glass backdrop (`bg-[#161617]/85 backdrop-blur-2xl border-white/10 rounded-full`).
 - **Telemetry Clock**: Consumes the `useLocalTime` hook (`lib/hooks/useLocalTime.ts`), querying `Intl.DateTimeFormat` with `timeZone: "Asia/Karachi"` to render live Pakistan Standard Time (PKT) in a tabular monospace badge.
 - **Availability Beacon**: Green pulsing status indicator (`bg-emerald-400 animate-pulse`) signaling role availability.
-- **Smooth Anchor Links**: Quick jumps to `#storyboard`, `#bento`, `#compare`, `#specimens`, `#archive`, and `#contact`.
+- **Smooth Anchor Links**: Quick jumps to `#storyboard`, `#bento`, `#compare`, `#archive`, and `#contact`.
+- **Action CTA**: Direct `"Dispatch ↗"` button jumping to the footer dispatch terminal.
 
 ---
 
@@ -268,7 +281,7 @@ Inspired by Apple's product comparison matrices, this section provides quantitat
 - Words matching `highlightWords` (e.g., *purpose-built*, *deterministic*, *Win32*, *GNSS*, *biquad*) receive bold white weight (`text-white font-semibold`), while standard words illuminate from subdued gray (`0.22` opacity) to readable silver (`1.0` opacity).
 
 ### Preset Switcher System
-Users can switch between 9 comparison presets via an Apple-style dropdown:
+Users can expand the comparison matrix and switch between 9 comparison presets via an Apple-style dropdown:
 
 | Preset ID | Industry Baseline Compared Against | Khuzaima's Engine | Primary Metrics Demonstrated |
 |---|---|---|---|
@@ -286,7 +299,7 @@ Users can switch between 9 comparison presets via an Apple-style dropdown:
 
 ## 9. Flagship Bento Showcase & Extended Suite (`AppleBentoShowcase.tsx`)
 
-The centerpiece of the portfolio is divided into two distinct architectural tiers:
+The showcase is divided into two distinct architectural tiers:
 
 ### Part 1: The Pinned Scrollytelling Theater (440vh Container)
 - A **440vh pinned container** (`h-[440vh]`) locks the viewport while the user scrolls through the **4 Core Flagships**:
@@ -294,7 +307,7 @@ The centerpiece of the portfolio is divided into two distinct architectural tier
   - Chapter 02: `AudioSage: Audiophile Research Assistant & Acoustic Suite`
   - Chapter 03: `The Silent AI Daily Auditor & Life Chronicle`
   - Chapter 04: `CinemaVault: Taste-Profiling Recommendation Engine`
-- **Interactive Chapter Pill Switcher**: Clicking any chapter button (`01 GNSS`, `02 AudioSage`, etc.) calculates target scroll offset and triggers a smooth scroll:
+- **Interactive Chapter Pill Switcher**: Clicking any chapter button (`01 GNSS`, `02 AudioSage`, etc.) calculates target scroll offset and triggers a smooth programmatic scroll:
   ```typescript
   const targetY = containerTop + (index / 4) * (containerHeight - window.innerHeight) + 50;
   window.scrollTo({ top: targetY, behavior: "smooth" });
@@ -314,56 +327,35 @@ Below the pinned theater, a mathematically balanced **12-column grid** displays 
 
 ---
 
-## 10. Live Interactive Mathematical Engines (`SpecimensSection.tsx`)
+## 10. About, Capabilities Marquee & Live Telemetry Visor (`ProjectArchive.tsx`)
 
-The specimens section proves technical claims through three live in-browser mathematical implementations:
+Section `#archive` functions as an executive briefing, core toolchain matrix, and live capability inspector:
 
-### Specimen 1: AudioSage PEQ Synthesizer (`AcousticVisualizer.tsx`)
-- **Mathematical Principle**: Simulates multi-band biquad bell equalization across a logarithmic frequency scale ($20\text{ Hz} \to 20,000\text{ Hz}$).
-- **Logarithmic Grid Mapping**:
-  $$\text{pixelX} = \frac{\log_{10}(f) - \log_{10}(20)}{\log_{10}(20000) - \log_{10}(20)} \times \text{width}$$
-- **Biquad Bell Formula**:
-  $$\text{Gain}(f) = \sum_{b \in \text{bands}} G_b \cdot \exp\left(-\frac{1}{2} \left(\frac{\ln(f / f_b)}{1.2 / Q_b}\right)^2\right)$$
-- **Target Curve Synthesis**: Calculates authentic 301-point Harman In-Ear 2019 target curve response (bass shelf + ear canal gain peak at 3kHz).
-- **Real-Time RMS Residual Error**: Dynamically evaluates the root-mean-square deviation between composite EQ filter output and the Harman target, updating with slider input.
+### 1. High-Impact Personal Statement & Executive Bio
+- Location indicator (`Karachi, PK`) with headline: *"I build systems that run on real hardware, with real constraints — not demos, not tutorials."*
+- Word-by-word scroll-illuminated bio (`ScrollTextReveal`).
+- Quick links: GitHub (`github.com/khuzaima175`), Download CV (`/cv.pdf`), and `"Open for select engineering roles"` status beacon.
 
-### Specimen 2: GNSS RTS Trajectory Filter (`GNSSSimulator.tsx`)
-- **60 FPS Canvas Simulation**: Renders vehicle movement along a closed geodetic trajectory modeling a 20 KM drive.
-- **3 Visual Layers**:
-  1. *Ground Truth*: 2cm NovAtel ProPak6 NRTK reference baseline.
-  2. *Raw Consumer GPS L1*: Synthetic high-variance Gaussian noise simulating 10.89m RMS error.
-  3. *Rauch-Tung-Striebel (RTS) Backward Smoother*: Filtered blue trajectory with covariance ellipse matching 1.235m RMS accuracy.
-- **Tunnel Blackout Simulation**: Toggle button simulates a 60-second satellite blackout inside an urban tunnel, showing dead-reckoning drift ($0.062\text{ m/s}$).
+### 2. Kinetic Capabilities Marquee
+- Hardware-accelerated infinite horizontal loop running a 28s cycle across 10 core engineering capabilities:
+  - *3D ECEF Signal Fusion*, *0.0% CPU Win32 Daemons*, *Web Audio DSP Cascades*, *3-Tier LLM Cascades*, *Zero-Latency SQLite*, *Offline-First React Native*, *Harman Target Curve Synthesis*, *CSV Token Compression*, *SM-2 Spaced Repetition*, *Automated E2E Telemetry*.
+- Pauses smoothly on hover.
 
-### Specimen 3: 24-Hour Biological Day Ribbon (`SensoryRibbon.tsx`)
-- **24-Hour Discrete Time Blocks**: Visualizes the zero-overhead daemon's continuous daily timeline.
-- **Intelligent Classification**:
-  - *Focus*: High-speed coding/engineering flow (Vite, terminal, IDE).
-  - *Meeting*: CoreAudio session detection triggers relaxed AFK threshold (30 minutes).
-  - *Idle*: Retroactively reattributed away from active focus without phantom hours.
-  - *Rest*: System sleep state handled with UTC-anchored `time.monotonic()` timing.
-- **Zero CPU Telemetry**: Emphasizes `0.0% measurable CPU overhead` via native Win32 ctypes API polling.
+### 3. 3 Grand Architectural Capability Hubs
+- **Real-Time Systems & DSP** (Blue specular gradient): Python, SciPy, NumPy, Win32 Ctypes, Web Audio API, Bash. Metrics: 0.0% CPU, ≤0.5 dB PEQ, 23ms latency.
+- **Autonomous AI & Intelligence** (Indigo/Purple specular gradient): Google Gemini API, FastAPI, CSV Prompt Encoding, OMDb API. Metrics: 3-Tier fallback, 60% token cut, 0.0% hallucination.
+- **Full-Stack & Local-First Edge** (Emerald/Teal specular gradient): React Native, Next.js, TypeScript, SQLite, PostgreSQL, Docker, Resend API, Vercel. Metrics: 0ms local latency, 60 FPS mobile, 3 optimized SQL queries.
+
+### 4. Interactive Capability Telemetry HUD / Inspector Visor
+- Positioned below the capability hubs with a live radar ping animation.
+- Backed by an in-memory `TECH_DATABASE` of 22 verified technologies.
+- **Dynamic Interaction**: Hovering over or tapping any technology badge updates the visor in real-time, displaying its verified production role, quantified benchmark metric, and deployed flagship project.
 
 ---
 
-## 11. System Index & Instant Filtering Engine (`ProjectArchive.tsx`)
+## 11. Deep-Dive Inspection Drawer & Live Proof Specimens (`ProjectModal.tsx`)
 
-The Project Archive acts as a searchable directory of all 9 architectures:
-
-- **Instant Full-Text Search**: React `useMemo` filter matching user queries against `title`, `tagline`, and `techStack` arrays with sub-millisecond response.
-- **Category Filter Tabs**: Quick filtering across:
-  - `ALL WORK (9)`
-  - `SYSTEMS & AI (3)`
-  - `FULL-STACK (3)`
-  - `MOBILE & LOCAL (3)`
-- **Framer Motion Layout Transitions**: Employs `<motion.div layout>` and `<AnimatePresence>` for fluid card reflow during search and filter operations.
-- **Data-Dense Tabular Row Cards**: Displays reference numbering, category, title, tagline, key quantitative metric badge, and technology tags.
-
----
-
-## 12. Deep-Dive Inspection Drawer (`ProjectModal.tsx`)
-
-Clicking any project card across the Bento Showcase or Archive opens a sliding inspection drawer:
+Clicking any project card across the Bento Showcase opens a full-height sliding inspection drawer:
 
 ```typescript
 // Smooth Apple Drawer Animation
@@ -373,36 +365,60 @@ exit={{ x: "100%" }}
 transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
 ```
 
-### Technical Dossier Structure Inside Drawer:
-1. **Header**: Category badge, year, and dismissal close button (`ESC` key listener supported).
+### Drawer Architecture & Scoped Lenis Scrolling
+- Pauses the root window's Lenis scroll and initializes an internal, scoped Lenis smooth scroller (`duration: 0.8s`).
+- Listens for `Escape` key and backdrop clicks.
+
+### Two-Tier Tab Architecture:
+
+#### Tab 1: Overview
+1. **Header**: Category badge, year, close button.
 2. **Title & Tagline**: Full engineering system name and architectural summary.
 3. **Archival Media Specimen**: Image showcase with high-contrast grayscale hover treatment.
 4. **Executive Briefing**: High-level problem statement, engineering approach, and production impact.
 5. **Validated Performance Metrics**: 3-column grid highlighting verified quantitative benchmarks.
-6. **Core Architecture & Engineering Highlights**: Detailed breakdown of internal algorithms, equations, data pipelines, and concurrency patterns.
-7. **Hard Metrics & Quantitative Benchmarks**: Verified statistical results (e.g., p-values, RMS errors, query reduction percentages).
-8. **Technologies Deployed**: Monospace tag cloud of all languages, libraries, and protocols used.
-9. **Engineering Impact Statements**: Resume-ready bullet points with quantitative achievements.
+6. **Technologies Deployed**: Monospace tag cloud of all languages and libraries.
+7. **"Run Live Proof" Interactive Simulator**:
+   Embedded collapsible mathematical workbenches executing live on client silicon:
+
+   * **Specimen A: AudioSage PEQ Synthesizer (`AcousticVisualizer.tsx`)**
+     - Simulates multi-band biquad bell equalization across logarithmic frequency ($20\text{ Hz} \to 20,000\text{ Hz}$).
+     - Biquad Bell Formula:
+       $$\text{Gain}(f) = \sum_{b \in \text{bands}} G_b \cdot \exp\left(-\frac{1}{2} \left(\frac{\ln(f / f_b)}{1.2 / Q_b}\right)^2\right)$$
+     - Features 3 adjustable frequency bands (Sub-Bass, Vocal Notch, Air Shelf) with Frequency, Gain, and Q sliders.
+     - Toggles authentic 301-point Harman In-Ear 2019 target curve and computes real-time residual RMS error in dB.
+
+   * **Specimen B: GNSS RTS Trajectory Filter (`GNSSSimulator.tsx`)**
+     - 60 FPS HTML5 Canvas 2D simulation rendering vehicle movement along a closed geodetic trajectory modeling a 20 KM drive.
+     - Plots 3 trajectory layers: NovAtel 2cm RTK truth, noisy raw GPS SPP L1 (10.89m RMS), and RTS backward-smoothed path (1.235m RMS).
+     - Includes live epoch counter, pause/resume controls, and a `"TUNNEL BLACKOUT"` switch demonstrating $0.062\text{ m/s}$ dead-reckoning drift.
+
+   * **Specimen C: 24-Hour Biological Day Ribbon (`SensoryRibbon.tsx`)**
+     - Interactive 24-hour discrete timeline blocks visualising Win32 foreground ctypes polling at 5000ms intervals.
+     - Interactive scrubber inspecting foreground window title, CoreAudio stream detection status, and dynamic AFK boundary relaxation (5m standard vs 30m meeting mode).
+
+#### Tab 2: Technical Deep-Dive
+1. **Core Architecture & Engineering Highlights**: 4 numbered deep-dives (`01.` to `04.`) explaining internal algorithms, coordinate math, and concurrency patterns.
+2. **Hard Metrics & Quantitative Benchmarks**: Verified statistical results with bracketed notation (`[1]`, `[2]`, `[3]`).
+3. **Engineering Impact Statements**: Resume-ready bullet points with quantitative achievements.
 
 ---
 
-## 13. Tenets & Dispatch Terminal (`EngineeringMethod.tsx`, `ContactSection.tsx`)
+## 12. Dispatch Terminal & Footer (`ContactSection.tsx`)
 
-### Engineering Tenets (`EngineeringMethod.tsx`)
-Summarizes the 4 core tenets guiding all systems in the portfolio:
-1. **Zero Ghost Work & 0.0% Daemon Overhead**: Native Win32 ctypes sensory daemons with UTC-anchored monotonic timing.
-2. **Physics-First Ground Truth Before ML**: Rigorous metrological audits (LODO-CV, Chi-square NIS innovation gating).
-3. **Local-First Sovereign Privacy**: Zero screen recordings; embedded SQLite FTS5 offline full-text search.
-4. **Zero-Quota-Waste Algorithmic Efficiency**: <15ms in-browser NLP clustering and ~60% LLM prompt compression via CSV encoding.
+Section `#contact` provides a sleek communication dispatch console:
 
-### Dispatch Console (`ContactSection.tsx`)
-- **Encrypted Packet Transmission Simulation**: Terminal interface allowing visitors to draft inquiries with interactive transmission feedback (`"TRANSMITTING ENCRYPTED PACKET..."` $\to$ `"DISPATCH SUCCESSFUL"`).
 - **1-Click Clipboard Email**: Copies `khuzaima.ahmed.33820@gmail.com` with instantaneous visual state change (`Check` icon feedback for 2500ms).
-- **External Links**: Direct mail client link and GitHub profile link (`github.com/khuzaima175`).
+- **External Links**: Direct mail client link (`mailto:`) and GitHub profile link (`github.com/khuzaima175`).
+- **Collapsible Direct Dispatch Console**:
+  - Terminal-styled card with `"Direct Dispatch Console // Ready"` indicator.
+  - Textarea for message payload + `"Transmit ↗"` button.
+  - Simulates encrypted packet transmission: displays `"TRANSMITTING ENCRYPTED PACKET..."` for 800ms before confirming `"DISPATCH SUCCESSFUL // INBOX DELIVERED"`.
+- **Footer Colophon**: Copyright + *"Built with deterministic architecture."*
 
 ---
 
-## 14. Central Data Schema (`lib/data/projects.ts`)
+## 13. Central Data Schema (`lib/data/projects.ts`)
 
 Every component in the application consumes a strictly typed data model:
 
@@ -449,7 +465,7 @@ export interface Project {
 
 ---
 
-## 15. Performance Engineering & GPU Acceleration
+## 14. Performance Engineering & GPU Acceleration
 
 To guarantee locked 120 FPS performance during complex scroll sequences, the frontend employs several optimization strategies:
 
@@ -466,7 +482,7 @@ To guarantee locked 120 FPS performance during complex scroll sequences, the fro
 
 ---
 
-## 16. Developer & Maintenance Playbook
+## 15. Developer & Maintenance Playbook
 
 ### Running Locally
 ```bash
@@ -488,6 +504,6 @@ npm run start
 2. Append a new object complying with the `Project` interface.
 3. Add a corresponding preview image to `/public/images/`.
 4. The system will automatically:
-   - Include it in the `ProjectArchive` search index and category filters.
    - Surface it in the `AppleComparison` preset dropdown.
-   - Render its technical dossier inside the `ProjectModal` deep-dive drawer.
+   - Render its card in the `AppleBentoShowcase`.
+   - Render its technical dossier and embedded live proof simulator inside the `ProjectModal` deep-dive drawer.

@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useState, useEffect, useRef } from "react";
+import { motion, AnimatePresence, useScroll, useVelocity, useSpring, useTransform } from "framer-motion";
 import {
   ArrowUpRight,
   Github,
@@ -12,6 +12,9 @@ import {
   ChevronRight,
 } from "lucide-react";
 import { ScrollTextReveal } from "@/components/ui/ScrollTextReveal";
+import { Odometer } from "@/components/ui/Odometer";
+import { Reveal } from "@/components/ui/Reveal";
+import { EASE_ENTER, SPRING_LAYOUT, SPRING_FLOAT } from "@/lib/motion/tokens";
 
 interface TechDetail {
   name: string;
@@ -252,16 +255,35 @@ const MARQUEE_ITEMS = [
   "Automated E2E Telemetry",
 ];
 
-const fadeUp = (delay = 0) => ({
-  initial: { opacity: 0, y: 20 },
-  whileInView: { opacity: 1, y: 0 },
-  viewport: { once: true, margin: "-40px" },
-  transition: { duration: 0.5, delay, ease: [0.16, 1, 0.3, 1] as const },
-});
-
 export function ProjectArchive() {
   const [hoveredTech, setHoveredTech] = useState<string | null>(null);
   const activeTechInfo = hoveredTech ? TECH_DATABASE[hoveredTech] : null;
+
+  // Scroll velocity coupling for kinetic marquee
+  const { scrollY } = useScroll();
+  const scrollVelocity = useVelocity(scrollY);
+  const smoothVelocity = useSpring(scrollVelocity, { damping: 50, stiffness: 400 });
+  const marqueeSkew = useTransform(smoothVelocity, [-1500, 1500], [-6, 6]);
+
+  // Typewriter effect for visor role description
+  const [typedRole, setTypedRole] = useState("");
+  useEffect(() => {
+    const targetText = activeTechInfo
+      ? activeTechInfo.role
+      : "Hover over or tap any technology chip above to inspect its verified production role, hardware benchmarks, and architectural implementation.";
+    
+    setTypedRole("");
+    let currentIdx = 0;
+    const interval = setInterval(() => {
+      currentIdx += 2;
+      setTypedRole(targetText.slice(0, currentIdx));
+      if (currentIdx >= targetText.length) {
+        clearInterval(interval);
+      }
+    }, 12);
+
+    return () => clearInterval(interval);
+  }, [hoveredTech]);
 
   return (
     <section
@@ -270,34 +292,44 @@ export function ProjectArchive() {
     >
       {/* — 1. High-Impact Personal Statement & Executive Bio — */}
       <div className="space-y-8">
-        <motion.div
-          initial={{ opacity: 0, x: -30, filter: "blur(4px)" }}
-          whileInView={{ opacity: 1, x: 0, filter: "blur(0px)" }}
-          viewport={{ once: true, margin: "-40px" }}
-          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          className="flex items-center gap-3"
-        >
-          <span className="inline-block text-xs sm:text-sm font-sans font-semibold tracking-wider uppercase text-apple-blue">
-            About // Systems & AI Engineer
-          </span>
-          <span className="w-1.5 h-1.5 rounded-full bg-apple-blue/60" />
-          <span className="text-xs sm:text-sm font-sans text-neutral-400">
-            Karachi, PK
-          </span>
-        </motion.div>
+        <Reveal variant="slide-right">
+          <div className="flex items-center gap-3">
+            <span className="inline-block text-xs sm:text-sm font-sans font-semibold tracking-wider uppercase text-apple-blue">
+              About // Systems & AI Engineer
+            </span>
+            <span className="w-1.5 h-1.5 rounded-full bg-apple-blue/60" />
+            <span className="text-xs sm:text-sm font-sans text-neutral-400">
+              Karachi, PK
+            </span>
+          </div>
+        </Reveal>
 
-        <motion.h2
-          initial={{ opacity: 0, x: -40, filter: "blur(6px)" }}
-          whileInView={{ opacity: 1, x: 0, filter: "blur(0px)" }}
-          viewport={{ once: true, margin: "-40px" }}
-          transition={{ duration: 0.7, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
-          className="font-sans text-3xl sm:text-5xl lg:text-6xl font-bold text-white leading-[1.12] tracking-tight max-w-4xl"
-        >
-          I build systems that run on real hardware, with real constraints —{" "}
-          <span className="text-neutral-500 font-normal">
-            not demos, not tutorials.
-          </span>
-        </motion.h2>
+        {/* Asymmetric Editorial Headline */}
+        <div className="space-y-2 max-w-4xl">
+          <div className="overflow-hidden">
+            <motion.h2
+              initial={{ y: "110%" }}
+              whileInView={{ y: 0 }}
+              viewport={{ once: true, margin: "-40px" }}
+              transition={{ duration: 0.7, ease: EASE_ENTER }}
+              className="font-sans text-3xl sm:text-5xl lg:text-6xl font-bold text-white leading-[1.12] tracking-tight"
+            >
+              I build systems that run on real hardware, with real constraints
+            </motion.h2>
+          </div>
+
+          <div className="overflow-hidden">
+            <motion.h2
+              initial={{ x: 60, opacity: 0 }}
+              whileInView={{ x: 0, opacity: 1 }}
+              viewport={{ once: true, margin: "-40px" }}
+              transition={{ duration: 0.75, delay: 0.12, ease: EASE_ENTER }}
+              className="font-sans text-3xl sm:text-5xl lg:text-6xl font-bold text-neutral-500 leading-[1.12] tracking-tight"
+            >
+              — not demos, not tutorials.
+            </motion.h2>
+          </div>
+        </div>
 
         {/* Word-by-Word Scroll-Illuminated Bio */}
         <div className="pt-2 max-w-3xl">
@@ -320,53 +352,44 @@ export function ProjectArchive() {
           />
         </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 25 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-40px" }}
-          transition={{ duration: 0.6, delay: 0.18, ease: [0.16, 1, 0.3, 1] }}
-          className="flex items-center gap-4 flex-wrap pt-2"
-        >
-          <a
-            href="https://github.com/khuzaima175"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/10 hover:bg-white/20 border border-white/15 text-white text-sm font-semibold transition-all duration-200 backdrop-blur-md hover:scale-[1.02] active:scale-[0.98]"
-            data-cursor-interactive="true"
-          >
-            <Github className="w-4 h-4" />
-            GitHub
-          </a>
+        <Reveal variant="blur-rise" delay={0.2}>
+          <div className="flex items-center gap-4 flex-wrap pt-2">
+            <a
+              href="https://github.com/khuzaima175"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/10 hover:bg-white/20 border border-white/15 text-white text-sm font-semibold transition-all duration-200 backdrop-blur-md hover:scale-[1.02] active:scale-[0.98]"
+              data-cursor-interactive="true"
+            >
+              <Github className="w-4 h-4" />
+              GitHub
+            </a>
 
-          <a
-            href="/cv.pdf"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-apple-blue hover:bg-blue-400 text-white text-sm font-semibold transition-all duration-200 shadow-lg shadow-apple-blue/25 hover:scale-[1.02] active:scale-[0.98]"
-            data-cursor-interactive="true"
-          >
-            <FileText className="w-4 h-4" />
-            Download CV
-            <ArrowUpRight className="w-4 h-4" />
-          </a>
+            <a
+              href="/cv.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-apple-blue hover:bg-blue-400 text-white text-sm font-semibold transition-all duration-200 shadow-lg shadow-apple-blue/25 hover:scale-[1.02] active:scale-[0.98]"
+              data-cursor-interactive="true"
+            >
+              <FileText className="w-4 h-4" />
+              Download CV
+              <ArrowUpRight className="w-4 h-4" />
+            </a>
 
-          <div className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-white/[0.04] border border-white/10 text-xs sm:text-sm font-sans text-neutral-300">
-            <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
-            <span>Open for select engineering roles</span>
+            <div className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-white/[0.04] border border-white/10 text-xs sm:text-sm font-sans text-neutral-300">
+              <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
+              <span>Open for select engineering roles</span>
+            </div>
           </div>
-        </motion.div>
+        </Reveal>
       </div>
 
-      {/* — 2. Dynamic Kinetic Capabilities Marquee — */}
+      {/* — 2. Dynamic Velocity-Coupled Capabilities Marquee — */}
       <motion.div
-        initial={{ opacity: 0, scale: 0.96 }}
-        whileInView={{ opacity: 1, scale: 1 }}
-        viewport={{ once: true, margin: "-30px" }}
-        transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-        className="relative overflow-hidden py-6 border-y border-white/10 bg-gradient-to-r from-white/[0.01] via-white/[0.03] to-white/[0.01]"
+        style={{ skewX: marqueeSkew }}
+        className="relative overflow-hidden py-6 border-y border-white/10 bg-gradient-to-r from-white/[0.01] via-white/[0.03] to-white/[0.01] marquee-mask"
       >
-        <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-black to-transparent z-10 pointer-events-none" />
-        <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-black to-transparent z-10 pointer-events-none" />
         <div className="flex w-max animate-marquee space-x-10 items-center">
           {[...MARQUEE_ITEMS, ...MARQUEE_ITEMS].map((item, idx) => (
             <div
@@ -380,32 +403,28 @@ export function ProjectArchive() {
         </div>
       </motion.div>
 
-      {/* — 3. Grand Architectural Capability Hubs with Side-Loading Momentum — */}
+      {/* — 3. Grand Architectural Capability Hubs — */}
       <div className="space-y-10">
-        <motion.div
-          initial={{ opacity: 0, x: -30, filter: "blur(4px)" }}
-          whileInView={{ opacity: 1, x: 0, filter: "blur(0px)" }}
-          viewport={{ once: true, margin: "-40px" }}
-          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          className="space-y-3"
-        >
-          <span className="text-xs sm:text-sm font-sans font-semibold tracking-wider uppercase text-apple-blue">
-            Core Toolchain & Architecture
-          </span>
-          <h3 className="font-sans text-3xl sm:text-5xl font-bold text-white tracking-tight">
-            Engineered for speed. Built for scale.
-          </h3>
-          <p className="text-neutral-400 text-base sm:text-lg max-w-3xl font-normal">
-            Every tool is selected to maximize hardware performance, eliminate bloat, and deliver verifiable precision.
-          </p>
-        </motion.div>
+        <Reveal variant="slide-right">
+          <div className="space-y-3">
+            <span className="text-xs sm:text-sm font-sans font-semibold tracking-wider uppercase text-apple-blue">
+              Core Toolchain & Architecture
+            </span>
+            <h3 className="font-sans text-3xl sm:text-5xl font-bold text-white tracking-tight">
+              Engineered for speed. Built for scale.
+            </h3>
+            <p className="text-neutral-400 text-base sm:text-lg max-w-3xl font-normal">
+              Every tool is selected to maximize hardware performance, eliminate bloat, and deliver verifiable precision.
+            </p>
+          </div>
+        </Reveal>
 
-        {/* 3 Massive Architectural Bento Cards with Side & Bottom Slide Entrances */}
+        {/* 3 Massive Architectural Bento Cards */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8 items-stretch">
           {CAPABILITY_HUBS.map((hub, hIdx) => {
             const Icon = hub.icon;
-            const initialX = hub.direction === "left" ? -60 : hub.direction === "right" ? 60 : 0;
-            const initialY = hub.direction === "bottom" ? 50 : 20;
+            const initialX = hub.direction === "left" ? -50 : hub.direction === "right" ? 50 : 0;
+            const initialY = hub.direction === "bottom" ? 40 : 20;
 
             return (
               <motion.div
@@ -413,7 +432,7 @@ export function ProjectArchive() {
                 initial={{ opacity: 0, x: initialX, y: initialY, filter: "blur(6px)" }}
                 whileInView={{ opacity: 1, x: 0, y: 0, filter: "blur(0px)" }}
                 viewport={{ once: true, margin: "-60px" }}
-                transition={{ duration: 0.7, delay: hIdx * 0.12, ease: [0.16, 1, 0.3, 1] }}
+                transition={{ duration: 0.7, delay: hIdx * 0.12, ease: EASE_ENTER }}
                 className={`relative p-7 sm:p-9 bg-[#121214] border border-white/10 ${hub.borderHover} rounded-3xl transition-all duration-500 flex flex-col justify-between space-y-7 overflow-hidden group shadow-2xl`}
               >
                 {/* Ambient Radial Specular Gradient */}
@@ -441,21 +460,21 @@ export function ProjectArchive() {
                     </p>
                   </div>
 
-                  {/* Benchmark Performance Telemetry Grid */}
+                  {/* Benchmark Performance Telemetry Grid with Odometers */}
                   <div className="grid grid-cols-3 gap-2 py-4 border-y border-white/10">
                     {hub.stats.map((st, sIdx) => (
                       <div key={sIdx} className="space-y-1">
                         <div className="text-[10px] text-neutral-400 uppercase font-sans font-medium tracking-wide">
                           {st.label}
                         </div>
-                        <div className="font-sans text-sm sm:text-base font-bold text-white">
-                          {st.value}
+                        <div className="font-sans text-sm sm:text-base font-bold text-white flex items-center">
+                          <Odometer value={st.value} />
                         </div>
                       </div>
                     ))}
                   </div>
 
-                  {/* Interactive Tech Badges */}
+                  {/* Interactive Tech Badges with Shared Layout Rings */}
                   <div className="space-y-3">
                     <div className="text-xs font-sans font-semibold uppercase tracking-wider text-neutral-400">
                       Technology Stack
@@ -469,14 +488,21 @@ export function ProjectArchive() {
                             onMouseEnter={() => setHoveredTech(techName)}
                             onMouseLeave={() => setHoveredTech(null)}
                             onClick={() => setHoveredTech(techName)}
-                            className={`px-3.5 py-2 rounded-xl text-xs sm:text-sm font-sans font-semibold transition-all duration-200 border ${
+                            className={`relative px-3.5 py-2 rounded-xl text-xs sm:text-sm font-sans font-semibold transition-all duration-200 border ${
                               isHovered
                                 ? "bg-apple-blue text-white border-apple-blue shadow-lg shadow-apple-blue/30 scale-105"
                                 : "bg-white/[0.06] hover:bg-white/[0.12] text-neutral-200 hover:text-white border-white/10 hover:border-white/30"
                             }`}
                             data-cursor-interactive="true"
                           >
-                            {techName}
+                            {isHovered && (
+                              <motion.div
+                                layoutId="active-tech-ring"
+                                transition={SPRING_LAYOUT}
+                                className="absolute -inset-1 border border-apple-blue/50 rounded-2xl pointer-events-none"
+                              />
+                            )}
+                            <span>{techName}</span>
                           </button>
                         );
                       })}
@@ -484,9 +510,12 @@ export function ProjectArchive() {
                   </div>
                 </div>
 
-                {/* Flagship System Link Footer */}
-                <div className="pt-4 border-t border-white/10 flex items-center justify-between text-xs font-sans text-neutral-400 relative z-10">
-                  <span className="truncate">{hub.flagship}</span>
+                {/* Flagship System Link Footer with 2-line clamp & title */}
+                <div
+                  title={hub.flagship}
+                  className="pt-4 border-t border-white/10 flex items-center justify-between text-xs font-sans text-neutral-400 relative z-10"
+                >
+                  <span className="line-clamp-1 pr-2">{hub.flagship}</span>
                   <ChevronRight className="w-4 h-4 text-apple-blue flex-shrink-0 group-hover:translate-x-1 transition-transform duration-200" />
                 </div>
               </motion.div>
@@ -499,7 +528,7 @@ export function ProjectArchive() {
           initial={{ opacity: 0, y: 40, filter: "blur(6px)" }}
           whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
           viewport={{ once: true, margin: "-40px" }}
-          transition={{ duration: 0.7, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration: 0.7, delay: 0.15, ease: EASE_ENTER }}
           className="relative p-7 sm:p-10 rounded-3xl bg-[#0d0d0f] border border-white/15 overflow-hidden shadow-2xl backdrop-blur-2xl"
         >
           {/* Glowing Top Specular Line */}
@@ -521,20 +550,11 @@ export function ProjectArchive() {
                 )}
               </div>
 
-              <AnimatePresence mode="wait">
-                <motion.p
-                  key={hoveredTech || "default"}
-                  initial={{ opacity: 0, y: 6 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -6 }}
-                  transition={{ duration: 0.2 }}
-                  className="font-sans text-base sm:text-xl text-white font-medium leading-relaxed"
-                >
-                  {activeTechInfo
-                    ? activeTechInfo.role
-                    : "Hover over or tap any technology chip above to inspect its verified production role, hardware benchmarks, and architectural implementation."}
-                </motion.p>
-              </AnimatePresence>
+              {/* Monospace Typewriter Description */}
+              <p className="font-sans text-base sm:text-xl text-white font-medium leading-relaxed min-h-[56px]">
+                {typedRole}
+                <span className="inline-block w-1.5 h-4 bg-apple-blue ml-1 animate-pulse" />
+              </p>
             </div>
 
             {/* Benchmark & Target Spec Column */}
@@ -563,5 +583,3 @@ export function ProjectArchive() {
     </section>
   );
 }
-
-

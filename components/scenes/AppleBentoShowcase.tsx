@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState, useEffect } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, useMotionValue, useSpring } from "framer-motion";
 import {
   ArrowUpRight,
   Compass,
@@ -16,6 +16,10 @@ import {
   Sparkles,
 } from "lucide-react";
 import { Project } from "@/lib/data/projects";
+import { Odometer } from "@/components/ui/Odometer";
+import { MagneticButton } from "@/components/ui/MagneticButton";
+import { EASE_ENTER, SPRING_LAYOUT, SPRING_FLOAT } from "@/lib/motion/tokens";
+import { scrollToTarget } from "@/lib/utils/scroll";
 
 interface AppleBentoShowcaseProps {
   projects: Project[];
@@ -83,8 +87,8 @@ export function AppleBentoShowcase({
 
   useEffect(() => {
     const unsubscribe = scrollYProgress.on("change", (latest) => {
-      if (latest < 0.25) setActiveChapter(0);
-      else if (latest < 0.50) setActiveChapter(1);
+      if (latest < 0.21) setActiveChapter(0);
+      else if (latest < 0.49) setActiveChapter(1);
       else if (latest < 0.75) setActiveChapter(2);
       else setActiveChapter(3);
     });
@@ -92,42 +96,119 @@ export function AppleBentoShowcase({
   }, [scrollYProgress]);
 
   const chapters = [
-    { project: gnss, icon: Compass, badge: "3D ECEF Signal Fusion // 20KM Drive Benchmark", glow: "rgba(41, 151, 255, 0.16)" },
-    { project: audiosage, icon: Activity, badge: "Residual PEQ // Web Audio DSP Cascade", glow: "rgba(99, 102, 241, 0.16)" },
-    { project: auditor, icon: Cpu, badge: "0.0% CPU Sensory Engine // Win32 Ctypes", glow: "rgba(16, 185, 129, 0.14)" },
-    { project: cinema, icon: Layers, badge: "Dual-Pass AI Critique // OMDb Truth Verification", glow: "rgba(245, 158, 11, 0.14)" },
+    {
+      project: gnss,
+      shortLabel: "01 GNSS",
+      icon: Compass,
+      badge: "3D ECEF Signal Fusion // 20KM Drive Benchmark",
+      glow: "rgba(41, 151, 255, 0.16)",
+      stats: [
+        { label: "HORIZ RMS", value: "1.235m" },
+        { label: "TUNNEL DRIFT", value: "0.062 m/s" },
+        { label: "ACCURACY", value: "+88.4%" },
+      ],
+    },
+    {
+      project: audiosage,
+      shortLabel: "02 AudioSage",
+      icon: Activity,
+      badge: "Residual PEQ // Web Audio DSP Cascade",
+      glow: "rgba(99, 102, 241, 0.16)",
+      stats: [
+        { label: "TARGET ERROR", value: "≤ 0.5 dB" },
+        { label: "DSP LATENCY", value: "23 ms" },
+        { label: "DATASET", value: "301 Pts" },
+      ],
+    },
+    {
+      project: auditor,
+      shortLabel: "03 Auditor",
+      icon: Cpu,
+      badge: "0.0% CPU Sensory Engine // Win32 Ctypes",
+      glow: "rgba(16, 185, 129, 0.14)",
+      stats: [
+        { label: "CPU DRAG", value: "0.0%" },
+        { label: "GHOST WORK", value: "0 hrs" },
+        { label: "UNIT TESTS", value: "66 Tests" },
+      ],
+    },
+    {
+      project: cinema,
+      shortLabel: "04 CinemaVault",
+      icon: Layers,
+      badge: "Dual-Pass AI Critique // OMDb Truth Verification",
+      glow: "rgba(245, 158, 11, 0.14)",
+      stats: [
+        { label: "TOKEN CUT", value: "~60%" },
+        { label: "HALLUCINATION", value: "0.0%" },
+        { label: "FAILOVER", value: "3-Tier" },
+      ],
+    },
   ];
 
-  // Smooth scroll to chapter on pill click
+  // Smooth scroll to chapter on pill or segment rail click
   const scrollToChapter = (index: number) => {
     if (!containerRef.current) return;
-    const containerTop = containerRef.current.offsetTop;
+    const rect = containerRef.current.getBoundingClientRect();
+    const containerTop = rect.top + window.scrollY;
     const containerHeight = containerRef.current.offsetHeight;
-    const targetY = containerTop + (index / 4) * (containerHeight - window.innerHeight) + 50;
-    window.scrollTo({ top: targetY, behavior: "smooth" });
+    const scrollableDistance = containerHeight - window.innerHeight;
+    
+    // Exact midpoint fractions corresponding to each chapter's solid focal zone
+    const targetFractions = [0.05, 0.35, 0.62, 0.90];
+    const targetY = containerTop + targetFractions[index] * scrollableDistance;
+    scrollToTarget(targetY);
   };
 
-  // Dynamic transforms for Chapter 1
-  const ch1Opacity = useTransform(scrollYProgress, [0, 0.18, 0.24], [1, 1, 0]);
-  const ch1Y = useTransform(scrollYProgress, [0, 0.18, 0.24], [0, 0, -35]);
-  const ch1Scale = useTransform(scrollYProgress, [0, 0.20], [1, 0.96]);
+  // Subtle 3D Pointer Tilt for Stage (±2.5deg)
+  const tiltX = useMotionValue(0);
+  const tiltY = useMotionValue(0);
+  const springTiltX = useSpring(tiltX, SPRING_FLOAT);
+  const springTiltY = useSpring(tiltY, SPRING_FLOAT);
 
-  // Dynamic transforms for Chapter 2
-  const ch2Opacity = useTransform(scrollYProgress, [0.24, 0.29, 0.44, 0.49], [0, 1, 1, 0]);
-  const ch2Y = useTransform(scrollYProgress, [0.24, 0.29, 0.44, 0.49], [40, 0, 0, -35]);
-  const ch2Scale = useTransform(scrollYProgress, [0.24, 0.29, 0.44], [0.96, 1, 0.96]);
+  const handleStageMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (window.matchMedia("(pointer: coarse)").matches) return;
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width - 0.5;
+    const y = (e.clientY - rect.top) / rect.height - 0.5;
+    tiltX.set(-y * 5);
+    tiltY.set(x * 5);
+  };
 
-  // Dynamic transforms for Chapter 3
-  const ch3Opacity = useTransform(scrollYProgress, [0.49, 0.54, 0.69, 0.74], [0, 1, 1, 0]);
-  const ch3Y = useTransform(scrollYProgress, [0.49, 0.54, 0.69, 0.74], [40, 0, 0, -35]);
-  const ch3Scale = useTransform(scrollYProgress, [0.49, 0.54, 0.69], [0.96, 1, 0.96]);
+  const handleStageMouseLeave = () => {
+    tiltX.set(0);
+    tiltY.set(0);
+  };
 
-  // Dynamic transforms for Chapter 4
-  const ch4Opacity = useTransform(scrollYProgress, [0.74, 0.79, 1.0], [0, 1, 1]);
-  const ch4Y = useTransform(scrollYProgress, [0.74, 0.79, 1.0], [40, 0, 0]);
-  const ch4Scale = useTransform(scrollYProgress, [0.74, 0.82, 1.0], [0.96, 1, 1]);
+  // Continuous overlapping crossfades (opacity_A + opacity_B = 1.0, zero black gaps)
+  // Dynamic transforms for Chapter 1 (0.00 -> 0.26)
+  const ch1Opacity = useTransform(scrollYProgress, [0, 0.16, 0.26], [1, 1, 0]);
+  const ch1Y = useTransform(scrollYProgress, [0, 0.16, 0.26], [0, 0, -35]);
+  const ch1Scale = useTransform(scrollYProgress, [0, 0.16, 0.26], [1, 1, 0.96]);
+
+  // Dynamic transforms for Chapter 2 (0.16 -> 0.54)
+  const ch2Opacity = useTransform(scrollYProgress, [0.16, 0.26, 0.44, 0.54], [0, 1, 1, 0]);
+  const ch2Y = useTransform(scrollYProgress, [0.16, 0.26, 0.44, 0.54], [35, 0, 0, -35]);
+  const ch2Scale = useTransform(scrollYProgress, [0.16, 0.26, 0.44, 0.54], [0.96, 1, 1, 0.96]);
+
+  // Dynamic transforms for Chapter 3 (0.44 -> 0.80)
+  const ch3Opacity = useTransform(scrollYProgress, [0.44, 0.54, 0.70, 0.80], [0, 1, 1, 0]);
+  const ch3Y = useTransform(scrollYProgress, [0.44, 0.54, 0.70, 0.80], [35, 0, 0, -35]);
+  const ch3Scale = useTransform(scrollYProgress, [0.44, 0.54, 0.70, 0.80], [0.96, 1, 1, 0.96]);
+
+  // Dynamic transforms for Chapter 4 (0.70 -> 1.00)
+  const ch4Opacity = useTransform(scrollYProgress, [0.70, 0.80, 1.0], [0, 1, 1]);
+  const ch4Y = useTransform(scrollYProgress, [0.70, 0.80, 1.0], [35, 0, 0]);
+  const ch4Scale = useTransform(scrollYProgress, [0.70, 0.80, 1.0], [0.96, 1, 1]);
 
   const activeGlow = chapters[activeChapter]?.glow || "rgba(41, 151, 255, 0.15)";
+
+  const chapterTransforms = [
+    { opacity: ch1Opacity, y: ch1Y, scale: ch1Scale },
+    { opacity: ch2Opacity, y: ch2Y, scale: ch2Scale },
+    { opacity: ch3Opacity, y: ch3Y, scale: ch3Scale },
+    { opacity: ch4Opacity, y: ch4Y, scale: ch4Scale },
+  ];
 
   return (
     <div id="bento" className="bg-black text-white">
@@ -143,15 +224,15 @@ export function AppleBentoShowcase({
             style={{ backgroundColor: activeGlow }}
           />
 
-          {/* Top Header & Chapter Pill Switcher */}
+          {/* Top Header & Chapter Pill Switcher with Sliding Layout Pill */}
           <div className="relative z-20 max-w-6xl mx-auto w-full flex flex-col sm:flex-row items-center justify-between gap-4">
             <div className="flex items-center space-x-2 text-xs font-mono text-apple-subtle">
               <Sparkles className="w-3.5 h-3.5 text-apple-blue" />
               <span className="uppercase tracking-wider">FLAGSHIP SHOWCASE // CINEMATIC ARCHITECTURE</span>
             </div>
 
-            {/* Apple Chapter Pills */}
-            <div className="flex items-center space-x-2 p-1 rounded-full bg-[#161617]/80 backdrop-blur-xl border border-white/10 shadow-xl overflow-x-auto max-w-full">
+            {/* Apple Chapter Pills with layoutId sliding background */}
+            <div className="flex items-center space-x-1.5 p-1 rounded-full bg-[#161617]/85 backdrop-blur-xl border border-white/10 shadow-xl overflow-x-auto max-w-full">
               {chapters.map((ch, idx) => {
                 const Icon = ch.icon;
                 const isActive = activeChapter === idx;
@@ -159,283 +240,149 @@ export function AppleBentoShowcase({
                   <button
                     key={idx}
                     onClick={() => scrollToChapter(idx)}
-                    className={`flex items-center space-x-1.5 px-3.5 py-1.5 rounded-full text-xs font-mono transition-all duration-300 ${
+                    className={`relative flex items-center space-x-1.5 px-3.5 py-1.5 rounded-full text-xs font-mono transition-colors z-10 ${
                       isActive
-                        ? "bg-white text-black font-semibold shadow-md"
-                        : "text-apple-subtle hover:text-white hover:bg-white/5"
+                        ? "text-black font-semibold"
+                        : "text-apple-subtle hover:text-white"
                     }`}
                     data-cursor-interactive="true"
                   >
+                    {isActive && (
+                      <motion.div
+                        layoutId="chapter-pill"
+                        transition={SPRING_LAYOUT}
+                        className="absolute inset-0 bg-white rounded-full -z-10 shadow-md"
+                      />
+                    )}
                     <Icon className={`w-3 h-3 ${isActive ? "text-black" : "text-apple-blue"}`} />
-                    <span className="truncate max-w-[110px] sm:max-w-none">0{idx + 1} {ch.project.title.split(" ")[0]}</span>
+                    <span className="truncate">{ch.shortLabel}</span>
                   </button>
                 );
               })}
             </div>
           </div>
 
-          {/* Central Scrollytelling Stage */}
-          <div className="relative z-10 my-auto w-full max-w-6xl mx-auto">
-            {/* ================= CHAPTER 1: GNSS ENGINE ================= */}
-            <motion.div
-              style={{ opacity: ch1Opacity, y: ch1Y, scale: ch1Scale }}
-              className={`space-y-6 ${activeChapter === 0 ? "pointer-events-auto" : "pointer-events-none"}`}
-            >
-              <div className="relative w-full h-[40vh] sm:h-[46vh] rounded-3xl overflow-hidden shadow-2xl border border-white/10 bg-black">
-                <img
-                  src={gnss.image}
-                  alt={gnss.title}
-                  className="w-full h-full object-cover grayscale contrast-125 hover:grayscale-0 transition-transform duration-700 ease-out"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent" />
-                <div className="absolute bottom-4 left-4 sm:left-6 flex items-center space-x-2 px-4 py-2 rounded-full bg-black/80 backdrop-blur-md border border-white/10 text-xs font-mono text-white">
-                  <Compass className="w-4 h-4 text-apple-blue" />
-                  <span>3D ECEF Signal Fusion // 20KM Drive Benchmark</span>
-                </div>
-              </div>
+          {/* Central Scrollytelling Stage with 3D Tilt */}
+          <motion.div
+            style={{ rotateX: springTiltX, rotateY: springTiltY, transformPerspective: 1000 }}
+            onMouseMove={handleStageMouseMove}
+            onMouseLeave={handleStageMouseLeave}
+            className="relative z-10 my-auto w-full max-w-6xl mx-auto grid grid-cols-1 grid-rows-1 items-center"
+          >
+            {chapters.map((ch, idx) => {
+              const project = ch.project;
+              const Icon = ch.icon;
+              const trans = chapterTransforms[idx];
+              const isCurrent = activeChapter === idx;
 
-              <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 pt-2">
-                <div className="space-y-2 max-w-2xl">
-                  <div className="flex items-center space-x-3 text-xs font-mono text-apple-subtle">
-                    <span className="text-apple-blue uppercase font-bold">{gnss.category}</span>
-                    <span>// {gnss.year}</span>
-                    <span>// CHAPTER 01 OF 04</span>
-                  </div>
-                  <h3 className="font-sans text-3xl sm:text-5xl lg:text-6xl font-bold text-white tracking-apple-tightest leading-tight">
-                    {gnss.title}
-                  </h3>
-                  <p className="text-apple-subtle text-sm sm:text-base leading-relaxed font-normal">
-                    {gnss.executivePitch}
-                  </p>
-                </div>
-
-                <div className="flex flex-col sm:flex-row lg:flex-col items-start sm:items-center lg:items-end gap-4 flex-shrink-0">
-                  <div className="flex gap-3">
-                    <div className="p-3.5 px-4 rounded-2xl bg-[#161617] border border-white/10 text-center min-w-[100px]">
-                      <div className="text-[10px] text-apple-subtle uppercase font-mono">HORIZ RMS</div>
-                      <div className="font-sans text-xl sm:text-2xl font-bold text-white">1.235m</div>
-                    </div>
-                    <div className="p-3.5 px-4 rounded-2xl bg-[#161617] border border-white/10 text-center min-w-[100px]">
-                      <div className="text-[10px] text-apple-subtle uppercase font-mono">TUNNEL DRIFT</div>
-                      <div className="font-sans text-xl sm:text-2xl font-bold text-white">0.062 m/s</div>
-                    </div>
-                    <div className="p-3.5 px-4 rounded-2xl bg-[#161617] border border-white/10 text-center min-w-[100px]">
-                      <div className="text-[10px] text-apple-subtle uppercase font-mono">ACCURACY</div>
-                      <div className="font-sans text-xl sm:text-2xl font-bold text-apple-blue">+88.4%</div>
+              return (
+                <motion.div
+                  key={project.id}
+                  style={{
+                    opacity: trans.opacity,
+                    y: trans.y,
+                    scale: trans.scale,
+                  }}
+                  className={`col-start-1 row-start-1 w-full space-y-4 sm:space-y-5 ${
+                    isCurrent ? "pointer-events-auto z-10" : "pointer-events-none z-0"
+                  }`}
+                >
+                  {/* Media Plate with Shared Layout Morph Hook */}
+                  <div className="relative w-full h-[32vh] sm:h-[38vh] rounded-3xl overflow-hidden shadow-2xl border border-white/10 bg-black">
+                    <motion.img
+                      layoutId={`media-${project.id}`}
+                      src={project.image}
+                      alt={project.title}
+                      className="w-full h-full object-cover grayscale contrast-125 hover:grayscale-0 transition-transform duration-700 ease-out"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent" />
+                    <div className="absolute bottom-4 left-4 sm:left-6 flex items-center space-x-2 px-4 py-2 rounded-full bg-black/80 backdrop-blur-md border border-white/10 text-xs font-mono text-white">
+                      <Icon className="w-4 h-4 text-apple-blue" />
+                      <span>{ch.badge}</span>
                     </div>
                   </div>
 
-                  <button
-                    onClick={() => onSelectProject(gnss)}
-                    className="inline-flex items-center space-x-2 px-6 py-3 rounded-full bg-white text-black hover:bg-neutral-200 transition-colors text-xs font-semibold shadow-lg"
-                    data-cursor-interactive="true"
-                  >
-                    <span>Inspect Full Architecture</span>
-                    <ArrowUpRight className="w-4 h-4" />
-                  </button>
-                </div>
-              </div>
-            </motion.div>
+                  {/* Title & Metadata with Line Masks */}
+                  <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 pt-1">
+                    <div className="space-y-2 max-w-2xl">
+                      <div className="flex items-center space-x-3 text-xs font-mono text-apple-subtle">
+                        <span className="text-apple-blue uppercase font-bold">{project.category}</span>
+                        <span>// {project.year}</span>
+                        <span>// CHAPTER 0{idx + 1} OF 04</span>
+                      </div>
 
-            {/* ================= CHAPTER 2: AUDIOSAGE ================= */}
-            <motion.div
-              style={{ opacity: ch2Opacity, y: ch2Y, scale: ch2Scale }}
-              className={`absolute inset-0 space-y-6 ${activeChapter === 1 ? "pointer-events-auto" : "pointer-events-none"}`}
-            >
-              <div className="relative w-full h-[40vh] sm:h-[46vh] rounded-3xl overflow-hidden shadow-2xl border border-white/10 bg-black">
-                <img
-                  src={audiosage.image}
-                  alt={audiosage.title}
-                  className="w-full h-full object-cover grayscale contrast-125 hover:grayscale-0 transition-transform duration-700 ease-out"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent" />
-                <div className="absolute bottom-4 left-4 sm:left-6 flex items-center space-x-2 px-4 py-2 rounded-full bg-black/80 backdrop-blur-md border border-white/10 text-xs font-mono text-white">
-                  <Activity className="w-4 h-4 text-apple-blue" />
-                  <span>Residual PEQ Synthesizer // Web Audio DSP Cascade</span>
-                </div>
-              </div>
+                      <div className="overflow-hidden">
+                        <h3 className="font-sans text-2xl sm:text-4xl lg:text-5xl font-bold text-white tracking-apple-tightest leading-tight">
+                          {project.title}
+                        </h3>
+                      </div>
 
-              <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 pt-2">
-                <div className="space-y-2 max-w-2xl">
-                  <div className="flex items-center space-x-3 text-xs font-mono text-apple-subtle">
-                    <span className="text-apple-blue uppercase font-bold">{audiosage.category}</span>
-                    <span>// {audiosage.year}</span>
-                    <span>// CHAPTER 02 OF 04</span>
-                  </div>
-                  <h3 className="font-sans text-3xl sm:text-5xl lg:text-6xl font-bold text-white tracking-apple-tightest leading-tight">
-                    {audiosage.title}
-                  </h3>
-                  <p className="text-apple-subtle text-sm sm:text-base leading-relaxed font-normal">
-                    {audiosage.executivePitch}
-                  </p>
-                </div>
-
-                <div className="flex flex-col sm:flex-row lg:flex-col items-start sm:items-center lg:items-end gap-4 flex-shrink-0">
-                  <div className="flex gap-3">
-                    <div className="p-3.5 px-4 rounded-2xl bg-[#161617] border border-white/10 text-center min-w-[100px]">
-                      <div className="text-[10px] text-apple-subtle uppercase font-mono">TARGET ERROR</div>
-                      <div className="font-sans text-xl sm:text-2xl font-bold text-white">≤ 0.5 dB</div>
+                      <p className="text-apple-subtle text-xs sm:text-sm leading-relaxed font-normal">
+                        {project.executivePitch}
+                      </p>
                     </div>
-                    <div className="p-3.5 px-4 rounded-2xl bg-[#161617] border border-white/10 text-center min-w-[100px]">
-                      <div className="text-[10px] text-apple-subtle uppercase font-mono">DSP LATENCY</div>
-                      <div className="font-sans text-xl sm:text-2xl font-bold text-white">23 ms</div>
-                    </div>
-                    <div className="p-3.5 px-4 rounded-2xl bg-[#161617] border border-white/10 text-center min-w-[100px]">
-                      <div className="text-[10px] text-apple-subtle uppercase font-mono">DATASET</div>
-                      <div className="font-sans text-xl sm:text-2xl font-bold text-apple-blue">301 Pts</div>
+
+                    {/* Metric Cards with Slotted Odometers */}
+                    <div className="flex flex-col sm:flex-row lg:flex-col items-start sm:items-center lg:items-end gap-3 flex-shrink-0">
+                      <div className="flex gap-2.5">
+                        {ch.stats.map((st, sIdx) => (
+                          <div
+                            key={sIdx}
+                            className="p-3 px-3.5 rounded-2xl bg-[#161617] border border-white/10 text-center min-w-[90px] shadow-lg"
+                          >
+                            <div className="text-[9px] text-apple-subtle uppercase font-mono">
+                              {st.label}
+                            </div>
+                            <div className="font-sans text-lg sm:text-xl font-bold text-white flex items-center justify-center">
+                              <Odometer value={st.value} duration={0.6} />
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+
+                      <MagneticButton>
+                        <button
+                          onClick={() => onSelectProject(project)}
+                          className="inline-flex items-center space-x-2 px-5 py-2.5 rounded-full bg-white text-black hover:bg-neutral-200 transition-colors text-xs font-semibold shadow-xl active:scale-95 cursor-pointer"
+                          data-cursor-interactive="true"
+                          data-cursor-label="INSPECT"
+                        >
+                          <span>Inspect Full Architecture</span>
+                          <ArrowUpRight className="w-4 h-4" />
+                        </button>
+                      </MagneticButton>
                     </div>
                   </div>
+                </motion.div>
+              );
+            })}
+          </motion.div>
 
-                  <button
-                    onClick={() => onSelectProject(audiosage)}
-                    className="inline-flex items-center space-x-2 px-6 py-3 rounded-full bg-white text-black hover:bg-neutral-200 transition-colors text-xs font-semibold shadow-lg"
-                    data-cursor-interactive="true"
-                  >
-                    <span>Inspect Full Architecture</span>
-                    <ArrowUpRight className="w-4 h-4" />
-                  </button>
-                </div>
-              </div>
-            </motion.div>
-
-            {/* ================= CHAPTER 3: THE SILENT AUDITOR ================= */}
-            <motion.div
-              style={{ opacity: ch3Opacity, y: ch3Y, scale: ch3Scale }}
-              className={`absolute inset-0 space-y-6 ${activeChapter === 2 ? "pointer-events-auto" : "pointer-events-none"}`}
-            >
-              <div className="relative w-full h-[40vh] sm:h-[46vh] rounded-3xl overflow-hidden shadow-2xl border border-white/10 bg-black">
-                <img
-                  src={auditor.image}
-                  alt={auditor.title}
-                  className="w-full h-full object-cover grayscale contrast-125 hover:grayscale-0 transition-transform duration-700 ease-out"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent" />
-                <div className="absolute bottom-4 left-4 sm:left-6 flex items-center space-x-2 px-4 py-2 rounded-full bg-black/80 backdrop-blur-md border border-white/10 text-xs font-mono text-white">
-                  <Cpu className="w-4 h-4 text-apple-blue" />
-                  <span>0.0% CPU Sensory Daemon // Win32 Ctypes & CoreAudio</span>
-                </div>
-              </div>
-
-              <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 pt-2">
-                <div className="space-y-2 max-w-2xl">
-                  <div className="flex items-center space-x-3 text-xs font-mono text-apple-subtle">
-                    <span className="text-apple-blue uppercase font-bold">{auditor.category}</span>
-                    <span>// {auditor.year}</span>
-                    <span>// CHAPTER 03 OF 04</span>
-                  </div>
-                  <h3 className="font-sans text-3xl sm:text-5xl lg:text-6xl font-bold text-white tracking-apple-tightest leading-tight">
-                    {auditor.title}
-                  </h3>
-                  <p className="text-apple-subtle text-sm sm:text-base leading-relaxed font-normal">
-                    {auditor.executivePitch}
-                  </p>
-                </div>
-
-                <div className="flex flex-col sm:flex-row lg:flex-col items-start sm:items-center lg:items-end gap-4 flex-shrink-0">
-                  <div className="flex gap-3">
-                    <div className="p-3.5 px-4 rounded-2xl bg-[#161617] border border-white/10 text-center min-w-[100px]">
-                      <div className="text-[10px] text-apple-subtle uppercase font-mono">CPU DRAG</div>
-                      <div className="font-sans text-xl sm:text-2xl font-bold text-white">0.0%</div>
-                    </div>
-                    <div className="p-3.5 px-4 rounded-2xl bg-[#161617] border border-white/10 text-center min-w-[100px]">
-                      <div className="text-[10px] text-apple-subtle uppercase font-mono">GHOST WORK</div>
-                      <div className="font-sans text-xl sm:text-2xl font-bold text-white">0 hrs</div>
-                    </div>
-                    <div className="p-3.5 px-4 rounded-2xl bg-[#161617] border border-white/10 text-center min-w-[100px]">
-                      <div className="text-[10px] text-apple-subtle uppercase font-mono">UNIT TESTS</div>
-                      <div className="font-sans text-xl sm:text-2xl font-bold text-apple-blue">66 Tests</div>
-                    </div>
-                  </div>
-
-                  <button
-                    onClick={() => onSelectProject(auditor)}
-                    className="inline-flex items-center space-x-2 px-6 py-3 rounded-full bg-white text-black hover:bg-neutral-200 transition-colors text-xs font-semibold shadow-lg"
-                    data-cursor-interactive="true"
-                  >
-                    <span>Inspect Full Architecture</span>
-                    <ArrowUpRight className="w-4 h-4" />
-                  </button>
-                </div>
-              </div>
-            </motion.div>
-
-            {/* ================= CHAPTER 4: CINEMAVAULT ================= */}
-            <motion.div
-              style={{ opacity: ch4Opacity, y: ch4Y, scale: ch4Scale }}
-              className={`absolute inset-0 space-y-6 ${activeChapter === 3 ? "pointer-events-auto" : "pointer-events-none"}`}
-            >
-              <div className="relative w-full h-[40vh] sm:h-[46vh] rounded-3xl overflow-hidden shadow-2xl border border-white/10 bg-black">
-                <img
-                  src={cinema.image}
-                  alt={cinema.title}
-                  className="w-full h-full object-cover grayscale contrast-125 hover:grayscale-0 transition-transform duration-700 ease-out"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent" />
-                <div className="absolute bottom-4 left-4 sm:left-6 flex items-center space-x-2 px-4 py-2 rounded-full bg-black/80 backdrop-blur-md border border-white/10 text-xs font-mono text-white">
-                  <Layers className="w-4 h-4 text-apple-blue" />
-                  <span>Dual-Pass AI Critique // OMDb Truth Verification</span>
-                </div>
-              </div>
-
-              <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 pt-2">
-                <div className="space-y-2 max-w-2xl">
-                  <div className="flex items-center space-x-3 text-xs font-mono text-apple-subtle">
-                    <span className="text-apple-blue uppercase font-bold">{cinema.category}</span>
-                    <span>// {cinema.year}</span>
-                    <span>// CHAPTER 04 OF 04</span>
-                  </div>
-                  <h3 className="font-sans text-3xl sm:text-5xl lg:text-6xl font-bold text-white tracking-apple-tightest leading-tight">
-                    {cinema.title}
-                  </h3>
-                  <p className="text-apple-subtle text-sm sm:text-base leading-relaxed font-normal">
-                    {cinema.executivePitch}
-                  </p>
-                </div>
-
-                <div className="flex flex-col sm:flex-row lg:flex-col items-start sm:items-center lg:items-end gap-4 flex-shrink-0">
-                  <div className="flex gap-3">
-                    <div className="p-3.5 px-4 rounded-2xl bg-[#161617] border border-white/10 text-center min-w-[100px]">
-                      <div className="text-[10px] text-apple-subtle uppercase font-mono">TOKEN CUT</div>
-                      <div className="font-sans text-xl sm:text-2xl font-bold text-white">~60%</div>
-                    </div>
-                    <div className="p-3.5 px-4 rounded-2xl bg-[#161617] border border-white/10 text-center min-w-[100px]">
-                      <div className="text-[10px] text-apple-subtle uppercase font-mono">HALLUCINATION</div>
-                      <div className="font-sans text-xl sm:text-2xl font-bold text-white">0.0%</div>
-                    </div>
-                    <div className="p-3.5 px-4 rounded-2xl bg-[#161617] border border-white/10 text-center min-w-[100px]">
-                      <div className="text-[10px] text-apple-subtle uppercase font-mono">FAILOVER</div>
-                      <div className="font-sans text-xl sm:text-2xl font-bold text-apple-blue">3-Tier</div>
-                    </div>
-                  </div>
-
-                  <button
-                    onClick={() => onSelectProject(cinema)}
-                    className="inline-flex items-center space-x-2 px-6 py-3 rounded-full bg-white text-black hover:bg-neutral-200 transition-colors text-xs font-semibold shadow-lg"
-                    data-cursor-interactive="true"
-                  >
-                    <span>Inspect Full Architecture</span>
-                    <ArrowUpRight className="w-4 h-4" />
-                  </button>
-                </div>
-              </div>
-            </motion.div>
-          </div>
-
-          {/* Bottom Timeline Indicator */}
+          {/* Bottom Segmented Intra-Chapter Progress Rail */}
           <div className="relative z-20 max-w-6xl mx-auto w-full flex items-center justify-between font-mono text-xs text-apple-subtle pt-4 border-t border-white/10">
             <div className="flex items-center space-x-2">
               <span className="w-2 h-2 rounded-full bg-apple-blue animate-pulse" />
-              <span>SCROLL TO PROGRESS FLAGSHIPS</span>
+              <span className="uppercase tracking-wider">SCROLL TO PROGRESS FLAGSHIPS</span>
             </div>
 
-            <div className="flex items-center space-x-3">
-              <div className="w-32 sm:w-48 h-1 bg-white/10 rounded-full overflow-hidden">
-                <div
-                  className="h-full bg-apple-blue rounded-full transition-all duration-300"
-                  style={{ width: `${((activeChapter + 1) / 4) * 100}%` }}
-                />
-              </div>
-              <span>0{activeChapter + 1} / 04</span>
+            {/* 4 Interactive Segment Rails */}
+            <div className="flex items-center space-x-2">
+              {[0, 1, 2, 3].map((segIdx) => (
+                <button
+                  key={segIdx}
+                  onClick={() => scrollToChapter(segIdx)}
+                  className="group py-2 px-1 flex items-center"
+                >
+                  <div
+                    className={`h-1.5 rounded-full transition-all duration-300 ${
+                      activeChapter === segIdx
+                        ? "w-10 bg-apple-blue shadow-sm shadow-apple-blue/50"
+                        : "w-4 bg-white/20 group-hover:bg-white/40"
+                    }`}
+                  />
+                </button>
+              ))}
+              <span className="ml-2 font-bold text-white">0{activeChapter + 1} / 04</span>
             </div>
           </div>
         </div>
@@ -459,24 +406,29 @@ export function AppleBentoShowcase({
           </p>
         </div>
 
-        {/* Perfectly Balanced 12-Column Studio Grid (Row 1: 6+6=12, Row 2: 4+4+4=12) */}
+        {/* Balanced 12-Column Studio Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
           {extendedProjects.map((item) => {
             const project = item.project;
             const Icon = item.icon;
 
             return (
-              <div
+              <motion.div
                 key={project.id}
+                initial={{ opacity: 0, y: 35, filter: "blur(6px)" }}
+                whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                viewport={{ once: true, margin: "-40px" }}
+                transition={{ duration: 0.6, ease: EASE_ENTER }}
                 onClick={() => onSelectProject(project)}
                 className={`${item.span} group apple-card rounded-[2.5rem] p-7 sm:p-9 flex flex-col justify-between overflow-hidden cursor-pointer relative transform-gpu hover:border-white/20 transition-all duration-300`}
                 data-cursor-interactive="true"
                 data-cursor-label="INSPECT"
               >
-                {/* Visual Media Graphic with Uniform Aspect Ratio */}
+                {/* Visual Media Graphic with layoutId morph hook */}
                 {project.image && (
                   <div className="relative w-full aspect-[16/10] rounded-2xl overflow-hidden mb-6 border border-white/5 bg-black">
-                    <img
+                    <motion.img
+                      layoutId={`media-${project.id}`}
                       src={project.image}
                       alt={project.title}
                       loading="lazy"
@@ -510,7 +462,7 @@ export function AppleBentoShowcase({
                     </p>
                   </div>
 
-                  {/* Quantitative Metrics Badges */}
+                  {/* Quantitative Metrics Badges with Odometers */}
                   <div className="pt-2">
                     <div className="flex flex-wrap gap-2 mb-3">
                       {project.metrics.slice(0, 3).map((metric, mIdx) => (
@@ -522,7 +474,7 @@ export function AppleBentoShowcase({
                             {metric.label}
                           </div>
                           <div className="font-sans text-base sm:text-lg font-bold text-white tabular-nums">
-                            {metric.value}
+                            <Odometer value={metric.value} />
                           </div>
                         </div>
                       ))}
@@ -547,11 +499,15 @@ export function AppleBentoShowcase({
                   </div>
                 </div>
 
-                {/* Action Icon Pill Button */}
-                <div className="absolute top-7 right-7 w-9 h-9 rounded-full bg-white/10 flex items-center justify-center text-white group-hover:bg-apple-blue transition-colors duration-200 shadow-lg pointer-events-none">
-                  <ArrowUpRight className="w-4 h-4" />
+                {/* Magnetic Action Icon Button */}
+                <div className="absolute top-7 right-7">
+                  <MagneticButton>
+                    <div className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center text-white group-hover:bg-apple-blue transition-colors duration-200 shadow-lg pointer-events-none">
+                      <ArrowUpRight className="w-4 h-4" />
+                    </div>
+                  </MagneticButton>
                 </div>
-              </div>
+              </motion.div>
             );
           })}
         </div>

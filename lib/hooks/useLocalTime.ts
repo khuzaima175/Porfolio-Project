@@ -2,13 +2,10 @@
 
 import { useEffect, useState } from "react";
 
-export function useLocalTime() {
-  const [time, setTime] = useState<string>("--:--:--");
-  const [mounted, setMounted] = useState(false);
+export function useLocalTime(): string {
+  const [time, setTime] = useState<string>("");
 
   useEffect(() => {
-    setMounted(true);
-
     function updateClock() {
       const now = new Date();
       try {
@@ -21,7 +18,6 @@ export function useLocalTime() {
         });
         setTime(formatter.format(now));
       } catch {
-        // Fallback to local time if timezone string fails
         const pad = (n: number) => n.toString().padStart(2, "0");
         setTime(`${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`);
       }
@@ -32,5 +28,5 @@ export function useLocalTime() {
     return () => clearInterval(interval);
   }, []);
 
-  return { time, mounted };
+  return time || "08:50:00";
 }

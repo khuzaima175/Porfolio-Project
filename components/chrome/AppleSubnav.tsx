@@ -26,7 +26,7 @@ const ALL_SECTION_IDS = [
 ];
 
 export function AppleSubnav() {
-  const { time, mounted } = useLocalTime();
+  const localTime = useLocalTime();
   const [visible, setVisible] = useState(true);
   const activeSection = useScrollSpy(ALL_SECTION_IDS, 0.35);
   const [isScrolledPastHero, setIsScrolledPastHero] = useState(false);
@@ -150,7 +150,7 @@ export function AppleSubnav() {
           <div className="hidden sm:flex items-center space-x-2 font-mono text-xs sm:text-sm text-neutral-200 px-3.5 py-1.5 rounded-full bg-white/[0.06] border border-white/10 shadow-inner">
             <span className="w-1.5 h-1.5 rounded-full bg-apple-blue animate-pulse" />
             <span className="tabular-nums font-semibold tracking-wider text-white">
-              {mounted ? time : "08:50:00"}
+              {localTime}
             </span>
             <span className="text-apple-blue text-[11px] font-bold tracking-tight">
               PKT

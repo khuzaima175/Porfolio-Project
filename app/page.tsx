@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { MotionConfig } from "framer-motion";
 import { useLenis } from "@/lib/hooks/useLenis";
 import { PROJECTS, Project } from "@/lib/data/projects";
 import { Subnav } from "@/components/chrome/Subnav";
@@ -23,7 +24,8 @@ export default function Home() {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
 
   return (
-    <main className="relative min-h-screen bg-black text-brand-text selection:bg-brand-blue selection:text-white">
+    <MotionConfig reducedMotion="user">
+    <main id="main-content" className="relative min-h-screen bg-black text-brand-text selection:bg-brand-blue selection:text-white">
       {/* Static Sub-Pixel Grain Noise to Eliminate Color Banding */}
       <GrainOverlay />
 
@@ -63,5 +65,6 @@ export default function Home() {
         onClose={() => setSelectedProject(null)}
       />
     </main>
+    </MotionConfig>
   );
 }

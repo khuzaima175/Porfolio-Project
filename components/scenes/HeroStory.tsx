@@ -2,7 +2,8 @@
 
 import { useRef, useState, useEffect } from "react";
 import { motion, useScroll, useTransform, useMotionValue, useSpring } from "framer-motion";
-import { ChevronRight } from "lucide-react";
+import { ArrowDown, ArrowUpRight, ChevronRight } from "lucide-react";
+import { OrbitalBackdrop } from "@/components/ui/OrbitalBackdrop";
 import { GNSSSimulator } from "@/components/specimens/GNSSSimulator";
 import { Odometer } from "@/components/ui/Odometer";
 import { ScrambleText } from "@/components/ui/ScrambleText";
@@ -12,6 +13,7 @@ import { scrollToTarget } from "@/lib/utils/scroll";
 export function HeroStory() {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [isPastHero, setIsPastHero] = useState(false);
+  const [activeStage, setActiveStage] = useState(0);
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -22,6 +24,7 @@ export function HeroStory() {
   useEffect(() => {
     const unsub = scrollYProgress.on("change", (latest) => {
       setIsPastHero(latest > 0.55);
+      setActiveStage(latest < 0.3 ? 0 : latest < 0.73 ? 1 : 2);
     });
     return () => unsub();
   }, [scrollYProgress]);
@@ -33,7 +36,7 @@ export function HeroStory() {
   const springMouseY = useSpring(mouseY, SPRING_FLOAT);
 
   const handleMouseMove = (e: React.MouseEvent) => {
-    if (window.matchMedia("(pointer: coarse)").matches) return;
+    if (window.matchMedia("(pointer: coarse), (prefers-reduced-motion: reduce)").matches) return;
     const { innerWidth, innerHeight } = window;
     const normalizedX = (e.clientX / innerWidth - 0.5) * 16;
     const normalizedY = (e.clientY / innerHeight - 0.5) * 16;
@@ -80,10 +83,12 @@ export function HeroStory() {
       id="storyboard"
       ref={containerRef}
       onMouseMove={handleMouseMove}
-      className="relative h-[280vh] bg-black text-white"
+      onMouseLeave={() => { mouseX.set(0); mouseY.set(0); }}
+      className="hero-story relative h-[250vh] bg-black text-white"
     >
       {/* Sticky Fullscreen Stage */}
-      <div className="sticky top-0 h-[100dvh] w-full overflow-hidden flex flex-col justify-between pt-14 pb-5 px-4 sm:pt-20 sm:pb-10 sm:px-12 select-none">
+      <div className="sticky top-0 h-[100dvh] w-full overflow-hidden flex flex-col justify-between pt-24 pb-5 px-4 sm:pt-28 sm:pb-10 sm:px-12">
+        <OrbitalBackdrop />
         {/* Dynamic Multi-Layer Ambient Specular Lights */}
         <motion.div
           style={{ opacity: blueGlowOpacity }}
@@ -113,7 +118,7 @@ export function HeroStory() {
             <div className="absolute inset-0" style={{ background: 'radial-gradient(circle, transparent 0%, rgba(0,0,0,0.2) 40%, rgba(0,0,0,0.8) 100%)' }} />
 
             {/* Subtle Plate Telemetry Watermark */}
-            <div className="absolute bottom-4 left-5 flex items-center space-x-2 font-mono text-[10px] text-brand-subtle/80 bg-black/60 px-3 py-1.5 rounded-full border border-white/5">
+            <div className="hidden sm:flex absolute bottom-4 left-5 items-center space-x-2 font-mono text-[10px] text-brand-subtle/80 bg-black/60 px-3 py-1.5 rounded-full border border-white/5">
               <span className="w-1.5 h-1.5 rounded-full bg-brand-blue animate-pulse" />
               <span>LIVE AMBIENT SILICON PROOF // 30 FPS RTK FUSION</span>
             </div>
@@ -141,6 +146,7 @@ export function HeroStory() {
 
           {/* Phase 1: Massive Statement */}
           <motion.div
+            aria-hidden={activeStage !== 0}
             style={{
               opacity: stage1Opacity,
               y: stage1Y,
@@ -156,49 +162,66 @@ export function HeroStory() {
                 transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
                 className="inline-block text-xs sm:text-sm font-semibold tracking-widest uppercase text-brand-blue font-mono"
               >
-                The Sovereign Architecture
+                Independent thinking. Precise engineering.
               </motion.span>
             </div>
 
             {/* Line-Masked Headline */}
-            <div className="space-y-1">
+            <h1 className="space-y-1" aria-label="Deterministic by construction.">
               <div className="overflow-hidden">
-                <motion.h1
+                <motion.div
                   initial={{ y: "110%" }}
                   animate={{ y: 0 }}
                   transition={{ duration: 0.8, delay: 0.05, ease: [0.16, 1, 0.3, 1] }}
-                  className="font-sans text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-tightest-editorial leading-[0.95] text-white"
+                  className="hero-headline font-bold tracking-tightest-editorial text-white"
                 >
                   Deterministic
-                </motion.h1>
+                </motion.div>
               </div>
               <div className="overflow-hidden">
-                <motion.h1
+                <motion.div
                   initial={{ y: "110%" }}
                   animate={{ y: 0 }}
                   transition={{ duration: 0.8, delay: 0.14, ease: [0.16, 1, 0.3, 1] }}
-                  className="font-sans text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-tightest-editorial leading-[0.95] text-brand-subtle"
+                  className="hero-headline hero-gradient font-bold tracking-tightest-editorial"
                 >
                   by construction.
-                </motion.h1>
+                </motion.div>
               </div>
-            </div>
+            </h1>
 
             <div className="overflow-hidden">
               <motion.p
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.7, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
-                className="max-w-2xl mx-auto text-brand-subtle text-sm sm:text-lg font-normal leading-relaxed pt-1"
+                className="max-w-2xl mx-auto text-neutral-300 text-sm sm:text-lg font-normal leading-relaxed pt-3"
               >
-                Zero overhead by proof. Native Win32 background daemons, 3D multi-stream GNSS
-                trajectory fusion, and real-time DSP audio synthesis.
+                I build systems where every millisecond matters. Precision positioning,
+                real-time audio, and AI that works beyond the demo.
               </motion.p>
+            </div>
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.4 }}
+              className="flex flex-wrap items-center justify-center gap-3 pt-3"
+            >
+              <button tabIndex={activeStage === 0 ? 0 : -1} onClick={() => scrollToTarget("bento")} className="hero-primary group">
+                Explore selected work <ArrowUpRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+              </button>
+              <button tabIndex={activeStage === 0 ? 0 : -1} onClick={() => scrollToTarget("contact")} className="hero-secondary">
+                Let’s build something <ChevronRight className="w-4 h-4" />
+              </button>
+            </motion.div>
+            <div className="hero-disciplines" aria-label="Engineering specialties">
+              <span>Systems engineering</span><i /><span>Sensor fusion</span><i /><span>Applied AI</span>
             </div>
           </motion.div>
 
           {/* Phase 2: 3-Column Comparative Metrics with Odometers */}
           <motion.div
+            aria-hidden={activeStage !== 1}
             style={{
               opacity: stage2Opacity,
               y: stage2Y,
@@ -252,6 +275,7 @@ export function HeroStory() {
 
           {/* Phase 3: Transition Prompt */}
           <motion.div
+            aria-hidden={activeStage !== 2}
             style={{
               opacity: stage3Opacity,
               y: stage3Y,
@@ -266,6 +290,7 @@ export function HeroStory() {
               Explore the engineering.
             </h3>
             <button
+              tabIndex={activeStage === 2 ? 0 : -1}
               onClick={() => scrollToTarget("bento")}
               className="inline-flex items-center space-x-2 px-7 py-3.5 rounded-full bg-white text-black hover:bg-neutral-200 transition-colors text-sm font-semibold mt-2 shadow-xl hover:scale-105 active:scale-95 cursor-pointer"
               data-cursor-interactive="true"
@@ -287,7 +312,7 @@ export function HeroStory() {
               className="w-full h-full bg-brand-blue origin-top"
             />
           </div>
-          <span className="text-[10px] tracking-widest uppercase text-neutral-400">SCROLL</span>
+          <span className="flex items-center gap-2 text-[10px] tracking-widest uppercase text-neutral-400">Scroll to discover <ArrowDown className="w-3 h-3" /></span>
         </motion.div>
       </div>
     </div>

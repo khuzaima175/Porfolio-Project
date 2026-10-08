@@ -18,10 +18,37 @@ interface ProjectModalProps {
 
 export function ProjectModal({ project, onClose }: ProjectModalProps) {
   const scrollWrapperRef = useRef<HTMLDivElement | null>(null);
+  const dialogRef = useRef<HTMLDivElement | null>(null);
   const scrollContentRef = useRef<HTMLDivElement | null>(null);
   const [activeTab, setActiveTab] = useState<"overview" | "deep-dive">("overview");
   const [specimenOpen, setSpecimenOpen] = useState(false);
   const [isInnerScrolled, setIsInnerScrolled] = useState(false);
+
+  useEffect(() => {
+    if (!project) return;
+    const previousFocus = document.activeElement as HTMLElement | null;
+    const frame = requestAnimationFrame(() => dialogRef.current?.focus());
+    const trapFocus = (event: KeyboardEvent) => {
+      if (event.key !== "Tab" || !dialogRef.current) return;
+      const elements = Array.from(dialogRef.current.querySelectorAll<HTMLElement>(
+        'button:not([disabled]), a[href], input, textarea, select, [tabindex="0"]'
+      )).filter((element) => element.getClientRects().length > 0 && !element.closest('[inert]'));
+      const first = elements[0];
+      const last = elements[elements.length - 1];
+      if (!first) { event.preventDefault(); return; }
+      if (event.shiftKey && (document.activeElement === first || document.activeElement === dialogRef.current)) {
+        event.preventDefault(); last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault(); first.focus();
+      }
+    };
+    document.addEventListener("keydown", trapFocus);
+    return () => {
+      cancelAnimationFrame(frame);
+      document.removeEventListener("keydown", trapFocus);
+      previousFocus?.focus();
+    };
+  }, [project?.id]);
 
   // Reset tabs when a new project opens
   useEffect(() => {
@@ -132,6 +159,11 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
           {/* Drawer Panel */}
           <motion.div
             data-lenis-prevent="true"
+            ref={dialogRef}
+            role="dialog"
+            aria-modal="true"
+            aria-label={project.title}
+            tabIndex={-1}
             initial={{ x: "100%" }}
             animate={{ x: 0 }}
             exit={{ x: "100%" }}

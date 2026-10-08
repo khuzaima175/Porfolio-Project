@@ -167,7 +167,7 @@ export function BentoShowcase({
   const springTiltY = useSpring(tiltY, SPRING_FLOAT);
 
   const handleStageMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (window.matchMedia("(pointer: coarse)").matches) return;
+    if (window.matchMedia("(pointer: coarse), (prefers-reduced-motion: reduce)").matches) return;
     const rect = e.currentTarget.getBoundingClientRect();
     const x = (e.clientX - rect.left) / rect.width - 0.5;
     const y = (e.clientY - rect.top) / rect.height - 0.5;
@@ -278,6 +278,7 @@ export function BentoShowcase({
               return (
                 <motion.div
                   key={project.id}
+                  aria-hidden={!isCurrent}
                   style={{
                     opacity: trans.opacity,
                     y: trans.y,
@@ -288,7 +289,7 @@ export function BentoShowcase({
                   }`}
                 >
                   {/* Media Plate with Shared Layout Morph Hook (Expansive Cinematic Widescreen) */}
-                  <div className="relative w-full h-[40vh] sm:h-[48vh] lg:h-[52vh] max-h-[35rem] rounded-[2rem] overflow-hidden shadow-2xl border border-white/10 bg-black">
+                  <div className="flagship-media relative w-full h-[27dvh] sm:h-[48vh] lg:h-[52vh] max-h-[35rem] rounded-[2rem] overflow-hidden shadow-2xl border border-white/10 bg-black">
                     <motion.img
                       layoutId={`media-${project.id}`}
                       src={project.image}
@@ -305,19 +306,19 @@ export function BentoShowcase({
                   {/* Title & Metadata with Line Masks */}
                   <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 pt-1 w-full">
                     <div className="space-y-2 max-w-4xl">
-                      <div className="flex items-center space-x-3 text-xs sm:text-sm font-mono text-brand-subtle">
+                      <div className="flex flex-wrap items-center gap-2 text-[9px] sm:text-sm font-mono text-brand-subtle">
                         <span className="text-brand-blue uppercase font-bold">{project.category}</span>
                         <span>// {project.year}</span>
                         <span>// CHAPTER 0{idx + 1} OF 04</span>
                       </div>
 
                       <div className="overflow-hidden">
-                        <h3 className="font-sans text-3xl sm:text-5xl lg:text-6xl font-bold text-white tracking-tightest-editorial leading-tight">
+                        <h3 className="font-sans text-2xl sm:text-5xl lg:text-6xl font-bold text-white tracking-tightest-editorial leading-tight">
                           {project.title}
                         </h3>
                       </div>
 
-                      <p className="text-brand-subtle text-sm sm:text-base lg:text-lg leading-relaxed font-normal max-w-3xl">
+                      <p className="line-clamp-3 sm:line-clamp-none text-brand-subtle text-sm sm:text-base lg:text-lg leading-relaxed font-normal max-w-3xl">
                         {project.executivePitch}
                       </p>
                     </div>
@@ -342,6 +343,7 @@ export function BentoShowcase({
 
                       <MagneticButton>
                         <button
+                          tabIndex={isCurrent ? 0 : -1}
                           onClick={() => onSelectProject(project)}
                           className="w-full sm:w-auto inline-flex items-center justify-center space-x-2.5 px-6 sm:px-7 py-3 sm:py-3.5 rounded-full bg-white text-black hover:bg-neutral-200 transition-colors text-xs sm:text-sm font-semibold shadow-2xl active:scale-95 cursor-pointer min-h-[44px]"
                           data-cursor-interactive="true"
@@ -362,7 +364,7 @@ export function BentoShowcase({
           <div className="relative z-20 max-w-[95vw] 2xl:max-w-[110rem] mx-auto w-full flex items-center justify-between font-mono text-xs sm:text-sm text-brand-subtle pt-4 border-t border-white/10">
             <div className="flex items-center space-x-2">
               <span className="w-2 h-2 rounded-full bg-brand-blue animate-pulse" />
-              <span className="uppercase tracking-wider">SCROLL TO PROGRESS FLAGSHIPS</span>
+              <span className="uppercase tracking-wider"><span className="sm:hidden">Explore</span><span className="hidden sm:inline">SCROLL TO PROGRESS FLAGSHIPS</span></span>
             </div>
 
             {/* 4 Interactive Segment Rails */}
@@ -370,6 +372,8 @@ export function BentoShowcase({
               {[0, 1, 2, 3].map((segIdx) => (
                 <button
                   key={segIdx}
+                  aria-label={`View ${chapters[segIdx].project.title}`}
+                  aria-current={activeChapter === segIdx ? "step" : undefined}
                   onClick={() => scrollToChapter(segIdx)}
                   className="group py-2 px-1 flex items-center"
                 >
@@ -421,6 +425,15 @@ export function BentoShowcase({
                   viewport={{ once: true, margin: "-40px" }}
                   transition={{ duration: 0.6, ease: EASE_ENTER }}
                   onClick={() => onSelectProject(project)}
+                  role="button"
+                  tabIndex={0}
+                  aria-label={`Inspect ${project.title}`}
+                  onKeyDown={(event) => {
+                    if (event.key === "Enter" || event.key === " ") {
+                      event.preventDefault();
+                      onSelectProject(project);
+                    }
+                  }}
                   className={`${item.span} group pro-card rounded-[2rem] p-7 sm:p-9 flex flex-col justify-between overflow-hidden cursor-pointer relative transform-gpu hover:border-white/20 transition-all duration-300`}
                   data-cursor-interactive="true"
                   data-cursor-label="INSPECT"

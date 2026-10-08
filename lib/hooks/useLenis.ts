@@ -7,6 +7,7 @@ export function useLenis() {
   const lenisRef = useRef<Lenis | null>(null);
 
   useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     // Detect touch / mobile screen
     const isTouchDevice =
       typeof window !== "undefined" &&

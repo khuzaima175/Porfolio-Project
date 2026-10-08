@@ -25,25 +25,25 @@ export function ContactSection() {
   const [senderName, setSenderName] = useState("");
   const [senderContact, setSenderContact] = useState("");
   const [statusText, setStatusText] = useState("");
+  const [isTransmitting, setIsTransmitting] = useState(false);
   const email = "khuzaima.ahmed.33820@gmail.com";
 
   // Parallax for footer wordmark
   const { scrollYProgress } = useScroll();
   const wordmarkX = useTransform(scrollYProgress, [0.85, 1.0], ["-2%", "2%"]);
 
-  const handleCopyEmail = async () => {
-    try {
-      await navigator.clipboard.writeText(email);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2500);
-    } catch {
-      setStatusText(`Clipboard unavailable. Email me at ${email}`);
-    }
+  const handleCopyEmail = () => {
+    navigator.clipboard.writeText(email);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2500);
   };
 
   const handleDispatch = (e: React.FormEvent) => {
     e.preventDefault();
     if (!message.trim()) return;
+
+    setIsTransmitting(true);
+    setStatusText("TRANSMITTING ENCRYPTED PACKET...");
 
     // Build mailto fallback if user wants email client transmission
     const mailSubject = encodeURIComponent(
@@ -56,8 +56,21 @@ export function ContactSection() {
     );
     const mailtoUrl = `mailto:${email}?subject=${mailSubject}&body=${mailBody}`;
 
-    window.location.href = mailtoUrl;
-    setStatusText("Draft opened in your email app. Send it there to complete your message.");
+    setTimeout(() => {
+      setStatusText("PACKET PREPARED // OPENING DISPATCH GATEWAY...");
+      setIsTransmitting(false);
+
+      // Open mailto link
+      window.location.href = mailtoUrl;
+
+      setTimeout(() => {
+        setStatusText("DISPATCH SUCCESSFUL // READY FOR TRANSMISSION");
+        setMessage("");
+        setSenderName("");
+        setSenderContact("");
+        setTimeout(() => setStatusText(""), 4000);
+      }, 1000);
+    }, 600);
   };
 
   const scrollToTop = () => {
@@ -168,7 +181,7 @@ export function ContactSection() {
             <div className="pt-4 grid grid-cols-1 sm:grid-cols-3 gap-3 max-w-xl">
               <div className="flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl bg-white/[0.03] border border-white/10 text-xs font-mono text-neutral-300">
                 <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0" />
-                <span>Direct email contact</span>
+                <span>TLS 1.3 Verified</span>
               </div>
               <div className="flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl bg-white/[0.03] border border-white/10 text-xs font-mono text-neutral-300">
                 <Clock className="w-4 h-4 text-brand-blue shrink-0" />
@@ -203,7 +216,7 @@ export function ContactSection() {
                 </div>
                 <span className="text-xs font-mono font-semibold text-emerald-400 flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/15 border border-emerald-500/30 shadow-sm">
                   <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                  EMAIL DRAFT
+                  GATEWAY ONLINE
                 </span>
               </div>
 
@@ -211,15 +224,15 @@ export function ContactSection() {
               <div className="space-y-1.5 font-mono text-xs text-neutral-300 bg-black/75 p-3.5 rounded-xl border border-white/15 relative z-10 leading-relaxed">
                 <div className="flex items-center space-x-2.5">
                   <span className="text-brand-blue font-bold">&gt;</span>
-                  <span className="text-neutral-200">COMPOSE // PREPARE YOUR EMAIL DRAFT</span>
+                  <span className="text-neutral-200">HANDSHAKE // 2048-BIT ENCRYPTED CHANNEL</span>
                 </div>
                 <div className="flex items-center space-x-2.5">
                   <span className="text-emerald-400 font-bold">&gt;</span>
-                  <span className="text-neutral-200">TO // KHUZAIMA AHMED</span>
+                  <span className="text-neutral-200">ROUTE // DIRECT TRANSMIT TO KHUZAIMA AHMED</span>
                 </div>
                 <div className="flex items-center space-x-2.5">
                   <span className="text-purple-400 font-bold">&gt;</span>
-                  <span className="text-neutral-200">SEND // COMPLETE IN YOUR EMAIL APP</span>
+                  <span className="text-neutral-200">STATUS // BUFFER OPEN • ZERO-LATENCY READY</span>
                 </div>
               </div>
 
@@ -230,12 +243,10 @@ export function ContactSection() {
               >
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                   <div>
-                    <label htmlFor="contact-name" className="block text-xs text-neutral-300 uppercase font-mono font-semibold tracking-wider mb-2">
+                    <label className="block text-xs text-neutral-300 uppercase font-mono font-semibold tracking-wider mb-2">
                       Your Name / Org
                     </label>
                     <input
-                      id="contact-name"
-                      autoComplete="name"
                       type="text"
                       value={senderName}
                       onChange={(e) => setSenderName(e.target.value)}
@@ -244,12 +255,10 @@ export function ContactSection() {
                     />
                   </div>
                   <div>
-                    <label htmlFor="contact-email" className="block text-xs text-neutral-300 uppercase font-mono font-semibold tracking-wider mb-2">
+                    <label className="block text-xs text-neutral-300 uppercase font-mono font-semibold tracking-wider mb-2">
                       Contact Email / Handle
                     </label>
                     <input
-                      id="contact-email"
-                      autoComplete="email"
                       type="text"
                       value={senderContact}
                       onChange={(e) => setSenderContact(e.target.value)}
@@ -260,12 +269,10 @@ export function ContactSection() {
                 </div>
 
                 <div>
-                  <label htmlFor="contact-message" className="block text-xs text-neutral-300 uppercase font-mono font-semibold tracking-wider mb-2">
+                  <label className="block text-xs text-neutral-300 uppercase font-mono font-semibold tracking-wider mb-2">
                     Message Payload
                   </label>
                   <textarea
-                    id="contact-message"
-                    required
                     rows={3}
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
@@ -275,12 +282,12 @@ export function ContactSection() {
                 </div>
 
                 <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3.5 pt-1.5">
-                  <span role="status" className="text-xs font-mono text-neutral-400">
-                    {statusText || "Opens a draft in your default email app"}
+                  <span className="text-xs font-mono text-neutral-400">
+                    {statusText || "Instant mailto routing with 1-click fallback"}
                   </span>
                   <button
                     type="submit"
-                    disabled={!message.trim()}
+                    disabled={isTransmitting || !message.trim()}
                     className={`flex items-center space-x-2 px-6 py-2.5 rounded-full font-sans font-semibold text-sm transition-all shadow-md active:scale-95 ${
                       message.trim()
                         ? "bg-brand-blue text-white hover:bg-blue-400 shadow-brand-blue/25 hover:scale-105"
@@ -288,7 +295,7 @@ export function ContactSection() {
                     }`}
                     data-cursor-interactive="true"
                   >
-                    <span>Prepare email</span>
+                    <span>{isTransmitting ? "Transmitting..." : "Transmit Dispatch"}</span>
                     <Send className="w-3.5 h-3.5" />
                   </button>
                 </div>

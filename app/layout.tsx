@@ -34,7 +34,6 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <body className="bg-black text-brand-text antialiased selection:bg-brand-blue selection:text-white font-sans">
-        <a href="#main-content" className="skip-link">Skip to content</a>
         {/* Precision Cursor */}
         <CustomCursor />
 
